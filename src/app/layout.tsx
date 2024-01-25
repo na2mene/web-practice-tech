@@ -15,6 +15,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // throw '何かしらのエラー、このlayoutレベルで発生するエラーは、global-error.tsxでハンドリング';
   return (
     <html lang="en">
       <body className={inter.className}>
