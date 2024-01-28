@@ -1,0 +1,57 @@
+openapi: 3.0.2
+info:
+  description: Web Practice Tech API
+  title: Web Practice Tech API
+  version: 0.0.1
+servers:
+- description: Development server
+  url: https://jsonplaceholder.typicode.com
+tags:
+- description: 投稿
+  name: posts
+paths:
+  /posts:
+    get:
+      description: |
+        hogeに管理された投稿をすべて返却する.
+        ドメイン知識どうのこうの、あれこれ、それそれで、
+        使われているので、こうこうそれそれなので、
+        このエンドポイントを削除することは、不可能.
+      operationId: getPosts
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostsListResponseBody'
+          description: Successful response
+      summary: すべての投稿を返却する
+      tags:
+      - Posts
+components:
+  schemas:
+    PostsListResponseBody:
+      items:
+        $ref: '#/components/schemas/PostsListResponseBody_inner'
+      type: array
+    PostsListResponseBody_inner:
+      example:
+        id: 0
+        completed: completed
+        title: title
+        userId: 6
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: string
+      required:
+      - completed
+      - id
+      - title
+      - userId
+      type: object

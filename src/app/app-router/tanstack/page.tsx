@@ -1,24 +1,26 @@
 'use client'
 
-import {
-  useQuery,
-} from '@tanstack/react-query'
+import { useGetPosts } from '@/api/posts/posts'
 
-const getPosts = () => {
-  return fetch('https://jsonplaceholder.typicode.com/todos')
-      .then(response => response.json())
-};
+// NOTE: Axiosをかました時にレスポンスの返却値が変わるので、同じようにwrapしたい
+// import { getGetPostsMock } from '@/api/backend.msw'
 
 export default function Page() {
-  const { isPending, data } = useQuery({ queryKey: ['todos'], queryFn: getPosts })
-  if (isPending) return (<div>ローディング</div>);
+  // TODO: dev環境特有？2回目のレンダリングの時に、エラーで死ぬ
+  //       隙間で調査、動くには動いてそうだけど、使えてないのが現実.
+  // const res = getGetPostsMock();
 
-  console.log(data);
+  const { data: res, error, isPending } = useGetPosts();
+  if (isPending) return (<div>ローディング</div>);
+  if (error) return (<div>エラーです: {error}</div>);
+
+  console.log(`中身`);
+  console.log(res);
 
   return (
     <>
       {
-        data.map((el) => (
+        res.data.map((el) => (
           <div key={el.id}>
             {el.title}
           </div>
