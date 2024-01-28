@@ -6,7 +6,7 @@ export default defineConfig({
       target: './openapi/web-practice-tech/openapi.yaml',
     },
     output: {
-      target: './src/api/backend.ts',
+      target: './src/apis/backend.ts',
       client: 'react-query',
       clean: true,
       mode: 'tags-split',
