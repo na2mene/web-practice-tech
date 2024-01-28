@@ -1,0 +1,37 @@
+get:
+  summary: すべての投稿を返却する
+  description: |
+    hogeに管理された投稿をすべて返却する.
+    ドメイン知識どうのこうの、あれこれ、それそれで、
+    使われているので、こうこうそれそれなので、
+    このエンドポイントを削除することは、不可能.
+  tags: [Posts]
+  operationId: getPosts
+  responses:
+    "200":
+      description: Successful response
+      content:
+        "application/json":
+          schema:
+            $ref: "#/components/schemas/PostsListResponseBody"
+
+components:
+  schemas:
+    PostsListResponseBody:
+      type: array
+      items:
+        type: object
+        required:
+          - id
+          - userId
+          - title
+          - completed
+        properties:
+          id:
+            type: integer
+          userId:
+            type: integer
+          title:
+            type: string
+          completed:
+            type: string

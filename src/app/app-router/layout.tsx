@@ -1,11 +1,5 @@
-'use client'
-
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-
-const queryClient = new QueryClient()
+import AxiosProvider from './AxiosProvider';
+import TanstackQueryProvider from './TanstackQueryProvider';
 
 export default function AppRouterLayout({
   children,
@@ -13,8 +7,10 @@ export default function AppRouterLayout({
   children: React.ReactNode
 }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
+    <AxiosProvider>
+      <TanstackQueryProvider>
+        {children}
+      </TanstackQueryProvider>
+    </AxiosProvider>
   )
 }

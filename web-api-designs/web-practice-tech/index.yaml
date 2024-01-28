@@ -1,0 +1,17 @@
+openapi: 3.0.2
+info:
+  title: Web Practice Tech API
+  description: Web Practice Tech API
+  version: 0.0.1
+servers:
+  - url: https://jsonplaceholder.typicode.com
+    description: Development server
+
+tags:
+  - name: posts
+    description: 投稿
+
+paths:
+  /posts:
+    $ref: ./paths/posts/post.yaml
+
