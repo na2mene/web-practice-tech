@@ -1,30 +1,20 @@
-'use client'
+'use client';
 
-import { useGetPostList } from './useGetPostList'
+import { useGetPostList } from './useGetPostList';
 
 export const TanstackScreen = () => {
-  const {data, error, isPending} = useGetPostList();
+  const { data, error, isPending } = useGetPostList();
 
   console.log(`中身`);
   console.log(data);
 
-  if (isPending) return(<>ローディング</>);
-  if (error) return(<>エラーです</>);
+  if (isPending) return <>ローディング</>;
+  if (error) return <>エラーです</>;
 
   return (
     <>
-      <div>
-        データの取得結果
-      </div>
-      {
-        data && (
-          data?.map((el) => (
-            <div key={el.id}>
-              {el.title}
-            </div>
-          ))
-        )
-      }
+      <div>データの取得結果</div>
+      {data && data?.map((el) => <div key={el.id}>{el.title}</div>)}
       {/* <button
         onClick={() => {
           mutation.mutate({
@@ -36,5 +26,5 @@ export const TanstackScreen = () => {
         Add Todo
       </button> */}
     </>
-  )
-}
+  );
+};

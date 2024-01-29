@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
 export default function AppError({
   error,
   reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+  error: Error & { digest?: string };
+  reset: () => void;
 }) {
   console.log(`AppError: ${error}`);
 
@@ -16,5 +16,5 @@ export default function AppError({
         <button onClick={() => reset()}>Try again</button>
       </body>
     </html>
-  )
+  );
 }

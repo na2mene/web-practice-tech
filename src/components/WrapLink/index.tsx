@@ -1,7 +1,9 @@
-import Link from "next/link"
+import Link from 'next/link';
 
 const WrapLink = ({
-  href, className, children
+  href,
+  className,
+  children,
 }: {
   href: string;
   className?: string;
@@ -13,9 +15,7 @@ const WrapLink = ({
     <Link href={href} className={className}>
       {children}
     </Link>
-  )
-}
+  );
+};
 
-export {
-  WrapLink,
-}
+export { WrapLink };
