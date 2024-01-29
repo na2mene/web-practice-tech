@@ -9,6 +9,8 @@ servers:
 tags:
 - description: 投稿
   name: posts
+- description: ユーザ
+  name: users
 paths:
   /posts:
     get:
@@ -27,13 +29,88 @@ paths:
       summary: すべての投稿を返却する
       tags:
       - Posts
+  /posts/{postId}:
+    get:
+      description: N/A
+      operationId: getPostDetail
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponseBody'
+          description: Successful response
+      summary: 指定されたIDの投稿を取得する.
+      tags:
+      - Posts
+  /posts/{postId}/comments:
+    get:
+      description: N/A
+      operationId: getPostDetailCommentList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostDetailCommentListResponseBody'
+          description: Successful response
+      summary: 指定されたIDの投稿のコメントを取得する.
+      tags:
+      - Posts
+  /users:
+    get:
+      description: |-
+        hogeに管理された投稿をすべて返却する.
+        ドメイン知識どうのこうの、あれこれ、それそれで、使われているので、
+        こうこうそれそれなので、このエンドポイントを削除することは、不可能.
+      operationId: getUserList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponseBody'
+          description: Successful response
+      summary: すべてのユーザを返却する
+      tags:
+      - Users
+  /users/{userId}:
+    get:
+      description: N/A
+      operationId: getUserDetail
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseBody'
+          description: Successful response
+      summary: 指定されたIDのユーザを取得する.
+      tags:
+      - Users
+  /users/{userId}/comments:
+    get:
+      description: N/A
+      operationId: getUserDetailCommentList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailCommentListResponseBody'
+          description: Successful response
+      summary: 指定されたIDのユーザのコメントを取得する.
+      tags:
+      - Users
 components:
   schemas:
     PostsListResponseBody:
       items:
-        $ref: '#/components/schemas/PostsListResponseBody_inner'
+        $ref: '#/components/schemas/post'
       type: array
-    PostsListResponseBody_inner:
+    PostResponseBody:
+      $ref: '#/components/schemas/post'
+    post:
       example:
         id: 0
         completed: completed
@@ -53,4 +130,131 @@ components:
       - id
       - title
       - userId
+      type: object
+    PostDetailCommentListResponseBody:
+      items:
+        $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
+      type: array
+    UserListResponseBody:
+      items:
+        $ref: '#/components/schemas/user'
+      type: array
+    UserResponseBody:
+      $ref: '#/components/schemas/user'
+    user:
+      example:
+        website: website
+        address:
+          zipcode: zipcode
+          geo:
+            lon: lon
+            lat: lat
+          suite: suite
+          city: city
+          street: street
+        phone: phone
+        name: name
+        company:
+          bs: bs
+          catchPhrase: catchPhrase
+          name: name
+        id: 0
+        email: email
+        username: username
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        address:
+          $ref: '#/components/schemas/user_address'
+        phone:
+          type: string
+        website:
+          type: string
+        company:
+          $ref: '#/components/schemas/user_company'
+      required:
+      - address
+      - email
+      - id
+      - name
+      - username
+      type: object
+    UserDetailCommentListResponseBody:
+      items:
+        $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
+      type: array
+    PostDetailCommentListResponseBody_inner:
+      example:
+        name: name
+        id: 0
+        postId: 6
+        body: body
+        email: email
+      properties:
+        id:
+          type: integer
+        postId:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        body:
+          type: string
+      required:
+      - body
+      - email
+      - id
+      - name
+      - postId
+      type: object
+    user_address_geo:
+      example:
+        lon: lon
+        lat: lat
+      properties:
+        lat:
+          type: string
+        lon:
+          type: string
+      type: object
+    user_address:
+      example:
+        zipcode: zipcode
+        geo:
+          lon: lon
+          lat: lat
+        suite: suite
+        city: city
+        street: street
+      properties:
+        street:
+          type: string
+        suite:
+          type: string
+        city:
+          type: string
+        zipcode:
+          type: string
+        geo:
+          $ref: '#/components/schemas/user_address_geo'
+      type: object
+    user_company:
+      example:
+        bs: bs
+        catchPhrase: catchPhrase
+        name: name
+      properties:
+        name:
+          type: string
+        catchPhrase:
+          type: string
+        bs:
+          type: string
       type: object
