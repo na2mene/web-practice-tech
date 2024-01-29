@@ -1,11 +1,11 @@
-import { PostsListResponseBody } from '@/apis/backend.schemas';
-import { useGetPosts, GetPostsQueryResult } from '@/apis/posts/posts';
+import type { GetPostsResponseBody } from '@/__generated__/api.schemas';
+import { useGetPosts, GetPostsQueryResult } from '@/__generated__/posts/posts';
 
 
 // NOTE: API取得後のロジック、ここをテストコード書けばよいだけにしておきたい.
 //       さらに、selectorなロジックは別ファイルに切り出すか・・・？
-const postFilter = (response: GetPostsQueryResult): PostsListResponseBody => {
-  const data: PostsListResponseBody = response.data
+const postFilter = (response: GetPostsQueryResult): GetPostsResponseBody => {
+  const data: GetPostsResponseBody = response.data
   return data.map(({ id, title, userId, completed }) => {
     return {
       id,

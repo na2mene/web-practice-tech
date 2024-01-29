@@ -24,15 +24,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostsListResponseBody'
+                $ref: '#/components/schemas/GetPostsResponseBody'
           description: Successful response
       summary: すべての投稿を返却する
       tags:
-      - Posts
-  /posts/{postId}:
-    get:
+      - posts
+    post:
       description: N/A
-      operationId: getPostDetail
+      operationId: createPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePostResponseBody'
+          description: Successful response
+      summary: 投稿を登録する
+      tags:
+      - users
+  /posts/{postId}:
+    delete:
+      description: N/A
+      operationId: deletePost
       parameters:
       - in: path
         name: postId
@@ -44,15 +62,58 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostResponseBody'
+                $ref: '#/components/schemas/DeletePostResponseBody'
+          description: Successful response
+      summary: 指定されたIDの投稿を削除する.
+      tags:
+      - posts
+    get:
+      description: N/A
+      operationId: getPost
+      parameters:
+      - in: path
+        name: postId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPostResponseBody'
           description: Successful response
       summary: 指定されたIDの投稿を取得する.
       tags:
-      - Posts
+      - posts
+    put:
+      description: N/A
+      operationId: updatePost
+      parameters:
+      - in: path
+        name: postId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatePostResponseBody'
+          description: Successful response
+      summary: 指定されたIDの投稿を更新する.
+      tags:
+      - posts
   /posts/{postId}/comments:
     get:
       description: N/A
-      operationId: getPostDetailCommentList
+      operationId: getPostComments
       parameters:
       - in: path
         name: postId
@@ -64,32 +125,50 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostDetailCommentListResponseBody'
+                $ref: '#/components/schemas/GetPostCommentsResponseBody'
           description: Successful response
       summary: 指定されたIDの投稿のコメントを取得する.
       tags:
-      - Posts
+      - posts
   /users:
     get:
       description: |-
         hogeに管理された投稿をすべて返却する.
         ドメイン知識どうのこうの、あれこれ、それそれで、使われているので、
         こうこうそれそれなので、このエンドポイントを削除することは、不可能.
-      operationId: getUserList
+      operationId: getUsers
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserListResponseBody'
+                $ref: '#/components/schemas/GetUsersResponseBody'
           description: Successful response
       summary: すべてのユーザを返却する
       tags:
-      - Users
-  /users/{userId}:
-    get:
+      - users
+    post:
       description: N/A
-      operationId: getUserDetail
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponseBody'
+          description: Successful response
+      summary: ユーザを登録する
+      tags:
+      - users
+  /users/{userId}:
+    delete:
+      description: N/A
+      operationId: deleteUser
       parameters:
       - in: path
         name: userId
@@ -101,15 +180,58 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponseBody'
+                $ref: '#/components/schemas/DeleteUserResponseBody'
+          description: Successful response
+      summary: 指定されたIDのユーザを削除する.
+      tags:
+      - users
+    get:
+      description: N/A
+      operationId: getUser
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponseBody'
           description: Successful response
       summary: 指定されたIDのユーザを取得する.
       tags:
-      - Users
+      - users
+    put:
+      description: N/A
+      operationId: updateUser
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponseBody'
+          description: Successful response
+      summary: 指定されたIDのユーザを更新する.
+      tags:
+      - users
   /users/{userId}/comments:
     get:
       description: N/A
-      operationId: getUserDetailCommentList
+      operationId: getUserComments
       parameters:
       - in: path
         name: userId
@@ -121,18 +243,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetailCommentListResponseBody'
+                $ref: '#/components/schemas/GetUserCommentsResponseBody'
           description: Successful response
       summary: 指定されたIDのユーザのコメントを取得する.
       tags:
-      - Users
+      - users
 components:
   schemas:
-    PostsListResponseBody:
+    GetPostsResponseBody:
       items:
         $ref: '#/components/schemas/post'
       type: array
-    PostResponseBody:
+    CreatePostResponseBody:
+      items:
+        $ref: '#/components/schemas/post'
+      type: array
+    CreatePostRequestBody:
+      example:
+        id: 0
+        completed: completed
+        title: title
+        userId: 6
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: string
+      type: object
+    GetPostResponseBody:
       $ref: '#/components/schemas/post'
     post:
       example:
@@ -155,15 +297,82 @@ components:
       - title
       - userId
       type: object
-    PostDetailCommentListResponseBody:
+    UpdatePostResponseBody:
       items:
-        $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
+        $ref: '#/components/schemas/post'
       type: array
-    UserListResponseBody:
+    UpdatePostRequestBody:
+      example:
+        id: 0
+        completed: completed
+        title: title
+        userId: 6
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: string
+      type: object
+    DeletePostResponseBody:
+      properties: {}
+      type: object
+    GetPostCommentsResponseBody:
+      items:
+        $ref: '#/components/schemas/GetPostCommentsResponseBody_inner'
+      type: array
+    GetUsersResponseBody:
       items:
         $ref: '#/components/schemas/user'
       type: array
-    UserResponseBody:
+    CreateUserResponseBody:
+      items:
+        $ref: '#/components/schemas/user'
+      type: array
+    CreateUserRequestBody:
+      example:
+        website: website
+        address:
+          zipcode: zipcode
+          geo:
+            lon: lon
+            lat: lat
+          suite: suite
+          city: city
+          street: street
+        phone: phone
+        name: name
+        company:
+          bs: bs
+          catchPhrase: catchPhrase
+          name: name
+        email: email
+        username: username
+      properties:
+        name:
+          nullable: true
+          type: string
+        username:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        address:
+          $ref: '#/components/schemas/CreateUserRequestBody_address'
+        phone:
+          nullable: true
+          type: string
+        website:
+          nullable: true
+          type: string
+        company:
+          $ref: '#/components/schemas/CreateUserRequestBody_company'
+      type: object
+    GetUserResponseBody:
       $ref: '#/components/schemas/user'
     user:
       example:
@@ -209,11 +418,58 @@ components:
       - name
       - username
       type: object
-    UserDetailCommentListResponseBody:
+    UpdateUserResponseBody:
       items:
-        $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
+        $ref: '#/components/schemas/user'
       type: array
-    PostDetailCommentListResponseBody_inner:
+    UpdateUserRequestBody:
+      example:
+        website: website
+        address:
+          zipcode: zipcode
+          geo:
+            lon: lon
+            lat: lat
+          suite: suite
+          city: city
+          street: street
+        phone: phone
+        name: name
+        company:
+          bs: bs
+          catchPhrase: catchPhrase
+          name: name
+        email: email
+        username: username
+      properties:
+        name:
+          nullable: true
+          type: string
+        username:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        address:
+          $ref: '#/components/schemas/CreateUserRequestBody_address'
+        phone:
+          nullable: true
+          type: string
+        website:
+          nullable: true
+          type: string
+        company:
+          $ref: '#/components/schemas/CreateUserRequestBody_company'
+      type: object
+    DeleteUserResponseBody:
+      properties: {}
+      type: object
+    GetUserCommentsResponseBody:
+      items:
+        $ref: '#/components/schemas/GetPostCommentsResponseBody_inner'
+      type: array
+    GetPostCommentsResponseBody_inner:
       example:
         name: name
         id: 0
@@ -237,6 +493,59 @@ components:
       - id
       - name
       - postId
+      type: object
+    CreateUserRequestBody_address_geo:
+      example:
+        lon: lon
+        lat: lat
+      properties:
+        lat:
+          nullable: true
+          type: string
+        lon:
+          nullable: true
+          type: string
+      type: object
+    CreateUserRequestBody_address:
+      example:
+        zipcode: zipcode
+        geo:
+          lon: lon
+          lat: lat
+        suite: suite
+        city: city
+        street: street
+      properties:
+        street:
+          nullable: true
+          type: string
+        suite:
+          nullable: true
+          type: string
+        city:
+          nullable: true
+          type: string
+        zipcode:
+          nullable: true
+          type: string
+        geo:
+          $ref: '#/components/schemas/CreateUserRequestBody_address_geo'
+      type: object
+    CreateUserRequestBody_company:
+      example:
+        bs: bs
+        catchPhrase: catchPhrase
+        name: name
+      properties:
+        name:
+          nullable: true
+          type: string
+        catchPhrase:
+          nullable: true
+          type: string
+        bs:
+          nullable: true
+          type: string
       type: object
     user_address_geo:
       example:

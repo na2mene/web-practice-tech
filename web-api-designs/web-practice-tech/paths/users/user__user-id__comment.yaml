@@ -1,8 +1,9 @@
 get:
   summary: 指定されたIDのユーザのコメントを取得する.
   description: N/A
-  tags: [Users]
-  operationId: getUserDetailCommentList
+  tags:
+    - users
+  operationId: getUserComments
   parameters:
     - name: userId
       in: path
@@ -14,13 +15,13 @@ get:
     "200":
       description: Successful response
       content:
-        "application/json":
+        application/json:
           schema:
-            $ref: "#/components/schemas/UserDetailCommentListResponseBody"
+            $ref: "#/components/schemas/GetUserCommentsResponseBody"
 
 components:
   schemas:
-    UserDetailCommentListResponseBody:
+    GetUserCommentsResponseBody:
       type: array
       items:
         type: object

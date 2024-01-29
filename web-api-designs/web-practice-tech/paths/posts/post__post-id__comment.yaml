@@ -1,8 +1,9 @@
 get:
   summary: 指定されたIDの投稿のコメントを取得する.
   description: N/A
-  tags: [Posts]
-  operationId: getPostDetailCommentList
+  tags:
+    - posts
+  operationId: getPostComments
   parameters:
     - name: postId
       in: path
@@ -14,13 +15,13 @@ get:
     "200":
       description: Successful response
       content:
-        "application/json":
+        application/json:
           schema:
-            $ref: "#/components/schemas/PostDetailCommentListResponseBody"
+            $ref: "#/components/schemas/GetPostCommentsResponseBody"
 
 components:
   schemas:
-    PostDetailCommentListResponseBody:
+    GetPostCommentsResponseBody:
       type: array
       items:
         type: object
