@@ -14,11 +14,123 @@ get:
     "200":
       description: Successful response
       content:
-        "application/json":
+        application/json:
           schema:
             $ref: "#/components/schemas/UserResponseBody"
+
+put:
+  summary: 指定されたIDのユーザを更新する.
+  description: N/A
+  tags: [Users]
+  operationId: updateUser
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        examle: 1
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/UpdateUserRequestBody"
+
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateUserResponseBody"
+
+delete:
+  summary: 指定されたIDのユーザを削除する.
+  description: N/A
+  tags: [Users]
+  operationId: deleteUser
+  parameters:
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        examle: 1
+
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DeleteUserResponseBody"
 
 components:
   schemas:
     UserResponseBody:
       $ref: './components/user.yaml'
+
+    UpdateUserRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+              nullable: true
+            suite:
+              type: string
+              nullable: true
+            city:
+              type: string
+              nullable: true
+            zipcode:
+              type: string
+              nullable: true
+            geo:
+              type: object
+              properties:
+                lat:
+                  type: string
+                  nullable: true
+                lon:
+                  type: string
+                  nullable: true
+        phone:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        company:
+          type: object
+          properties:
+            name:
+              type: string
+              nullable: true
+            catchPhrase:
+              type: string
+              nullable: true
+            bs:
+              type: string
+              nullable: true
+
+    UpdateUserResponseBody:
+      type: array
+      items:
+        $ref: './components/user.yaml'
+
+    DeleteUserResponseBody:
+      type: object
+      properties:
+        {}

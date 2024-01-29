@@ -6,11 +6,14 @@
  * OpenAPI spec version: 0.0.1
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query'
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query'
@@ -21,6 +24,13 @@ import type {
   AxiosResponse
 } from 'axios'
 import type {
+  CreatePostRequestBody,
+  CreatePostResponseBody,
+  CreateUserRequestBody,
+  CreateUserResponseBody,
+  DeleteUserResponseBody,
+  UpdateUserRequestBody,
+  UpdateUserResponseBody,
   User,
   UserDetailCommentListResponseBody,
   UserListResponseBody
@@ -29,6 +39,56 @@ import type {
 
 
 /**
+ * N/A
+ * @summary 投稿を登録する
+ */
+export const createPost = (
+    createPostRequestBody: CreatePostRequestBody, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<CreatePostResponseBody>> => {
+    
+    return axios.post(
+      `/posts`,
+      createPostRequestBody,options
+    );
+  }
+
+
+
+export const getCreatePostMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPost>>, TError,{data: CreatePostRequestBody}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof createPost>>, TError,{data: CreatePostRequestBody}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPost>>, {data: CreatePostRequestBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createPost(data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePostMutationResult = NonNullable<Awaited<ReturnType<typeof createPost>>>
+    export type CreatePostMutationBody = CreatePostRequestBody
+    export type CreatePostMutationError = AxiosError<unknown>
+
+    /**
+ * @summary 投稿を登録する
+ */
+export const useCreatePost = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPost>>, TError,{data: CreatePostRequestBody}, TContext>, axios?: AxiosRequestConfig}
+) => {
+
+      const mutationOptions = getCreatePostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * hogeに管理された投稿をすべて返却する.
 ドメイン知識どうのこうの、あれこれ、それそれで、使われているので、
 こうこうそれそれなので、このエンドポイントを削除することは、不可能.
@@ -91,6 +151,105 @@ export const useGetUserList = <TData = Awaited<ReturnType<typeof getUserList>>, 
 
 /**
  * N/A
+ * @summary ユーザを登録する
+ */
+export const createUser = (
+    createUserRequestBody: CreateUserRequestBody, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<CreateUserResponseBody>> => {
+    
+    return axios.post(
+      `/users`,
+      createUserRequestBody,options
+    );
+  }
+
+
+
+export const getCreateUserMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserRequestBody}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createUser>>, {data: CreateUserRequestBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createUser(data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type CreateUserMutationResult = NonNullable<Awaited<ReturnType<typeof createUser>>>
+    export type CreateUserMutationBody = CreateUserRequestBody
+    export type CreateUserMutationError = AxiosError<unknown>
+
+    /**
+ * @summary ユーザを登録する
+ */
+export const useCreateUser = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
+) => {
+
+      const mutationOptions = getCreateUserMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * N/A
+ * @summary 指定されたIDのユーザを削除する.
+ */
+export const deleteUser = (
+    userId: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<DeleteUserResponseBody>> => {
+    
+    return axios.delete(
+      `/users/${userId}`,options
+    );
+  }
+
+
+
+export const getDeleteUserMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, {userId: string}> = (props) => {
+          const {userId} = props ?? {};
+
+          return  deleteUser(userId,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
+    
+    export type DeleteUserMutationError = AxiosError<unknown>
+
+    /**
+ * @summary 指定されたIDのユーザを削除する.
+ */
+export const useDeleteUser = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext>, axios?: AxiosRequestConfig}
+) => {
+
+      const mutationOptions = getDeleteUserMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * N/A
  * @summary 指定されたIDのユーザを取得する.
  */
 export const getUserDetail = (
@@ -149,6 +308,57 @@ export const useGetUserDetail = <TData = Awaited<ReturnType<typeof getUserDetail
 
 
 /**
+ * N/A
+ * @summary 指定されたIDのユーザを更新する.
+ */
+export const updateUser = (
+    userId: string,
+    updateUserRequestBody: UpdateUserRequestBody, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<UpdateUserResponseBody>> => {
+    
+    return axios.put(
+      `/users/${userId}`,
+      updateUserRequestBody,options
+    );
+  }
+
+
+
+export const getUpdateUserMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUser>>, TError,{userId: string;data: UpdateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof updateUser>>, TError,{userId: string;data: UpdateUserRequestBody}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateUser>>, {userId: string;data: UpdateUserRequestBody}> = (props) => {
+          const {userId,data} = props ?? {};
+
+          return  updateUser(userId,data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateUserMutationResult = NonNullable<Awaited<ReturnType<typeof updateUser>>>
+    export type UpdateUserMutationBody = UpdateUserRequestBody
+    export type UpdateUserMutationError = AxiosError<unknown>
+
+    /**
+ * @summary 指定されたIDのユーザを更新する.
+ */
+export const useUpdateUser = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUser>>, TError,{userId: string;data: UpdateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
+) => {
+
+      const mutationOptions = getUpdateUserMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * N/A
  * @summary 指定されたIDのユーザのコメントを取得する.
  */

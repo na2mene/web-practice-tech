@@ -6,11 +6,14 @@
  * OpenAPI spec version: 0.0.1
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query'
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query'
@@ -21,9 +24,12 @@ import type {
   AxiosResponse
 } from 'axios'
 import type {
+  DeletePostResponseBody,
   Post,
   PostDetailCommentListResponseBody,
-  PostsListResponseBody
+  PostsListResponseBody,
+  UpdatePostRequestBody,
+  UpdatePostResponseBody
 } from '../backend.schemas'
 
 
@@ -91,6 +97,55 @@ export const useGetPosts = <TData = Awaited<ReturnType<typeof getPosts>>, TError
 
 /**
  * N/A
+ * @summary 指定されたIDの投稿を削除する.
+ */
+export const deletePost = (
+    postId: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<DeletePostResponseBody>> => {
+    
+    return axios.delete(
+      `/posts/${postId}`,options
+    );
+  }
+
+
+
+export const getDeletePostMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePost>>, TError,{postId: string}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof deletePost>>, TError,{postId: string}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deletePost>>, {postId: string}> = (props) => {
+          const {postId} = props ?? {};
+
+          return  deletePost(postId,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type DeletePostMutationResult = NonNullable<Awaited<ReturnType<typeof deletePost>>>
+    
+    export type DeletePostMutationError = AxiosError<unknown>
+
+    /**
+ * @summary 指定されたIDの投稿を削除する.
+ */
+export const useDeletePost = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deletePost>>, TError,{postId: string}, TContext>, axios?: AxiosRequestConfig}
+) => {
+
+      const mutationOptions = getDeletePostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
+ * N/A
  * @summary 指定されたIDの投稿を取得する.
  */
 export const getPostDetail = (
@@ -149,6 +204,57 @@ export const useGetPostDetail = <TData = Awaited<ReturnType<typeof getPostDetail
 
 
 /**
+ * N/A
+ * @summary 指定されたIDの投稿を更新する.
+ */
+export const updatePost = (
+    postId: string,
+    updatePostRequestBody: UpdatePostRequestBody, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<UpdatePostResponseBody>> => {
+    
+    return axios.put(
+      `/posts/${postId}`,
+      updatePostRequestBody,options
+    );
+  }
+
+
+
+export const getUpdatePostMutationOptions = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostRequestBody}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostRequestBody}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePost>>, {postId: string;data: UpdatePostRequestBody}> = (props) => {
+          const {postId,data} = props ?? {};
+
+          return  updatePost(postId,data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type UpdatePostMutationResult = NonNullable<Awaited<ReturnType<typeof updatePost>>>
+    export type UpdatePostMutationBody = UpdatePostRequestBody
+    export type UpdatePostMutationError = AxiosError<unknown>
+
+    /**
+ * @summary 指定されたIDの投稿を更新する.
+ */
+export const useUpdatePost = <TError = AxiosError<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePost>>, TError,{postId: string;data: UpdatePostRequestBody}, TContext>, axios?: AxiosRequestConfig}
+) => {
+
+      const mutationOptions = getUpdatePostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * N/A
  * @summary 指定されたIDの投稿のコメントを取得する.
  */

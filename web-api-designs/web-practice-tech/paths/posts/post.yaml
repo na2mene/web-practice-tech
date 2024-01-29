@@ -10,9 +10,27 @@ get:
     "200":
       description: Successful response
       content:
-        "application/json":
+        application/json:
           schema:
             $ref: "#/components/schemas/PostsListResponseBody"
+
+post:
+  summary: 投稿を登録する
+  description: N/A
+  tags: [Users]
+  operationId: createPost
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/CreatePostRequestBody"
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreatePostResponseBody"
 
 components:
   schemas:
@@ -20,3 +38,20 @@ components:
       type: array
       items:
         $ref: './components/post.yaml'
+
+    CreatePostRequestBody:
+          type: object
+          properties:
+            id:
+              type: integer
+            userId:
+              type: integer
+            title:
+              type: string
+            completed:
+              type: string
+
+    CreatePostResponseBody:
+          type: array
+          items:
+            $ref: './components/post.yaml'

@@ -29,7 +29,44 @@ paths:
       summary: すべての投稿を返却する
       tags:
       - Posts
+    post:
+      description: N/A
+      operationId: createPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePostResponseBody'
+          description: Successful response
+      summary: 投稿を登録する
+      tags:
+      - Users
   /posts/{postId}:
+    delete:
+      description: N/A
+      operationId: deletePost
+      parameters:
+      - in: path
+        name: postId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePostResponseBody'
+          description: Successful response
+      summary: 指定されたIDの投稿を削除する.
+      tags:
+      - Posts
     get:
       description: N/A
       operationId: getPostDetail
@@ -47,6 +84,30 @@ paths:
                 $ref: '#/components/schemas/PostResponseBody'
           description: Successful response
       summary: 指定されたIDの投稿を取得する.
+      tags:
+      - Posts
+    put:
+      description: N/A
+      operationId: updatePost
+      parameters:
+      - in: path
+        name: postId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePostRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdatePostResponseBody'
+          description: Successful response
+      summary: 指定されたIDの投稿を更新する.
       tags:
       - Posts
   /posts/{postId}/comments:
@@ -86,7 +147,44 @@ paths:
       summary: すべてのユーザを返却する
       tags:
       - Users
+    post:
+      description: N/A
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponseBody'
+          description: Successful response
+      summary: ユーザを登録する
+      tags:
+      - Users
   /users/{userId}:
+    delete:
+      description: N/A
+      operationId: deleteUser
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponseBody'
+          description: Successful response
+      summary: 指定されたIDのユーザを削除する.
+      tags:
+      - Users
     get:
       description: N/A
       operationId: getUserDetail
@@ -104,6 +202,30 @@ paths:
                 $ref: '#/components/schemas/UserResponseBody'
           description: Successful response
       summary: 指定されたIDのユーザを取得する.
+      tags:
+      - Users
+    put:
+      description: N/A
+      operationId: updateUser
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequestBody'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateUserResponseBody'
+          description: Successful response
+      summary: 指定されたIDのユーザを更新する.
       tags:
       - Users
   /users/{userId}/comments:
@@ -132,6 +254,26 @@ components:
       items:
         $ref: '#/components/schemas/post'
       type: array
+    CreatePostResponseBody:
+      items:
+        $ref: '#/components/schemas/post'
+      type: array
+    CreatePostRequestBody:
+      example:
+        id: 0
+        completed: completed
+        title: title
+        userId: 6
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: string
+      type: object
     PostResponseBody:
       $ref: '#/components/schemas/post'
     post:
@@ -155,6 +297,29 @@ components:
       - title
       - userId
       type: object
+    UpdatePostResponseBody:
+      items:
+        $ref: '#/components/schemas/post'
+      type: array
+    UpdatePostRequestBody:
+      example:
+        id: 0
+        completed: completed
+        title: title
+        userId: 6
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: string
+      type: object
+    DeletePostResponseBody:
+      properties: {}
+      type: object
     PostDetailCommentListResponseBody:
       items:
         $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
@@ -163,6 +328,50 @@ components:
       items:
         $ref: '#/components/schemas/user'
       type: array
+    CreateUserResponseBody:
+      items:
+        $ref: '#/components/schemas/user'
+      type: array
+    CreateUserRequestBody:
+      example:
+        website: website
+        address:
+          zipcode: zipcode
+          geo:
+            lon: lon
+            lat: lat
+          suite: suite
+          city: city
+          street: street
+        phone: phone
+        name: name
+        company:
+          bs: bs
+          catchPhrase: catchPhrase
+          name: name
+        email: email
+        username: username
+      properties:
+        name:
+          nullable: true
+          type: string
+        username:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        address:
+          $ref: '#/components/schemas/CreateUserRequestBody_address'
+        phone:
+          nullable: true
+          type: string
+        website:
+          nullable: true
+          type: string
+        company:
+          $ref: '#/components/schemas/CreateUserRequestBody_company'
+      type: object
     UserResponseBody:
       $ref: '#/components/schemas/user'
     user:
@@ -209,6 +418,53 @@ components:
       - name
       - username
       type: object
+    UpdateUserResponseBody:
+      items:
+        $ref: '#/components/schemas/user'
+      type: array
+    UpdateUserRequestBody:
+      example:
+        website: website
+        address:
+          zipcode: zipcode
+          geo:
+            lon: lon
+            lat: lat
+          suite: suite
+          city: city
+          street: street
+        phone: phone
+        name: name
+        company:
+          bs: bs
+          catchPhrase: catchPhrase
+          name: name
+        email: email
+        username: username
+      properties:
+        name:
+          nullable: true
+          type: string
+        username:
+          nullable: true
+          type: string
+        email:
+          nullable: true
+          type: string
+        address:
+          $ref: '#/components/schemas/CreateUserRequestBody_address'
+        phone:
+          nullable: true
+          type: string
+        website:
+          nullable: true
+          type: string
+        company:
+          $ref: '#/components/schemas/CreateUserRequestBody_company'
+      type: object
+    DeleteUserResponseBody:
+      properties: {}
+      type: object
     UserDetailCommentListResponseBody:
       items:
         $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
@@ -237,6 +493,59 @@ components:
       - id
       - name
       - postId
+      type: object
+    CreateUserRequestBody_address_geo:
+      example:
+        lon: lon
+        lat: lat
+      properties:
+        lat:
+          nullable: true
+          type: string
+        lon:
+          nullable: true
+          type: string
+      type: object
+    CreateUserRequestBody_address:
+      example:
+        zipcode: zipcode
+        geo:
+          lon: lon
+          lat: lat
+        suite: suite
+        city: city
+        street: street
+      properties:
+        street:
+          nullable: true
+          type: string
+        suite:
+          nullable: true
+          type: string
+        city:
+          nullable: true
+          type: string
+        zipcode:
+          nullable: true
+          type: string
+        geo:
+          $ref: '#/components/schemas/CreateUserRequestBody_address_geo'
+      type: object
+    CreateUserRequestBody_company:
+      example:
+        bs: bs
+        catchPhrase: catchPhrase
+        name: name
+      properties:
+        name:
+          nullable: true
+          type: string
+        catchPhrase:
+          nullable: true
+          type: string
+        bs:
+          nullable: true
+          type: string
       type: object
     user_address_geo:
       example:

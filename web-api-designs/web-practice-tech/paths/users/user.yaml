@@ -10,13 +10,91 @@ get:
     "200":
       description: Successful response
       content:
-        "application/json":
+        application/json:
           schema:
             $ref: "#/components/schemas/UserListResponseBody"
+
+post:
+  summary: ユーザを登録する
+  description: N/A
+  tags: [Users]
+  operationId: createUser
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/CreateUserRequestBody"
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateUserResponseBody"
 
 components:
   schemas:
     UserListResponseBody:
+      type: array
+      items:
+        $ref: './components/user.yaml'
+
+    CreateUserRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+              nullable: true
+            suite:
+              type: string
+              nullable: true
+            city:
+              type: string
+              nullable: true
+            zipcode:
+              type: string
+              nullable: true
+            geo:
+              type: object
+              properties:
+                lat:
+                  type: string
+                  nullable: true
+                lon:
+                  type: string
+                  nullable: true
+        phone:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        company:
+          type: object
+          properties:
+            name:
+              type: string
+              nullable: true
+            catchPhrase:
+              type: string
+              nullable: true
+            bs:
+              type: string
+              nullable: true
+
+    CreateUserResponseBody:
       type: array
       items:
         $ref: './components/user.yaml'

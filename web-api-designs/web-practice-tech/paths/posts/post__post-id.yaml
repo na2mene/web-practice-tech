@@ -14,11 +14,80 @@ get:
     "200":
       description: Successful response
       content:
-        "application/json":
+        application/json:
           schema:
             $ref: "#/components/schemas/PostResponseBody"
+
+put:
+  summary: 指定されたIDの投稿を更新する.
+  description: N/A
+  tags: [Posts]
+  operationId: updatePost
+  parameters:
+    - name: postId
+      in: path
+      required: true
+      schema:
+        type: string
+        examle: 1
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/UpdatePostRequestBody"
+
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdatePostResponseBody"
+
+delete:
+  summary: 指定されたIDの投稿を削除する.
+  description: N/A
+  tags: [Posts]
+  operationId: deletePost
+  parameters:
+    - name: postId
+      in: path
+      required: true
+      schema:
+        type: string
+        examle: 1
+
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DeletePostResponseBody"
 
 components:
   schemas:
     PostResponseBody:
       $ref: './components/post.yaml'
+
+    UpdatePostRequestBody:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        completed:
+          type: string
+
+    UpdatePostResponseBody:
+      type: array
+      items:
+        $ref: './components/post.yaml'
+
+    DeletePostResponseBody:
+      type: object
+      properties:
+        {}

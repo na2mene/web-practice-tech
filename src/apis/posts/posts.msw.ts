@@ -16,7 +16,11 @@ import {
 
 export const getGetPostsMock = () => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({completed: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), title: faker.word.sample(), userId: faker.number.int({min: undefined, max: undefined})})))
 
+export const getDeletePostMock = () => ({})
+
 export const getGetPostDetailMock = () => ({completed: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), title: faker.word.sample(), userId: faker.number.int({min: undefined, max: undefined})})
+
+export const getUpdatePostMock = () => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({completed: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), title: faker.word.sample(), userId: faker.number.int({min: undefined, max: undefined})})))
 
 export const getGetPostDetailCommentListMock = () => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({body: faker.word.sample(), email: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), postId: faker.number.int({min: undefined, max: undefined})})))
 
@@ -31,9 +35,29 @@ http.get('*/posts', async () => {
             }
           }
         )
+      }),http.delete('*/posts/:postId', async () => {
+        await delay(1000);
+        return new HttpResponse(JSON.stringify(getDeletePostMock()),
+          { 
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        )
       }),http.get('*/posts/:postId', async () => {
         await delay(1000);
         return new HttpResponse(JSON.stringify(getGetPostDetailMock()),
+          { 
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        )
+      }),http.put('*/posts/:postId', async () => {
+        await delay(1000);
+        return new HttpResponse(JSON.stringify(getUpdatePostMock()),
           { 
             status: 200,
             headers: {
