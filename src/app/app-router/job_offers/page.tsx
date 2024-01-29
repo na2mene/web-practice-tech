@@ -1,11 +1,11 @@
-import { Metadata } from 'next'
-import { WrapLink } from '@/components/WrapLink'
+import { Metadata } from 'next';
+import { WrapLink } from '@/components/WrapLink';
 
 // metaデータの上書き
 // only server component
 export const metadata: Metadata = {
   title: 'job_offer page',
-}
+};
 
 export default function JobOfferPage() {
   const jobOffers = [
@@ -26,13 +26,13 @@ export default function JobOfferPage() {
   return (
     <>
       <h1>求人一覧です</h1>
-      {
-        jobOffers.map((jobOffer) => (
-          <div key={jobOffer.id}>
-            <WrapLink href={`/app-router/job_offers/${jobOffer.id}`}>{`求人詳細: ${jobOffer.title}のページへ`}</WrapLink>
-          </div>
-        ))
-      }
+      {jobOffers.map((jobOffer) => (
+        <div key={jobOffer.id}>
+          <WrapLink
+            href={`/app-router/job_offers/${jobOffer.id}`}
+          >{`求人詳細: ${jobOffer.title}のページへ`}</WrapLink>
+        </div>
+      ))}
     </>
-  )
+  );
 }

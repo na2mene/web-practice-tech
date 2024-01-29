@@ -4,13 +4,13 @@ info:
   title: Web Practice Tech API
   version: 0.0.1
 servers:
-- description: Development server
-  url: https://jsonplaceholder.typicode.com
+  - description: Development server
+    url: https://jsonplaceholder.typicode.com
 tags:
-- description: 投稿
-  name: posts
-- description: ユーザ
-  name: users
+  - description: 投稿
+    name: posts
+  - description: ユーザ
+    name: users
 paths:
   /posts:
     get:
@@ -20,7 +20,7 @@ paths:
         こうこうそれそれなので、このエンドポイントを削除することは、不可能.
       operationId: getPosts
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -28,7 +28,7 @@ paths:
           description: Successful response
       summary: すべての投稿を返却する
       tags:
-      - posts
+        - posts
     post:
       description: N/A
       operationId: createPost
@@ -38,7 +38,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CreatePostRequestBody'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -46,19 +46,19 @@ paths:
           description: Successful response
       summary: 投稿を登録する
       tags:
-      - users
+        - users
   /posts/{postId}:
     delete:
       description: N/A
       operationId: deletePost
       parameters:
-      - in: path
-        name: postId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -66,18 +66,18 @@ paths:
           description: Successful response
       summary: 指定されたIDの投稿を削除する.
       tags:
-      - posts
+        - posts
     get:
       description: N/A
       operationId: getPost
       parameters:
-      - in: path
-        name: postId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -85,23 +85,23 @@ paths:
           description: Successful response
       summary: 指定されたIDの投稿を取得する.
       tags:
-      - posts
+        - posts
     put:
       description: N/A
       operationId: updatePost
       parameters:
-      - in: path
-        name: postId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdatePostRequestBody'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -109,19 +109,19 @@ paths:
           description: Successful response
       summary: 指定されたIDの投稿を更新する.
       tags:
-      - posts
+        - posts
   /posts/{postId}/comments:
     get:
       description: N/A
       operationId: getPostComments
       parameters:
-      - in: path
-        name: postId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: postId
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -129,7 +129,7 @@ paths:
           description: Successful response
       summary: 指定されたIDの投稿のコメントを取得する.
       tags:
-      - posts
+        - posts
   /users:
     get:
       description: |-
@@ -138,7 +138,7 @@ paths:
         こうこうそれそれなので、このエンドポイントを削除することは、不可能.
       operationId: getUsers
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -146,7 +146,7 @@ paths:
           description: Successful response
       summary: すべてのユーザを返却する
       tags:
-      - users
+        - users
     post:
       description: N/A
       operationId: createUser
@@ -156,7 +156,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateUserRequestBody'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -164,19 +164,19 @@ paths:
           description: Successful response
       summary: ユーザを登録する
       tags:
-      - users
+        - users
   /users/{userId}:
     delete:
       description: N/A
       operationId: deleteUser
       parameters:
-      - in: path
-        name: userId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -184,18 +184,18 @@ paths:
           description: Successful response
       summary: 指定されたIDのユーザを削除する.
       tags:
-      - users
+        - users
     get:
       description: N/A
       operationId: getUser
       parameters:
-      - in: path
-        name: userId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -203,23 +203,23 @@ paths:
           description: Successful response
       summary: 指定されたIDのユーザを取得する.
       tags:
-      - users
+        - users
     put:
       description: N/A
       operationId: updateUser
       parameters:
-      - in: path
-        name: userId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateUserRequestBody'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -227,19 +227,19 @@ paths:
           description: Successful response
       summary: 指定されたIDのユーザを更新する.
       tags:
-      - users
+        - users
   /users/{userId}/comments:
     get:
       description: N/A
       operationId: getUserComments
       parameters:
-      - in: path
-        name: userId
-        required: true
-        schema:
-          type: string
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -247,7 +247,7 @@ paths:
           description: Successful response
       summary: 指定されたIDのユーザのコメントを取得する.
       tags:
-      - users
+        - users
 components:
   schemas:
     GetPostsResponseBody:
@@ -292,10 +292,10 @@ components:
         completed:
           type: string
       required:
-      - completed
-      - id
-      - title
-      - userId
+        - completed
+        - id
+        - title
+        - userId
       type: object
     UpdatePostResponseBody:
       items:
@@ -412,11 +412,11 @@ components:
         company:
           $ref: '#/components/schemas/user_company'
       required:
-      - address
-      - email
-      - id
-      - name
-      - username
+        - address
+        - email
+        - id
+        - name
+        - username
       type: object
     UpdateUserResponseBody:
       items:
@@ -488,11 +488,11 @@ components:
         body:
           type: string
       required:
-      - body
-      - email
-      - id
-      - name
-      - postId
+        - body
+        - email
+        - id
+        - name
+        - postId
       type: object
     CreateUserRequestBody_address_geo:
       example:

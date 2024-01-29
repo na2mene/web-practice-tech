@@ -5,24 +5,17 @@
  * Web Practice Tech API
  * OpenAPI spec version: 0.0.1
  */
-import {
-  useMutation,
-  useQuery
-} from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type {
   MutationFunction,
   QueryFunction,
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
-  UseQueryResult
-} from '@tanstack/react-query'
-import axios from 'axios'
-import type {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse
-} from 'axios'
+  UseQueryResult,
+} from '@tanstack/react-query';
+import axios from 'axios';
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import type {
   CreatePostRequestBody,
   CreatePostResponseBody,
@@ -33,387 +26,440 @@ import type {
   GetUsersResponseBody,
   UpdateUserRequestBody,
   UpdateUserResponseBody,
-  User
-} from '../api.schemas'
-
-
+  User,
+} from '../api.schemas';
 
 /**
  * N/A
  * @summary 投稿を登録する
  */
 export const createPost = (
-    createPostRequestBody: CreatePostRequestBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreatePostResponseBody>> => {
-    
-    return axios.post(
-      `/posts`,
-      createPostRequestBody,options
-    );
-  }
+  createPostRequestBody: CreatePostRequestBody,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<CreatePostResponseBody>> => {
+  return axios.post(`/posts`, createPostRequestBody, options);
+};
 
+export const getCreatePostMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createPost>>,
+    TError,
+    { data: CreatePostRequestBody },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createPost>>,
+  TError,
+  { data: CreatePostRequestBody },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createPost>>,
+    { data: CreatePostRequestBody }
+  > = (props) => {
+    const { data } = props ?? {};
 
-export const getCreatePostMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPost>>, TError,{data: CreatePostRequestBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createPost>>, TError,{data: CreatePostRequestBody}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+    return createPost(data, axiosOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CreatePostMutationResult = NonNullable<Awaited<ReturnType<typeof createPost>>>;
+export type CreatePostMutationBody = CreatePostRequestBody;
+export type CreatePostMutationError = AxiosError<unknown>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPost>>, {data: CreatePostRequestBody}> = (props) => {
-          const {data} = props ?? {};
-
-          return  createPost(data,axiosOptions)
-        }
-
-        
-
-
-   return  { mutationFn, ...mutationOptions }}
-
-    export type CreatePostMutationResult = NonNullable<Awaited<ReturnType<typeof createPost>>>
-    export type CreatePostMutationBody = CreatePostRequestBody
-    export type CreatePostMutationError = AxiosError<unknown>
-
-    /**
+/**
  * @summary 投稿を登録する
  */
-export const useCreatePost = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPost>>, TError,{data: CreatePostRequestBody}, TContext>, axios?: AxiosRequestConfig}
-) => {
+export const useCreatePost = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createPost>>,
+    TError,
+    { data: CreatePostRequestBody },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const mutationOptions = getCreatePostMutationOptions(options);
 
-      const mutationOptions = getCreatePostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions);
+};
+/**
  * hogeに管理された投稿をすべて返却する.
 ドメイン知識どうのこうの、あれこれ、それそれで、使われているので、
 こうこうそれそれなので、このエンドポイントを削除することは、不可能.
  * @summary すべてのユーザを返却する
  */
 export const getUsers = (
-     options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetUsersResponseBody>> => {
-    
-    return axios.get(
-      `/users`,options
-    );
-  }
-
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<GetUsersResponseBody>> => {
+  return axios.get(`/users`, options);
+};
 
 export const getGetUsersQueryKey = () => {
-    return [`/users`] as const;
-    }
+  return [`/users`] as const;
+};
 
-    
-export const getGetUsersQueryOptions = <TData = Awaited<ReturnType<typeof getUsers>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>>, axios?: AxiosRequestConfig}
-) => {
+export const getGetUsersQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUsers>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>>;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetUsersQueryKey();
 
-  const queryKey =  queryOptions?.queryKey ?? getGetUsersQueryKey();
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsers>>> = ({ signal }) =>
+    getUsers({ signal, ...axiosOptions });
 
-  
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUsers>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsers>>> = ({ signal }) => getUsers({ signal, ...axiosOptions });
-
-      
-
-      
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetUsersQueryResult = NonNullable<Awaited<ReturnType<typeof getUsers>>>
-export type GetUsersQueryError = AxiosError<unknown>
+export type GetUsersQueryResult = NonNullable<Awaited<ReturnType<typeof getUsers>>>;
+export type GetUsersQueryError = AxiosError<unknown>;
 
 /**
  * @summary すべてのユーザを返却する
  */
-export const useGetUsers = <TData = Awaited<ReturnType<typeof getUsers>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const useGetUsers = <
+  TData = Awaited<ReturnType<typeof getUsers>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>>;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGetUsersQueryOptions(options);
 
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
-  const queryOptions = getGetUsersQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
-}
-
-
+};
 
 /**
  * N/A
  * @summary ユーザを登録する
  */
 export const createUser = (
-    createUserRequestBody: CreateUserRequestBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<CreateUserResponseBody>> => {
-    
-    return axios.post(
-      `/users`,
-      createUserRequestBody,options
-    );
-  }
+  createUserRequestBody: CreateUserRequestBody,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<CreateUserResponseBody>> => {
+  return axios.post(`/users`, createUserRequestBody, options);
+};
 
+export const getCreateUserMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createUser>>,
+    TError,
+    { data: CreateUserRequestBody },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createUser>>,
+  TError,
+  { data: CreateUserRequestBody },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createUser>>,
+    { data: CreateUserRequestBody }
+  > = (props) => {
+    const { data } = props ?? {};
 
-export const getCreateUserMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserRequestBody}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+    return createUser(data, axiosOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type CreateUserMutationResult = NonNullable<Awaited<ReturnType<typeof createUser>>>;
+export type CreateUserMutationBody = CreateUserRequestBody;
+export type CreateUserMutationError = AxiosError<unknown>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createUser>>, {data: CreateUserRequestBody}> = (props) => {
-          const {data} = props ?? {};
-
-          return  createUser(data,axiosOptions)
-        }
-
-        
-
-
-   return  { mutationFn, ...mutationOptions }}
-
-    export type CreateUserMutationResult = NonNullable<Awaited<ReturnType<typeof createUser>>>
-    export type CreateUserMutationBody = CreateUserRequestBody
-    export type CreateUserMutationError = AxiosError<unknown>
-
-    /**
+/**
  * @summary ユーザを登録する
  */
-export const useCreateUser = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createUser>>, TError,{data: CreateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
-) => {
+export const useCreateUser = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createUser>>,
+    TError,
+    { data: CreateUserRequestBody },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const mutationOptions = getCreateUserMutationOptions(options);
 
-      const mutationOptions = getCreateUserMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions);
+};
+/**
  * N/A
  * @summary 指定されたIDのユーザを削除する.
  */
 export const deleteUser = (
-    userId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<DeleteUserResponseBody>> => {
-    
-    return axios.delete(
-      `/users/${userId}`,options
-    );
-  }
+  userId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<DeleteUserResponseBody>> => {
+  return axios.delete(`/users/${userId}`, options);
+};
 
+export const getDeleteUserMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteUser>>,
+    TError,
+    { userId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof deleteUser>>,
+  TError,
+  { userId: string },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
 
+  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, { userId: string }> = (
+    props,
+  ) => {
+    const { userId } = props ?? {};
 
-export const getDeleteUserMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+    return deleteUser(userId, axiosOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteUser>>, {userId: string}> = (props) => {
-          const {userId} = props ?? {};
+export type DeleteUserMutationError = AxiosError<unknown>;
 
-          return  deleteUser(userId,axiosOptions)
-        }
-
-        
-
-
-   return  { mutationFn, ...mutationOptions }}
-
-    export type DeleteUserMutationResult = NonNullable<Awaited<ReturnType<typeof deleteUser>>>
-    
-    export type DeleteUserMutationError = AxiosError<unknown>
-
-    /**
+/**
  * @summary 指定されたIDのユーザを削除する.
  */
-export const useDeleteUser = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteUser>>, TError,{userId: string}, TContext>, axios?: AxiosRequestConfig}
-) => {
+export const useDeleteUser = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof deleteUser>>,
+    TError,
+    { userId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const mutationOptions = getDeleteUserMutationOptions(options);
 
-      const mutationOptions = getDeleteUserMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions);
+};
+/**
  * N/A
  * @summary 指定されたIDのユーザを取得する.
  */
 export const getUser = (
-    userId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<User>> => {
-    
-    return axios.get(
-      `/users/${userId}`,options
-    );
-  }
+  userId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<User>> => {
+  return axios.get(`/users/${userId}`, options);
+};
 
+export const getGetUserQueryKey = (userId: string) => {
+  return [`/users/${userId}`] as const;
+};
 
-export const getGetUserQueryKey = (userId: string,) => {
-    return [`/users/${userId}`] as const;
-    }
-
-    
-export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = AxiosError<unknown>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUserQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUser>>,
+  TError = AxiosError<unknown>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
 ) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetUserQueryKey(userId);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetUserQueryKey(userId);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUser>>> = ({ signal }) =>
+    getUser(userId, { signal, ...axiosOptions });
 
-  
+  return { queryKey, queryFn, enabled: !!userId, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUser>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUser>>> = ({ signal }) => getUser(userId, { signal, ...axiosOptions });
-
-      
-
-      
-
-   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetUserQueryResult = NonNullable<Awaited<ReturnType<typeof getUser>>>
-export type GetUserQueryError = AxiosError<unknown>
+export type GetUserQueryResult = NonNullable<Awaited<ReturnType<typeof getUser>>>;
+export type GetUserQueryError = AxiosError<unknown>;
 
 /**
  * @summary 指定されたIDのユーザを取得する.
  */
-export const useGetUser = <TData = Awaited<ReturnType<typeof getUser>>, TError = AxiosError<unknown>>(
- userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const useGetUser = <
+  TData = Awaited<ReturnType<typeof getUser>>,
+  TError = AxiosError<unknown>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGetUserQueryOptions(userId, options);
 
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
-  const queryOptions = getGetUserQueryOptions(userId,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
-}
-
-
+};
 
 /**
  * N/A
  * @summary 指定されたIDのユーザを更新する.
  */
 export const updateUser = (
-    userId: string,
-    updateUserRequestBody: UpdateUserRequestBody, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UpdateUserResponseBody>> => {
-    
-    return axios.put(
-      `/users/${userId}`,
-      updateUserRequestBody,options
-    );
-  }
+  userId: string,
+  updateUserRequestBody: UpdateUserRequestBody,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<UpdateUserResponseBody>> => {
+  return axios.put(`/users/${userId}`, updateUserRequestBody, options);
+};
 
+export const getUpdateUserMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateUser>>,
+    TError,
+    { userId: string; data: UpdateUserRequestBody },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateUser>>,
+  TError,
+  { userId: string; data: UpdateUserRequestBody },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
 
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateUser>>,
+    { userId: string; data: UpdateUserRequestBody }
+  > = (props) => {
+    const { userId, data } = props ?? {};
 
-export const getUpdateUserMutationOptions = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUser>>, TError,{userId: string;data: UpdateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
-): UseMutationOptions<Awaited<ReturnType<typeof updateUser>>, TError,{userId: string;data: UpdateUserRequestBody}, TContext> => {
- const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+    return updateUser(userId, data, axiosOptions);
+  };
 
-      
+  return { mutationFn, ...mutationOptions };
+};
 
+export type UpdateUserMutationResult = NonNullable<Awaited<ReturnType<typeof updateUser>>>;
+export type UpdateUserMutationBody = UpdateUserRequestBody;
+export type UpdateUserMutationError = AxiosError<unknown>;
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateUser>>, {userId: string;data: UpdateUserRequestBody}> = (props) => {
-          const {userId,data} = props ?? {};
-
-          return  updateUser(userId,data,axiosOptions)
-        }
-
-        
-
-
-   return  { mutationFn, ...mutationOptions }}
-
-    export type UpdateUserMutationResult = NonNullable<Awaited<ReturnType<typeof updateUser>>>
-    export type UpdateUserMutationBody = UpdateUserRequestBody
-    export type UpdateUserMutationError = AxiosError<unknown>
-
-    /**
+/**
  * @summary 指定されたIDのユーザを更新する.
  */
-export const useUpdateUser = <TError = AxiosError<unknown>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateUser>>, TError,{userId: string;data: UpdateUserRequestBody}, TContext>, axios?: AxiosRequestConfig}
-) => {
+export const useUpdateUser = <TError = AxiosError<unknown>, TContext = unknown>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateUser>>,
+    TError,
+    { userId: string; data: UpdateUserRequestBody },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const mutationOptions = getUpdateUserMutationOptions(options);
 
-      const mutationOptions = getUpdateUserMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    /**
+  return useMutation(mutationOptions);
+};
+/**
  * N/A
  * @summary 指定されたIDのユーザのコメントを取得する.
  */
 export const getUserComments = (
-    userId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<GetUserCommentsResponseBody>> => {
-    
-    return axios.get(
-      `/users/${userId}/comments`,options
-    );
-  }
+  userId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<GetUserCommentsResponseBody>> => {
+  return axios.get(`/users/${userId}/comments`, options);
+};
 
+export const getGetUserCommentsQueryKey = (userId: string) => {
+  return [`/users/${userId}/comments`] as const;
+};
 
-export const getGetUserCommentsQueryKey = (userId: string,) => {
-    return [`/users/${userId}/comments`] as const;
-    }
-
-    
-export const getGetUserCommentsQueryOptions = <TData = Awaited<ReturnType<typeof getUserComments>>, TError = AxiosError<unknown>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUserCommentsQueryOptions = <
+  TData = Awaited<ReturnType<typeof getUserComments>>,
+  TError = AxiosError<unknown>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
 ) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-const {query: queryOptions, axios: axiosOptions} = options ?? {};
+  const queryKey = queryOptions?.queryKey ?? getGetUserCommentsQueryKey(userId);
 
-  const queryKey =  queryOptions?.queryKey ?? getGetUserCommentsQueryKey(userId);
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserComments>>> = ({ signal }) =>
+    getUserComments(userId, { signal, ...axiosOptions });
 
-  
+  return { queryKey, queryFn, enabled: !!userId, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getUserComments>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserComments>>> = ({ signal }) => getUserComments(userId, { signal, ...axiosOptions });
-
-      
-
-      
-
-   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetUserCommentsQueryResult = NonNullable<Awaited<ReturnType<typeof getUserComments>>>
-export type GetUserCommentsQueryError = AxiosError<unknown>
+export type GetUserCommentsQueryResult = NonNullable<Awaited<ReturnType<typeof getUserComments>>>;
+export type GetUserCommentsQueryError = AxiosError<unknown>;
 
 /**
  * @summary 指定されたIDのユーザのコメントを取得する.
  */
-export const useGetUserComments = <TData = Awaited<ReturnType<typeof getUserComments>>, TError = AxiosError<unknown>>(
- userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const useGetUserComments = <
+  TData = Awaited<ReturnType<typeof getUserComments>>,
+  TError = AxiosError<unknown>,
+>(
+  userId: string,
+  options?: {
+    query?: Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData>>;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGetUserCommentsQueryOptions(userId, options);
 
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
-  const queryOptions = getGetUserCommentsQueryOptions(userId,options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  query.queryKey = queryOptions.queryKey ;
+  query.queryKey = queryOptions.queryKey;
 
   return query;
-}
-
-
-
+};

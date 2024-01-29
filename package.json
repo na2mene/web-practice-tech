@@ -9,7 +9,8 @@
     "lint": "next lint",
     "orval": "orval --config ./orval.config.ts",
     "openapi-build": "bash scripts/openapi/build.sh web-practice-tech",
-    "api-generate": "yarn run openapi-build && orval"
+    "codegen": "yarn run openapi-build && orval && yarn run format",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
@@ -35,10 +36,12 @@
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.33.2",
     "msw": "^2.1.5",
     "orval": "^6.23.0",
     "postcss": "^8",
+    "prettier": "^3.2.4",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

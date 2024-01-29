@@ -1,17 +1,9 @@
-'use client'
+'use client';
 
 import axios from 'axios';
 
-export default function AxiosProvider({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/'
+export default function AxiosProvider({ children }: { children: React.ReactNode }) {
+  axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com/';
 
-  return (
-    <>
-      {children}
-    </>
-  )
+  return <>{children}</>;
 }

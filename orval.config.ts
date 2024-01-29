@@ -11,6 +11,8 @@ export default defineConfig({
       clean: true,
       mode: 'tags-split',
       mock: true,
+      // prettierは、グローバルにインストールされたものしかできないらしく、回避策としてが以下
+      // @see: https://github.com/anymaniax/orval/issues/234
       // prettier: true,
       // override: {
       //   // カスタムインスタンスを使う場合

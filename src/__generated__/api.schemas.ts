@@ -53,7 +53,9 @@ export interface GetPostCommentsResponseBodyInner {
 
 export type GetUserCommentsResponseBody = GetPostCommentsResponseBodyInner[];
 
-export interface DeleteUserResponseBody { [key: string]: any }
+export interface DeleteUserResponseBody {
+  [key: string]: any;
+}
 
 export interface UpdateUserRequestBody {
   address?: CreateUserRequestBodyAddress;
@@ -96,7 +98,9 @@ export type GetUsersResponseBody = User[];
 
 export type GetPostCommentsResponseBody = GetPostCommentsResponseBodyInner[];
 
-export interface DeletePostResponseBody { [key: string]: any }
+export interface DeletePostResponseBody {
+  [key: string]: any;
+}
 
 export interface UpdatePostRequestBody {
   completed?: string;
@@ -126,4 +130,3 @@ export interface CreatePostRequestBody {
 export type CreatePostResponseBody = Post[];
 
 export type GetPostsResponseBody = Post[];
-
