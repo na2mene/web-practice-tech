@@ -1,0 +1,6 @@
+printWidth: 100 # 折り返し行
+trailingComma: all # 末尾のカンマ
+tabWidth: 2 # インデントのサイズ
+singleQuote: true # シングルクォーテーションで囲む
+jsxSingleQuote: true # JSXでの引用符
+bracketSpacing: true # 要素とカッコの間のスペース
