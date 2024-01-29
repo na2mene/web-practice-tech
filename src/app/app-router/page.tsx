@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
+import { WrapLink } from '@/components/WrapLink'
 
 // metaデータの上書き
 // only server component
@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <h1>App Routerで動くページ</h1>
-      <Link href="/app-router/dashboard">Dashboardページへ</Link>
+      <WrapLink href="/app-router/dashboard">Dashboardページへ</WrapLink>
     </>
   )
 }
