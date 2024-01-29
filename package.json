@@ -9,7 +9,8 @@
     "lint": "next lint",
     "orval": "orval --config ./orval.config.ts",
     "openapi-build": "bash scripts/openapi/build.sh web-practice-tech",
-    "api-generate": "yarn run openapi-build && orval"
+    "api-generate": "yarn run openapi-build && orval",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.0.2",
