@@ -1,19 +1,19 @@
 get:
-  summary: 指定されたIDの投稿のコメントを取得する.
+  summary: 指定されたIDのユーザのコメントを取得する.
   description: N/A
-  tags: [Posts]
-  operationId: getPostDetailCommentList
+  tags: [Users]
+  operationId: getUserDetailCommentList
   responses:
     "200":
       description: Successful response
       content:
         "application/json":
           schema:
-            $ref: "#/components/schemas/PostDetailCommentListResponseBody"
+            $ref: "#/components/schemas/UserDetailCommentListResponseBody"
 
 components:
   schemas:
-    PostDetailCommentListResponseBody:
+    UserDetailCommentListResponseBody:
       type: array
       items:
         type: object

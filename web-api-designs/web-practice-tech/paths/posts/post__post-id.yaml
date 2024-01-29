@@ -1,0 +1,17 @@
+get:
+  summary: 指定されたIDの投稿を取得する.
+  description: N/A
+  tags: [Posts]
+  operationId: getPostDetail
+  responses:
+    "200":
+      description: Successful response
+      content:
+        "application/json":
+          schema:
+            $ref: "#/components/schemas/PostResponseBody"
+
+components:
+  schemas:
+    PostResponseBody:
+      $ref: './components/post.yaml'

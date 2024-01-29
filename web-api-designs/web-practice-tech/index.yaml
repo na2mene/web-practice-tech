@@ -10,8 +10,20 @@ servers:
 tags:
   - name: posts
     description: 投稿
+  - name: users
+    description: ユーザ
 
 paths:
   /posts:
     $ref: ./paths/posts/post.yaml
+  /posts/{postId}:
+    $ref: ./paths/posts/post__post-id.yaml
+  /posts/{postId}/comments:
+    $ref: ./paths/posts/post__post-id__comment.yaml
 
+  /users:
+    $ref: ./paths/users/user.yaml
+  /users/{userId}:
+    $ref: ./paths/users/user__user-id.yaml
+  /users/{userId}/comments:
+    $ref: ./paths/users/user__user-id__comment.yaml
