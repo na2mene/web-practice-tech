@@ -3,6 +3,13 @@ get:
   description: N/A
   tags: [Users]
   operationId: getUserDetail
+  parameters:
+  - name: postId
+    in: path
+    required: true
+    schema:
+      type: string
+      examle: 1
   responses:
     "200":
       description: Successful response

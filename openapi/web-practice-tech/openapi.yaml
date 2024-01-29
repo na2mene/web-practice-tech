@@ -33,6 +33,12 @@ paths:
     get:
       description: N/A
       operationId: getPostDetail
+      parameters:
+      - in: path
+        name: postId
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           content:
@@ -78,6 +84,12 @@ paths:
     get:
       description: N/A
       operationId: getUserDetail
+      parameters:
+      - in: path
+        name: postId
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           content:
