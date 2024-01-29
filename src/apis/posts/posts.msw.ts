@@ -16,10 +16,34 @@ import {
 
 export const getGetPostsMock = () => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({completed: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), title: faker.word.sample(), userId: faker.number.int({min: undefined, max: undefined})})))
 
+export const getGetPostDetailMock = () => ({completed: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), title: faker.word.sample(), userId: faker.number.int({min: undefined, max: undefined})})
+
+export const getGetPostDetailCommentListMock = () => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({body: faker.word.sample(), email: faker.word.sample(), id: faker.number.int({min: undefined, max: undefined}), name: faker.word.sample(), postId: faker.number.int({min: undefined, max: undefined})})))
+
 export const getPostsMock = () => [
 http.get('*/posts', async () => {
         await delay(1000);
         return new HttpResponse(JSON.stringify(getGetPostsMock()),
+          { 
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        )
+      }),http.get('*/posts/:postId', async () => {
+        await delay(1000);
+        return new HttpResponse(JSON.stringify(getGetPostDetailMock()),
+          { 
+            status: 200,
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          }
+        )
+      }),http.get('*/posts/:postId/comments', async () => {
+        await delay(1000);
+        return new HttpResponse(JSON.stringify(getGetPostDetailCommentListMock()),
           { 
             status: 200,
             headers: {

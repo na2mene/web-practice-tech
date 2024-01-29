@@ -21,6 +21,8 @@ import type {
   AxiosResponse
 } from 'axios'
 import type {
+  Post,
+  PostDetailCommentListResponseBody,
   PostsListResponseBody
 } from '../backend.schemas'
 
@@ -77,6 +79,124 @@ export const useGetPosts = <TData = Awaited<ReturnType<typeof getPosts>>, TError
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = getGetPostsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * N/A
+ * @summary 指定されたIDの投稿を取得する.
+ */
+export const getPostDetail = (
+    postId: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<Post>> => {
+    
+    return axios.get(
+      `/posts/${postId}`,options
+    );
+  }
+
+
+export const getGetPostDetailQueryKey = (postId: string,) => {
+    return [`/posts/${postId}`] as const;
+    }
+
+    
+export const getGetPostDetailQueryOptions = <TData = Awaited<ReturnType<typeof getPostDetail>>, TError = AxiosError<unknown>>(postId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPostDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPostDetailQueryKey(postId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPostDetail>>> = ({ signal }) => getPostDetail(postId, { signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(postId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPostDetail>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPostDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getPostDetail>>>
+export type GetPostDetailQueryError = AxiosError<unknown>
+
+/**
+ * @summary 指定されたIDの投稿を取得する.
+ */
+export const useGetPostDetail = <TData = Awaited<ReturnType<typeof getPostDetail>>, TError = AxiosError<unknown>>(
+ postId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPostDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetPostDetailQueryOptions(postId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
+ * N/A
+ * @summary 指定されたIDの投稿のコメントを取得する.
+ */
+export const getPostDetailCommentList = (
+    postId: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<PostDetailCommentListResponseBody>> => {
+    
+    return axios.get(
+      `/posts/${postId}/comments`,options
+    );
+  }
+
+
+export const getGetPostDetailCommentListQueryKey = (postId: string,) => {
+    return [`/posts/${postId}/comments`] as const;
+    }
+
+    
+export const getGetPostDetailCommentListQueryOptions = <TData = Awaited<ReturnType<typeof getPostDetailCommentList>>, TError = AxiosError<unknown>>(postId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPostDetailCommentList>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPostDetailCommentListQueryKey(postId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPostDetailCommentList>>> = ({ signal }) => getPostDetailCommentList(postId, { signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(postId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPostDetailCommentList>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPostDetailCommentListQueryResult = NonNullable<Awaited<ReturnType<typeof getPostDetailCommentList>>>
+export type GetPostDetailCommentListQueryError = AxiosError<unknown>
+
+/**
+ * @summary 指定されたIDの投稿のコメントを取得する.
+ */
+export const useGetPostDetailCommentList = <TData = Awaited<ReturnType<typeof getPostDetailCommentList>>, TError = AxiosError<unknown>>(
+ postId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPostDetailCommentList>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetPostDetailCommentListQueryOptions(postId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
