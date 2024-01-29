@@ -35,6 +35,7 @@
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "eslint-plugin-react": "^7.33.2",
     "msw": "^2.1.5",
     "orval": "^6.23.0",
     "postcss": "^8",

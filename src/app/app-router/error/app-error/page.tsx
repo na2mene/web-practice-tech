@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
+import { WrapLink } from '@/components/WrapLink'
 
 // metaデータの上書き
 // only server component
@@ -13,7 +13,7 @@ export default function GlobalError() {
   return (
     <>
       <h1>ここには到達しない予定のページ</h1>
-      <Link href="/app-router">app-routerページへ</Link>
+      <WrapLink href="/app-router">app-routerページへ</WrapLink>
     </>
   )
 }

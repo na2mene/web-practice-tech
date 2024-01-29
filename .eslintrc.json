@@ -1,3 +1,16 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    // NOTE: WrapしたNextのものはそっちを使って欲しい意図で、
+    //       厳しい制約を付与
+    //       0 = off, 1 = warn, 2 = error
+    "react/forbid-elements": [2, {
+      "forbid": [
+        {
+          "element": "Link",
+          "message": "use <WrapLink> element instead"
+        }
+      ]
+    }]
+  }
 }

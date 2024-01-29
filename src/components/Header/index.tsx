@@ -1,18 +1,18 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
-import Link from "next/link"
+import { useNavigationPathname } from '@/hooks/useNavigation'
+import { WrapLink } from '@/components/WrapLink'
 import { Input } from "@/components/ui/input"
 
 export default function Header() {
-  const pathname = usePathname();
+  const pathname = useNavigationPathname();
 
   return (
     <header className="flex items-center justify-between px-4 py-2 bg-white dark:bg-gray-800">
-      <Link href="#">
+      <WrapLink href="#">
         <BriefcaseIcon className="h-6 w-6" />
         <span className="sr-only">JobSite</span>
-      </Link>
+      </WrapLink>
       <div className="flex-1 mx-4">
         <Input
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -21,28 +21,28 @@ export default function Header() {
         />
       </div>
       <nav className="flex items-center space-x-4">
-        <Link
+        <WrapLink
           className={`${pathname === '/app-router' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="/app-router">
           Home
-        </Link>
-        <Link className={`${pathname === '/app-router/job_offers' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="/app-router/job_offers">
+        </WrapLink>
+        <WrapLink className={`${pathname === '/app-router/job_offers' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="/app-router/job_offers">
           Jobs
-        </Link>
-        <Link className={`${pathname === '/app-router/dashboard' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="/app-router/dashboard">
+        </WrapLink>
+        <WrapLink className={`${pathname === '/app-router/dashboard' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="/app-router/dashboard">
           Dashboard
-        </Link>
-        <Link className={`${pathname === '/app-router/about' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="#">
+        </WrapLink>
+        <WrapLink className={`${pathname === '/app-router/about' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="#">
           About
-        </Link>
-        <Link className={`${pathname === '/app-router/contact' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="#">
+        </WrapLink>
+        <WrapLink className={`${pathname === '/app-router/contact' ? 'bg-sky-100 text-blue-600' : ''}text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100`} href="#">
           Contact
-        </Link>
+        </WrapLink>
       </nav>
     </header>
   )
 }
 
-function BriefcaseIcon(props) {
+function BriefcaseIcon(props: JSX.IntrinsicElements['svg']) {
   return (
     <svg
       {...props}

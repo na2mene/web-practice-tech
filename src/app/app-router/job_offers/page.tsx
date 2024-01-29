@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
+import { WrapLink } from '@/components/WrapLink'
 
 // metaデータの上書き
 // only server component
@@ -29,7 +29,7 @@ export default function JobOfferPage() {
       {
         jobOffers.map((jobOffer) => (
           <div key={jobOffer.id}>
-            <Link href={`/app-router/job_offers/${jobOffer.id}`}>{`求人詳細: ${jobOffer.title}のページへ`}</Link>
+            <WrapLink href={`/app-router/job_offers/${jobOffer.id}`}>{`求人詳細: ${jobOffer.title}のページへ`}</WrapLink>
           </div>
         ))
       }
