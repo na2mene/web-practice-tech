@@ -53,6 +53,12 @@ paths:
     get:
       description: N/A
       operationId: getPostDetailCommentList
+      parameters:
+      - in: path
+        name: postId
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           content:
@@ -86,7 +92,7 @@ paths:
       operationId: getUserDetail
       parameters:
       - in: path
-        name: postId
+        name: userId
         required: true
         schema:
           type: string
@@ -104,6 +110,12 @@ paths:
     get:
       description: N/A
       operationId: getUserDetailCommentList
+      parameters:
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
       responses:
         "200":
           content:

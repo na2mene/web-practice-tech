@@ -4,12 +4,12 @@ get:
   tags: [Users]
   operationId: getUserDetail
   parameters:
-  - name: postId
-    in: path
-    required: true
-    schema:
-      type: string
-      examle: 1
+    - name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+        examle: 1
   responses:
     "200":
       description: Successful response
