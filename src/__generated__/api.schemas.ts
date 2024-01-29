@@ -43,7 +43,7 @@ export interface CreateUserRequestBodyAddress {
   zipcode?: string | null;
 }
 
-export interface PostDetailCommentListResponseBodyInner {
+export interface GetPostCommentsResponseBodyInner {
   body: string;
   email: string;
   id: number;
@@ -51,7 +51,7 @@ export interface PostDetailCommentListResponseBodyInner {
   postId: number;
 }
 
-export type UserDetailCommentListResponseBody = PostDetailCommentListResponseBodyInner[];
+export type GetUserCommentsResponseBody = GetPostCommentsResponseBodyInner[];
 
 export interface DeleteUserResponseBody { [key: string]: any }
 
@@ -78,7 +78,7 @@ export interface User {
 
 export type UpdateUserResponseBody = User[];
 
-export type UserResponseBody = User;
+export type GetUserResponseBody = User;
 
 export interface CreateUserRequestBody {
   address?: CreateUserRequestBodyAddress;
@@ -92,9 +92,9 @@ export interface CreateUserRequestBody {
 
 export type CreateUserResponseBody = User[];
 
-export type UserListResponseBody = User[];
+export type GetUsersResponseBody = User[];
 
-export type PostDetailCommentListResponseBody = PostDetailCommentListResponseBodyInner[];
+export type GetPostCommentsResponseBody = GetPostCommentsResponseBodyInner[];
 
 export interface DeletePostResponseBody { [key: string]: any }
 
@@ -114,7 +114,7 @@ export interface Post {
 
 export type UpdatePostResponseBody = Post[];
 
-export type PostResponseBody = Post;
+export type GetPostResponseBody = Post;
 
 export interface CreatePostRequestBody {
   completed?: string;
@@ -125,5 +125,5 @@ export interface CreatePostRequestBody {
 
 export type CreatePostResponseBody = Post[];
 
-export type PostsListResponseBody = Post[];
+export type GetPostsResponseBody = Post[];
 

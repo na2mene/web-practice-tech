@@ -4,7 +4,8 @@ get:
     hogeに管理された投稿をすべて返却する.
     ドメイン知識どうのこうの、あれこれ、それそれで、使われているので、
     こうこうそれそれなので、このエンドポイントを削除することは、不可能.
-  tags: [Posts]
+  tags:
+    - posts
   operationId: getPosts
   responses:
     "200":
@@ -12,12 +13,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/PostsListResponseBody"
+            $ref: "#/components/schemas/GetPostsResponseBody"
 
 post:
   summary: 投稿を登録する
   description: N/A
-  tags: [Users]
+  tags:
+    - users
   operationId: createPost
   requestBody:
     content:
@@ -34,7 +36,7 @@ post:
 
 components:
   schemas:
-    PostsListResponseBody:
+    GetPostsResponseBody:
       type: array
       items:
         $ref: './components/post.yaml'

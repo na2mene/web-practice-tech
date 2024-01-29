@@ -1,8 +1,9 @@
 get:
   summary: 指定されたIDの投稿を取得する.
   description: N/A
-  tags: [Posts]
-  operationId: getPostDetail
+  tags:
+    - posts
+  operationId: getPost
   parameters:
     - name: postId
       in: path
@@ -16,12 +17,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/PostResponseBody"
+            $ref: "#/components/schemas/GetPostResponseBody"
 
 put:
   summary: 指定されたIDの投稿を更新する.
   description: N/A
-  tags: [Posts]
+  tags:
+    - posts
   operationId: updatePost
   parameters:
     - name: postId
@@ -47,7 +49,8 @@ put:
 delete:
   summary: 指定されたIDの投稿を削除する.
   description: N/A
-  tags: [Posts]
+  tags:
+    - posts
   operationId: deletePost
   parameters:
     - name: postId
@@ -67,7 +70,7 @@ delete:
 
 components:
   schemas:
-    PostResponseBody:
+    GetPostResponseBody:
       $ref: './components/post.yaml'
 
     UpdatePostRequestBody:

@@ -1,8 +1,9 @@
 get:
   summary: 指定されたIDのユーザを取得する.
   description: N/A
-  tags: [Users]
-  operationId: getUserDetail
+  tags:
+    - users
+  operationId: getUser
   parameters:
     - name: userId
       in: path
@@ -16,12 +17,13 @@ get:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/UserResponseBody"
+            $ref: "#/components/schemas/GetUserResponseBody"
 
 put:
   summary: 指定されたIDのユーザを更新する.
   description: N/A
-  tags: [Users]
+  tags:
+    - users
   operationId: updateUser
   parameters:
     - name: userId
@@ -47,7 +49,8 @@ put:
 delete:
   summary: 指定されたIDのユーザを削除する.
   description: N/A
-  tags: [Users]
+  tags:
+    - users
   operationId: deleteUser
   parameters:
     - name: userId
@@ -67,7 +70,7 @@ delete:
 
 components:
   schemas:
-    UserResponseBody:
+    GetUserResponseBody:
       $ref: './components/user.yaml'
 
     UpdateUserRequestBody:

@@ -24,11 +24,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostsListResponseBody'
+                $ref: '#/components/schemas/GetPostsResponseBody'
           description: Successful response
       summary: すべての投稿を返却する
       tags:
-      - Posts
+      - posts
     post:
       description: N/A
       operationId: createPost
@@ -46,7 +46,7 @@ paths:
           description: Successful response
       summary: 投稿を登録する
       tags:
-      - Users
+      - users
   /posts/{postId}:
     delete:
       description: N/A
@@ -66,10 +66,10 @@ paths:
           description: Successful response
       summary: 指定されたIDの投稿を削除する.
       tags:
-      - Posts
+      - posts
     get:
       description: N/A
-      operationId: getPostDetail
+      operationId: getPost
       parameters:
       - in: path
         name: postId
@@ -81,11 +81,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostResponseBody'
+                $ref: '#/components/schemas/GetPostResponseBody'
           description: Successful response
       summary: 指定されたIDの投稿を取得する.
       tags:
-      - Posts
+      - posts
     put:
       description: N/A
       operationId: updatePost
@@ -109,11 +109,11 @@ paths:
           description: Successful response
       summary: 指定されたIDの投稿を更新する.
       tags:
-      - Posts
+      - posts
   /posts/{postId}/comments:
     get:
       description: N/A
-      operationId: getPostDetailCommentList
+      operationId: getPostComments
       parameters:
       - in: path
         name: postId
@@ -125,28 +125,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostDetailCommentListResponseBody'
+                $ref: '#/components/schemas/GetPostCommentsResponseBody'
           description: Successful response
       summary: 指定されたIDの投稿のコメントを取得する.
       tags:
-      - Posts
+      - posts
   /users:
     get:
       description: |-
         hogeに管理された投稿をすべて返却する.
         ドメイン知識どうのこうの、あれこれ、それそれで、使われているので、
         こうこうそれそれなので、このエンドポイントを削除することは、不可能.
-      operationId: getUserList
+      operationId: getUsers
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserListResponseBody'
+                $ref: '#/components/schemas/GetUsersResponseBody'
           description: Successful response
       summary: すべてのユーザを返却する
       tags:
-      - Users
+      - users
     post:
       description: N/A
       operationId: createUser
@@ -164,7 +164,7 @@ paths:
           description: Successful response
       summary: ユーザを登録する
       tags:
-      - Users
+      - users
   /users/{userId}:
     delete:
       description: N/A
@@ -184,10 +184,10 @@ paths:
           description: Successful response
       summary: 指定されたIDのユーザを削除する.
       tags:
-      - Users
+      - users
     get:
       description: N/A
-      operationId: getUserDetail
+      operationId: getUser
       parameters:
       - in: path
         name: userId
@@ -199,11 +199,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserResponseBody'
+                $ref: '#/components/schemas/GetUserResponseBody'
           description: Successful response
       summary: 指定されたIDのユーザを取得する.
       tags:
-      - Users
+      - users
     put:
       description: N/A
       operationId: updateUser
@@ -227,11 +227,11 @@ paths:
           description: Successful response
       summary: 指定されたIDのユーザを更新する.
       tags:
-      - Users
+      - users
   /users/{userId}/comments:
     get:
       description: N/A
-      operationId: getUserDetailCommentList
+      operationId: getUserComments
       parameters:
       - in: path
         name: userId
@@ -243,14 +243,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserDetailCommentListResponseBody'
+                $ref: '#/components/schemas/GetUserCommentsResponseBody'
           description: Successful response
       summary: 指定されたIDのユーザのコメントを取得する.
       tags:
-      - Users
+      - users
 components:
   schemas:
-    PostsListResponseBody:
+    GetPostsResponseBody:
       items:
         $ref: '#/components/schemas/post'
       type: array
@@ -274,7 +274,7 @@ components:
         completed:
           type: string
       type: object
-    PostResponseBody:
+    GetPostResponseBody:
       $ref: '#/components/schemas/post'
     post:
       example:
@@ -320,11 +320,11 @@ components:
     DeletePostResponseBody:
       properties: {}
       type: object
-    PostDetailCommentListResponseBody:
+    GetPostCommentsResponseBody:
       items:
-        $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
+        $ref: '#/components/schemas/GetPostCommentsResponseBody_inner'
       type: array
-    UserListResponseBody:
+    GetUsersResponseBody:
       items:
         $ref: '#/components/schemas/user'
       type: array
@@ -372,7 +372,7 @@ components:
         company:
           $ref: '#/components/schemas/CreateUserRequestBody_company'
       type: object
-    UserResponseBody:
+    GetUserResponseBody:
       $ref: '#/components/schemas/user'
     user:
       example:
@@ -465,11 +465,11 @@ components:
     DeleteUserResponseBody:
       properties: {}
       type: object
-    UserDetailCommentListResponseBody:
+    GetUserCommentsResponseBody:
       items:
-        $ref: '#/components/schemas/PostDetailCommentListResponseBody_inner'
+        $ref: '#/components/schemas/GetPostCommentsResponseBody_inner'
       type: array
-    PostDetailCommentListResponseBody_inner:
+    GetPostCommentsResponseBody_inner:
       example:
         name: name
         id: 0

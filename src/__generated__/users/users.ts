@@ -29,12 +29,12 @@ import type {
   CreateUserRequestBody,
   CreateUserResponseBody,
   DeleteUserResponseBody,
+  GetUserCommentsResponseBody,
+  GetUsersResponseBody,
   UpdateUserRequestBody,
   UpdateUserResponseBody,
-  User,
-  UserDetailCommentListResponseBody,
-  UserListResponseBody
-} from '../backend.schemas'
+  User
+} from '../api.schemas'
 
 
 
@@ -94,9 +94,9 @@ export const useCreatePost = <TError = AxiosError<unknown>,
 こうこうそれそれなので、このエンドポイントを削除することは、不可能.
  * @summary すべてのユーザを返却する
  */
-export const getUserList = (
+export const getUsers = (
      options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UserListResponseBody>> => {
+ ): Promise<AxiosResponse<GetUsersResponseBody>> => {
     
     return axios.get(
       `/users`,options
@@ -104,41 +104,41 @@ export const getUserList = (
   }
 
 
-export const getGetUserListQueryKey = () => {
+export const getGetUsersQueryKey = () => {
     return [`/users`] as const;
     }
 
     
-export const getGetUserListQueryOptions = <TData = Awaited<ReturnType<typeof getUserList>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUsersQueryOptions = <TData = Awaited<ReturnType<typeof getUsers>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
 
 const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetUserListQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetUsersQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserList>>> = ({ signal }) => getUserList({ signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUsers>>> = ({ signal }) => getUsers({ signal, ...axiosOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserList>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetUserListQueryResult = NonNullable<Awaited<ReturnType<typeof getUserList>>>
-export type GetUserListQueryError = AxiosError<unknown>
+export type GetUsersQueryResult = NonNullable<Awaited<ReturnType<typeof getUsers>>>
+export type GetUsersQueryError = AxiosError<unknown>
 
 /**
  * @summary すべてのユーザを返却する
  */
-export const useGetUserList = <TData = Awaited<ReturnType<typeof getUserList>>, TError = AxiosError<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const useGetUsers = <TData = Awaited<ReturnType<typeof getUsers>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUsers>>, TError, TData>>, axios?: AxiosRequestConfig}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetUserListQueryOptions(options)
+  const queryOptions = getGetUsersQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -252,7 +252,7 @@ export const useDeleteUser = <TError = AxiosError<unknown>,
  * N/A
  * @summary 指定されたIDのユーザを取得する.
  */
-export const getUserDetail = (
+export const getUser = (
     userId: string, options?: AxiosRequestConfig
  ): Promise<AxiosResponse<User>> => {
     
@@ -262,41 +262,41 @@ export const getUserDetail = (
   }
 
 
-export const getGetUserDetailQueryKey = (userId: string,) => {
+export const getGetUserQueryKey = (userId: string,) => {
     return [`/users/${userId}`] as const;
     }
 
     
-export const getGetUserDetailQueryOptions = <TData = Awaited<ReturnType<typeof getUserDetail>>, TError = AxiosError<unknown>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUserQueryOptions = <TData = Awaited<ReturnType<typeof getUser>>, TError = AxiosError<unknown>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
 
 const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetUserDetailQueryKey(userId);
+  const queryKey =  queryOptions?.queryKey ?? getGetUserQueryKey(userId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserDetail>>> = ({ signal }) => getUserDetail(userId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUser>>> = ({ signal }) => getUser(userId, { signal, ...axiosOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserDetail>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetUserDetailQueryResult = NonNullable<Awaited<ReturnType<typeof getUserDetail>>>
-export type GetUserDetailQueryError = AxiosError<unknown>
+export type GetUserQueryResult = NonNullable<Awaited<ReturnType<typeof getUser>>>
+export type GetUserQueryError = AxiosError<unknown>
 
 /**
  * @summary 指定されたIDのユーザを取得する.
  */
-export const useGetUserDetail = <TData = Awaited<ReturnType<typeof getUserDetail>>, TError = AxiosError<unknown>>(
- userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserDetail>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const useGetUser = <TData = Awaited<ReturnType<typeof getUser>>, TError = AxiosError<unknown>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUser>>, TError, TData>>, axios?: AxiosRequestConfig}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetUserDetailQueryOptions(userId,options)
+  const queryOptions = getGetUserQueryOptions(userId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -362,9 +362,9 @@ export const useUpdateUser = <TError = AxiosError<unknown>,
  * N/A
  * @summary 指定されたIDのユーザのコメントを取得する.
  */
-export const getUserDetailCommentList = (
+export const getUserComments = (
     userId: string, options?: AxiosRequestConfig
- ): Promise<AxiosResponse<UserDetailCommentListResponseBody>> => {
+ ): Promise<AxiosResponse<GetUserCommentsResponseBody>> => {
     
     return axios.get(
       `/users/${userId}/comments`,options
@@ -372,41 +372,41 @@ export const getUserDetailCommentList = (
   }
 
 
-export const getGetUserDetailCommentListQueryKey = (userId: string,) => {
+export const getGetUserCommentsQueryKey = (userId: string,) => {
     return [`/users/${userId}/comments`] as const;
     }
 
     
-export const getGetUserDetailCommentListQueryOptions = <TData = Awaited<ReturnType<typeof getUserDetailCommentList>>, TError = AxiosError<unknown>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserDetailCommentList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetUserCommentsQueryOptions = <TData = Awaited<ReturnType<typeof getUserComments>>, TError = AxiosError<unknown>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
 
 const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetUserDetailCommentListQueryKey(userId);
+  const queryKey =  queryOptions?.queryKey ?? getGetUserCommentsQueryKey(userId);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserDetailCommentList>>> = ({ signal }) => getUserDetailCommentList(userId, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserComments>>> = ({ signal }) => getUserComments(userId, { signal, ...axiosOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserDetailCommentList>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetUserDetailCommentListQueryResult = NonNullable<Awaited<ReturnType<typeof getUserDetailCommentList>>>
-export type GetUserDetailCommentListQueryError = AxiosError<unknown>
+export type GetUserCommentsQueryResult = NonNullable<Awaited<ReturnType<typeof getUserComments>>>
+export type GetUserCommentsQueryError = AxiosError<unknown>
 
 /**
  * @summary 指定されたIDのユーザのコメントを取得する.
  */
-export const useGetUserDetailCommentList = <TData = Awaited<ReturnType<typeof getUserDetailCommentList>>, TError = AxiosError<unknown>>(
- userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserDetailCommentList>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const useGetUserComments = <TData = Awaited<ReturnType<typeof getUserComments>>, TError = AxiosError<unknown>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getUserComments>>, TError, TData>>, axios?: AxiosRequestConfig}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetUserDetailCommentListQueryOptions(userId,options)
+  const queryOptions = getGetUserCommentsQueryOptions(userId,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

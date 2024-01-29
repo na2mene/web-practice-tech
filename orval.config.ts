@@ -6,13 +6,11 @@ export default defineConfig({
       target: './openapi/web-practice-tech/openapi.yaml',
     },
     output: {
-      target: './src/apis/backend.ts',
+      target: './src/__generated__/api.ts',
       client: 'react-query',
       clean: true,
       mode: 'tags-split',
       mock: true,
-      useExamples: true,
-      locale: 'ja',
       // prettier: true,
       // override: {
       //   // カスタムインスタンスを使う場合

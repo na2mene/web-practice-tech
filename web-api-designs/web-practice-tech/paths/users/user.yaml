@@ -1,23 +1,45 @@
 get:
+  ## Rule: 必ず簡潔に何かを書く
   summary: すべてのユーザを返却する
+
+  ## Rule: ドメイン知識となるようなものを書く
   description: |-
     hogeに管理された投稿をすべて返却する.
     ドメイン知識どうのこうの、あれこれ、それそれで、使われているので、
     こうこうそれそれなので、このエンドポイントを削除することは、不可能.
-  tags: [Users]
-  operationId: getUserList
+
+  ## Rule: どのリソースに紐づくかを必須
+  tags:
+    - users
+  ## Rule: フロントのメソッド名に使われるので、いくつかルールを取り入れる
+  ## 1. RESTベース
+  ##      - getUsers
+  ##      - getUser
+  ##      - createUser
+  ##      - updateUser
+  ##      - deleteUser
+  ## リソースベースで基本形に沿ってやる.
+  ##
+  ## 2. ユースケースベース
+  ##      - PUT /users/agree-rule => agreeToTermsForUser
+  ##      - POST /users/update-password => updateUserPassword
+  ##      - POST /daily-flow/{dailyFlowId}/jobs/create => bulkLinkJobsAndDailyFlow
+  ## 特定のケースは、メソッド名を考えてもらうように設計してもらうでよさそう
+  ## あえてゆるさを取り入れることで、変な迷いをなくした（= ルールの例外にぶち当たった時みたいな）
+  operationId: getUsers
   responses:
     "200":
       description: Successful response
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/UserListResponseBody"
+            $ref: "#/components/schemas/GetUsersResponseBody"
 
 post:
   summary: ユーザを登録する
   description: N/A
-  tags: [Users]
+  tags:
+    - users
   operationId: createUser
   requestBody:
     content:
@@ -34,7 +56,7 @@ post:
 
 components:
   schemas:
-    UserListResponseBody:
+    GetUsersResponseBody:
       type: array
       items:
         $ref: './components/user.yaml'
