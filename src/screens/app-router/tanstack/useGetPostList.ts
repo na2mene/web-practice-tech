@@ -3,7 +3,7 @@ import { useGetPosts, GetPostsQueryResult } from '@/__generated__/posts/posts';
 
 // NOTE: API取得後のロジック、ここをテストコード書けばよいだけにしておきたい.
 //       さらに、selectorなロジックは別ファイルに切り出すか・・・？
-const postFilter = (response: GetPostsQueryResult): GetPostsResponseBody => {
+const _postFilter = (response: GetPostsQueryResult): GetPostsResponseBody => {
   const data: GetPostsResponseBody = response.data;
   return data.map(({ id, title, userId, completed }) => {
     return {
@@ -15,10 +15,10 @@ const postFilter = (response: GetPostsQueryResult): GetPostsResponseBody => {
   });
 };
 
-export const useGetPostList = () => {
+const useGetPostList = () => {
   return useGetPosts({
     query: {
-      select: postFilter,
+      select: _postFilter,
     },
   });
 
@@ -33,3 +33,5 @@ export const useGetPostList = () => {
 // TODO: dev環境特有？2回目のレンダリングの時に、エラーで死ぬ
 //       隙間で調査、動くには動いてそうだけど、使えてないのが現実.
 // const res = getGetPostsMock();
+
+export { useGetPostList, _postFilter };
