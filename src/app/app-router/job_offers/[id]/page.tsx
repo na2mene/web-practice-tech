@@ -1,5 +1,5 @@
-import { cpSync } from 'fs';
 import { Metadata, ResolvingMetadata } from 'next';
+import { JobOfferDetailScreen } from '@/screens/JobOfferDetailScreen';
 
 type Props = {
   params: { id: string };
@@ -64,5 +64,5 @@ export async function generateMetadata(
 }
 
 export default function JobOfferDetailPage({ params, searchParams }: Props) {
-  return <h1>求人詳細です</h1>;
+  return <JobOfferDetailScreen />;
 }

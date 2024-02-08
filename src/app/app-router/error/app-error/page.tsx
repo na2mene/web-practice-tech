@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { WrapLink } from '@/components/WrapLink';
+import { WrapLink } from '@/components/shared/WrapLink';
 
 // metaデータの上書き
 // only server component

@@ -1,8 +1,8 @@
 'use client';
 
 import { useNavigationPathname } from '@/hooks/useNavigation';
-import { WrapLink } from '@/components/WrapLink';
-import { Input } from '@/components/ui/input';
+import { WrapLink } from '@/components/shared/WrapLink';
+import { Input } from '@/components/ui/Input/input';
 
 export default function Header() {
   const pathname = useNavigationPathname();
