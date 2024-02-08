@@ -21,6 +21,6 @@ describe('_postFilter', () => {
     }));
 
     // 関数の結果が期待される結果と一致することを確認
-    expect(actual).toEqual(expected);
+    expect(actual.data).toEqual(expected);
   });
 });
