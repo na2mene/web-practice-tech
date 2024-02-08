@@ -1,5 +1,5 @@
-import type { GetPostsResponseBody } from '@/__generated__/api.schemas';
-import { useGetPosts, GetPostsQueryResult } from '@/__generated__/posts/posts';
+import type { GetPostsResponseBody } from '@/__generated_REST__/api.schemas';
+import { useGetPosts, GetPostsQueryResult } from '@/__generated_REST__/posts/posts';
 
 // NOTE: API取得後のロジック、ここをテストコード書けばよいだけにしておきたい.
 //       さらに、selectorなロジックは別ファイルに切り出すか・・・？
