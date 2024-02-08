@@ -3,9 +3,9 @@ import { useGetPosts, GetPostsQueryResult } from '@/__generated__/posts/posts';
 
 // NOTE: API取得後のロジック、ここをテストコード書けばよいだけにしておきたい.
 //       さらに、selectorなロジックは別ファイルに切り出すか・・・？
-const _postFilter = (response: GetPostsQueryResult): GetPostsResponseBody => {
+const _postFilter = (response: GetPostsQueryResult): GetPostsQueryResult => {
   const data: GetPostsResponseBody = response.data;
-  return data.map(({ id, title, userId, completed }) => {
+  response.data = data.map(({ id, title, userId, completed }) => {
     return {
       id,
       title: title.toUpperCase(),
@@ -13,6 +13,7 @@ const _postFilter = (response: GetPostsQueryResult): GetPostsResponseBody => {
       completed,
     };
   });
+  return response;
 };
 
 const useGetPostList = () => {
