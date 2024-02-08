@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getPosts } from '@/__generated__/posts/posts';
 import { _postFilter } from '../useGetPostList';
 import MockAdapter from 'axios-mock-adapter';
-import { mockPosts } from './mockData';
+import { mockPosts } from '@/__mocks__/posts';
 
 describe('_postFilter', () => {
   it('受け取ったデータを正しくフィルタリングできていること', async () => {
