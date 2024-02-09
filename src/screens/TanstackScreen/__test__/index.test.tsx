@@ -10,6 +10,24 @@ import '@testing-library/jest-dom';
 import AxiosProvider from '@/providers/AxiosProvider';
 import TanstackQueryProvider from '@/providers/TanstackQueryProvider';
 
+jest.mock('@/screens/TanstackScreen/useGetPostList', () => ({
+  useGetPostList: jest.fn(() => ({
+    data: {
+      data: mockPosts.map(({ id, title, userId, completed }) => {
+        return {
+          id,
+          title: title.toUpperCase(),
+          userId,
+          completed,
+        };
+      }),
+      status: 200,
+    },
+    isPending: false,
+    error: false,
+  })),
+}));
+
 describe('Tanstack screen', () => {
   describe('waitForを使って表現した場合', () => {
     it('データ取得ができていること', async () => {
@@ -24,6 +42,8 @@ describe('Tanstack screen', () => {
         </AxiosProvider>,
       );
 
+      // NOTE: jest.mockがいるので、実際はwaitFor関係ない
+      //       外したら、waitForで確認できるコード
       await waitFor(() => {
         const actual = screen.getByText('POST ONE');
         expect(actual).toBeInTheDocument();
@@ -31,19 +51,10 @@ describe('Tanstack screen', () => {
     });
   });
 
-  // TODO: （挙動だけみると）うまくモックできてない？
-  xdescribe('データ取得部分をモックした場合', () => {
+  describe('データ取得部分をモックした場合', () => {
     it('データ取得ができていること', async () => {
       const mock = new MockAdapter(axios);
       mock.onGet('/posts').reply(200, mockPosts);
-
-      jest.mock('@/__generated_REST__/posts/posts', () => ({
-        useGetPosts: jest.fn(() => ({
-          data: mockPosts,
-          isPending: false,
-          error: false,
-        })),
-      }));
 
       render(
         <AxiosProvider>
