@@ -1,4 +1,4 @@
-import { Form } from './Form';
+import { ApplyForm } from './ApplyForm';
 
 type Props = {
   params: { id: string };
@@ -9,7 +9,7 @@ export const ApplyScreen = ({ params, searchParams }: Props) => {
   return (
     <>
       <h1>応募フォームです</h1>
-      <Form />
+      <ApplyForm />
     </>
   );
 };

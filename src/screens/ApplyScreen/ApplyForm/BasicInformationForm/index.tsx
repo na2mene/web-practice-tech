@@ -1,4 +1,4 @@
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { BasicInformationFormSchemaType } from '../../schemas';
 import {
   FormControl,
@@ -17,7 +17,7 @@ import { Month } from '@/components/ui/Select/Birthday/month';
 import { Day } from '@/components/ui/Select/Birthday/day';
 import { getDaysInMonth } from '@/utils/days';
 import { Prefecture } from '@/components/ui/Select/Prefecture';
-import { CityWrapper } from '@/screens/ApplyScreen/Form/BasicInformationForm/CityWrapper';
+import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 
 export const BasicInfomationForm = () => {
   const { control, watch, setValue } = useFormContext<BasicInformationFormSchemaType>();
@@ -71,6 +71,7 @@ export const BasicInfomationForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={control}
           name='firstName'
@@ -102,6 +103,7 @@ export const BasicInfomationForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={control}
           name='firstNameKana'
@@ -119,39 +121,35 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div className='flex flex-row gap-x-4'>
-        <Controller
+        <FormField
+          control={control}
           name='year'
-          control={control}
-          render={({ field: { ref, ...restField } }) => {
-            return (
-              <Select {...restField} onValueChange={(value) => handleYearChange(value)}>
-                <SelectTrigger className='w-[180px]'>
-                  <SelectValue placeholder='西暦' />
-                </SelectTrigger>
-                <Year startYear={startYear} endYear={endYear} />
-              </Select>
-            );
-          }}
+          render={({ field: { ref, ...restField } }) => (
+            <Select {...restField} onValueChange={(value) => handleYearChange(value)}>
+              <SelectTrigger className='w-[180px]'>
+                <SelectValue placeholder='西暦' />
+              </SelectTrigger>
+              <Year startYear={startYear} endYear={endYear} />
+            </Select>
+          )}
         />
 
-        <Controller
+        <FormField
+          control={control}
           name='month'
-          control={control}
-          render={({ field: { ref, ...restField } }) => {
-            return (
-              <Select {...restField} onValueChange={(value) => handleMonthChange(value)}>
-                <SelectTrigger className='w-[180px]'>
-                  <SelectValue placeholder='月' />
-                </SelectTrigger>
-                <Month />
-              </Select>
-            );
-          }}
+          render={({ field: { ref, ...restField } }) => (
+            <Select {...restField} onValueChange={(value) => handleMonthChange(value)}>
+              <SelectTrigger className='w-[180px]'>
+                <SelectValue placeholder='月' />
+              </SelectTrigger>
+              <Month />
+            </Select>
+          )}
         />
 
-        <Controller
-          name='day'
+        <FormField
           control={control}
+          name='day'
           render={({ field: { ref, onChange, ...restField } }) => {
             const selectedValue = restField.value === null ? undefined : restField.value;
             return (
@@ -167,33 +165,31 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <Controller
-          name='gender'
+        <FormField
           control={control}
-          render={({ field: { onChange, ...restField } }) => {
-            return (
-              <RadioGroup
-                {...restField}
-                aria-label='性別'
-                className='flex items-center space-x-2'
-                onValueChange={onChange}
-              >
-                <RadioGroupItem value='1' id='man' />
-                <Label htmlFor='man'>男性</Label>
-                <RadioGroupItem value='2' id='woman' />
-                <Label htmlFor='woman'>女性</Label>
-              </RadioGroup>
-            );
-          }}
+          name='gender'
+          render={({ field: { ref, onChange, ...restField } }) => (
+            <RadioGroup
+              {...restField}
+              aria-label='性別'
+              className='flex items-center space-x-2'
+              onValueChange={onChange}
+            >
+              <RadioGroupItem value='1' id='man' />
+              <Label htmlFor='man'>男性</Label>
+              <RadioGroupItem value='2' id='woman' />
+              <Label htmlFor='woman'>女性</Label>
+            </RadioGroup>
+          )}
         />
       </div>
 
-      <div className='flex flex-row gap-x-4'>
+      <div>
         <FormField
           control={control}
           name='tel'
           render={({ field }) => (
-            <FormItem className='flex-1'>
+            <FormItem>
               <FormLabel>電話番号</FormLabel>
               <FormControl>
                 <Input className='w-[180px]' placeholder='09012345678' {...field} />
@@ -206,22 +202,20 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div className='flex flex-row gap-x-4'>
-        <Controller
-          name='prefecture'
+        <FormField
           control={control}
-          render={({ field: { ref, onChange, ...restField } }) => {
-            return (
-              <Select {...restField} onValueChange={onChange}>
-                <SelectTrigger className='w-[180px]'>
-                  <SelectValue placeholder='都道府県' />
-                </SelectTrigger>
-                <Prefecture />
-              </Select>
-            );
-          }}
+          name='prefecture'
+          render={({ field: { ref, onChange, ...restField } }) => (
+            <Select {...restField} onValueChange={onChange}>
+              <SelectTrigger className='w-[180px]'>
+                <SelectValue placeholder='都道府県' />
+              </SelectTrigger>
+              <Prefecture />
+            </Select>
+          )}
         />
 
-        <Controller
+        <FormField
           name='city'
           control={control}
           render={({ field: { ref, onChange, ...restField } }) => {
@@ -241,12 +235,12 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div className='flex flex-row gap-x-4'>
+      <div>
         <FormField
           control={control}
           name='town'
           render={({ field }) => (
-            <FormItem className='flex-1'>
+            <FormItem className='w-[380px]'>
               <FormControl>
                 <Input placeholder='町名・番地' {...field} />
               </FormControl>
@@ -257,12 +251,12 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div className='flex flex-row gap-x-4'>
+      <div>
         <FormField
           control={control}
           name='building'
           render={({ field }) => (
-            <FormItem className='flex-1'>
+            <FormItem className='w-[380px]'>
               <FormControl>
                 <Input placeholder='建物名' {...field} />
               </FormControl>
@@ -273,12 +267,12 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div className='flex flex-row gap-x-4'>
+      <div>
         <FormField
           control={control}
           name='email'
           render={({ field }) => (
-            <FormItem className='flex-1'>
+            <FormItem>
               <FormLabel>メールアドレス</FormLabel>
               <FormControl>
                 <Input placeholder='メールアドレス' {...field} />
@@ -290,12 +284,12 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div className='flex flex-row gap-x-4'>
+      <div>
         <FormField
           control={control}
           name='password'
           render={({ field }) => (
-            <FormItem className='flex-1'>
+            <FormItem>
               <FormLabel>パスワード</FormLabel>
               <FormControl>
                 <Input type='password' placeholder='パスワード' {...field} />
@@ -308,26 +302,24 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <Controller
+        <FormField
           name='employmentStatus'
           control={control}
-          render={({ field: { onChange, ...restField } }) => {
-            return (
-              <RadioGroup
-                {...restField}
-                aria-label='就業状況'
-                className='flex items-center space-x-2'
-                onValueChange={onChange}
-              >
-                <RadioGroupItem value='1' id='employmentStatus1' />
-                <Label htmlFor='employmentStatus1'>就業中</Label>
-                <RadioGroupItem value='2' id='employmentStatus2' />
-                <Label htmlFor='employmentStatus2'>離職中</Label>
-                <RadioGroupItem value='3' id='employmentStatus3' />
-                <Label htmlFor='employmentStatus3'>在学中</Label>
-              </RadioGroup>
-            );
-          }}
+          render={({ field: { onChange, ...restField } }) => (
+            <RadioGroup
+              {...restField}
+              aria-label='就業状況'
+              className='flex items-center space-x-2'
+              onValueChange={onChange}
+            >
+              <RadioGroupItem value='1' id='employmentStatus1' />
+              <Label htmlFor='employmentStatus1'>就業中</Label>
+              <RadioGroupItem value='2' id='employmentStatus2' />
+              <Label htmlFor='employmentStatus2'>離職中</Label>
+              <RadioGroupItem value='3' id='employmentStatus3' />
+              <Label htmlFor='employmentStatus3'>在学中</Label>
+            </RadioGroup>
+          )}
         />
       </div>
     </>
