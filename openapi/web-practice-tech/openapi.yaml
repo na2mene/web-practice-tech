@@ -11,6 +11,8 @@ tags:
     name: posts
   - description: ユーザ
     name: users
+  - description: 国土交通省外部API
+    name: webland
 paths:
   /posts:
     get:
@@ -248,6 +250,30 @@ paths:
       summary: 指定されたIDのユーザのコメントを取得する.
       tags:
         - users
+  /webland/api/CitySearch:
+    get:
+      description: |-
+        国土交通省が管理しているAPIから都道府県コードを渡して、
+        市区町村を取得する.
+        @see: https://www.land.mlit.go.jp/webland/api.html
+      operationId: getCityList
+      parameters:
+        - in: query
+          name: area
+          required: true
+          schema:
+            example: '1'
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCityListResponseBody'
+          description: Successful response
+      summary: 都道府県に紐づく市区町村の取得
+      tags:
+        - webland
 components:
   schemas:
     GetPostsResponseBody:
@@ -469,6 +495,25 @@ components:
       items:
         $ref: '#/components/schemas/GetPostCommentsResponseBody_inner'
       type: array
+    GetCityListResponseBody:
+      example:
+        data:
+          - name: name
+            id: id
+          - name: name
+            id: id
+        status: status
+      properties:
+        status:
+          type: string
+        data:
+          items:
+            $ref: '#/components/schemas/GetCityListResponseBody_data_inner'
+          type: array
+      required:
+        - data
+        - status
+      type: object
     GetPostCommentsResponseBody_inner:
       example:
         name: name
@@ -591,3 +636,15 @@ components:
         bs:
           type: string
       type: object
+    GetCityListResponseBody_data_inner:
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name

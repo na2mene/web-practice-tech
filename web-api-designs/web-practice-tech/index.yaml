@@ -13,6 +13,8 @@ tags:
     description: 投稿
   - name: users
     description: ユーザ
+  - name: webland
+    description: 国土交通省外部API
 
 paths:
   /posts:
@@ -28,3 +30,7 @@ paths:
     $ref: ./paths/users/user__user-id.yaml
   /users/{userId}/comments:
     $ref: ./paths/users/user__user-id__comment.yaml
+
+## 外部API
+  /webland/api/CitySearch:
+    $ref: ./paths/webland/webland__api__CitySearch.yaml

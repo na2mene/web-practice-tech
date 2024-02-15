@@ -1,0 +1,48 @@
+get:
+  summary: 都道府県に紐づく市区町村の取得
+
+  description: |-
+    国土交通省が管理しているAPIから都道府県コードを渡して、
+    市区町村を取得する.
+    @see: https://www.land.mlit.go.jp/webland/api.html
+
+  tags:
+    - webland
+  parameters:
+    - name: area
+      in: query
+      required: true
+      schema:
+        type: string
+        example: 01
+  operationId: getCityList
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetCityListResponseBody"
+
+components:
+  schemas:
+    GetCityListResponseBody:
+      type: object
+      required:
+        - status
+        - data
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            required:
+              - id
+              - name
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+
