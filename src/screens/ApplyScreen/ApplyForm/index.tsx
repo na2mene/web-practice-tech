@@ -1,13 +1,14 @@
 'use client';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { useForm, SubmitHandler, FormProvider } from 'react-hook-form';
-
+import { Form } from '@/components/ui/Form/form';
 import { ApplyFormSchemaType } from '../schemas';
-import { BasicInfomationForm } from '@/screens/ApplyScreen/Form/BasicInformationForm';
-import { ApplyInfomationForm } from '@/screens/ApplyScreen/Form/ApplyInfomationForm';
+import { BasicInfomationForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm';
+import { ApplyInfomationForm } from '@/screens/ApplyScreen/ApplyForm/ApplyInfomationForm';
+import { Button } from '@/components/ui/Button/button';
 
-export const Form = () => {
-  const Forms = useForm<ApplyFormSchemaType>({
+export const ApplyForm = () => {
+  const forms = useForm<ApplyFormSchemaType>({
     // NOTE: 以下回避のため、デフォルト値を設定する
     // @see: https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable
     defaultValues: {
@@ -30,14 +31,12 @@ export const Form = () => {
   });
   const onSubmit: SubmitHandler<ApplyFormSchemaType> = (data) => console.log(data);
   return (
-    <>
-      <FormProvider {...Forms}>
-        <form onSubmit={Forms.handleSubmit(onSubmit)}>
-          <BasicInfomationForm />
-          {/* <ApplyInfomationForm /> */}
-          <button type='submit'>応募する</button>
-        </form>
-      </FormProvider>
-    </>
+    <Form {...forms}>
+      <form onSubmit={forms.handleSubmit(onSubmit)} className='space-y-8'>
+        <BasicInfomationForm />
+        {/* <ApplyInfomationForm /> */}
+        <Button type='submit'>応募する</Button>
+      </form>
+    </Form>
   );
 };
