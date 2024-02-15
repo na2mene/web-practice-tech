@@ -201,6 +201,23 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
+      <div>
+        <FormField
+          control={control}
+          name='postalCode'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>郵便番号</FormLabel>
+              <FormControl>
+                <Input className='w-[180px]' placeholder='2610011' {...field} />
+              </FormControl>
+              <FormDescription>ここは説明箇所です.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
       <div className='flex flex-row gap-x-4'>
         <FormField
           control={control}
