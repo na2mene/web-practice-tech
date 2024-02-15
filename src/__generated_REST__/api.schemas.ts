@@ -5,6 +5,15 @@
  * Web Practice Tech API
  * OpenAPI spec version: 0.0.1
  */
+export type GetCityListParams = {
+  area: string;
+};
+
+export interface GetCityListResponseBodyDataInner {
+  id: string;
+  name: string;
+}
+
 export interface UserCompany {
   bs?: string;
   catchPhrase?: string;
@@ -49,6 +58,11 @@ export interface GetPostCommentsResponseBodyInner {
   id: number;
   name: string;
   postId: number;
+}
+
+export interface GetCityListResponseBody {
+  data: GetCityListResponseBodyDataInner[];
+  status: string;
 }
 
 export type GetUserCommentsResponseBody = GetPostCommentsResponseBodyInner[];
