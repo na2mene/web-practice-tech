@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { ApplyInformationFormSchemaType } from '../schemas';
+import { ApplyInformationFormSchemaType } from '../../schemas';
 
 export const ApplyInfomationForm = () => {
   const { register } = useFormContext<ApplyInformationFormSchemaType>();
