@@ -1,5 +1,5 @@
 import { useFormContext, Controller } from 'react-hook-form';
-import { BasicInformationFormSchemaType } from '../schemas';
+import { BasicInformationFormSchemaType } from '../../schemas';
 import {
   FormControl,
   FormField,
@@ -17,7 +17,7 @@ import { Month } from '@/components/ui/Select/Birthday/month';
 import { Day } from '@/components/ui/Select/Birthday/day';
 import { getDaysInMonth } from '@/utils/days';
 import { Prefecture } from '@/components/ui/Select/Prefecture';
-import { CityWrapper } from '@/screens/ApplyScreen/BasicInformationForm/CityWrapper';
+import { CityWrapper } from '@/screens/ApplyScreen/Form/BasicInformationForm/CityWrapper';
 
 export const BasicInfomationForm = () => {
   const { control, watch, setValue } = useFormContext<BasicInformationFormSchemaType>();
