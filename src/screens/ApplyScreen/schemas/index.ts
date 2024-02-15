@@ -6,7 +6,7 @@ import { z } from 'zod';
 //
 
 const basicInformationObjectSchema = z.object({
-  familyName: z.string().max(20, { message: '20文字以内で入力してください' }),
+  familyName: z.string().max(20, { message: '50文字以内で入力してください' }),
   firstName: z.string().max(20, { message: '20文字以内で入力してください' }),
   familyNameKana: z.string().max(20, { message: '20文字以内で入力してください' }),
   firstNameKana: z.string().max(20, { message: '20文字以内で入力してください' }),
@@ -26,15 +26,15 @@ const basicInformationObjectSchema = z.object({
 });
 
 const applyInformationObjectSchema = z.object({
-  MemberCareer: z.string().max(20, { message: '20文字以内で入力してください' }),
-  qualification: z.string().nullable(),
-  prefferdDateTime: z.array(
-    z.object({
-      prefferdDate: z.date(),
-      prefferdHour: z.array(z.string()),
-      prefferdMinutes: z.array(z.string()),
-    }),
-  ),
+  MemberCareer: z.string(),
+  qualification: z.string(),
+  // prefferdDateTime: z.array(
+  //   z.object({
+  //     prefferdDate: z.date(),
+  //     prefferdHour: z.array(z.string()),
+  //     prefferdMinutes: z.array(z.string()),
+  //   }),
+  // ),
 });
 
 //
@@ -42,7 +42,7 @@ const applyInformationObjectSchema = z.object({
 //       これはFormをつかさどる親のコンポーネントで使うスキーマ
 //
 
-const mergedApplyFormSchema = basicInformationObjectSchema.merge(applyInformationObjectSchema);
+export const applyFormSchema = basicInformationObjectSchema.merge(applyInformationObjectSchema);
 
 //
 // NOTE: 次に追加で生じるバリデーションを付与する
@@ -50,7 +50,7 @@ const mergedApplyFormSchema = basicInformationObjectSchema.merge(applyInformatio
 //       refineを使うとZodObject型からZodEffects型となりmergeすることができないため
 //
 
-export const basicInformationFormSchema = mergedApplyFormSchema
+export const basicInformationFormSchema = applyFormSchema
   .required({
     familyName: true,
     firstName: true,
@@ -77,9 +77,9 @@ export const basicInformationFormSchema = mergedApplyFormSchema
     },
   );
 
-export const applyInformationFormSchema = mergedApplyFormSchema.required({
-  MemberCareer: true,
-  qualification: true,
+export const applyInformationFormSchema = applyFormSchema.required({
+  // MemberCareer: true,
+  // qualification: true,
 });
 
 //
@@ -88,4 +88,4 @@ export const applyInformationFormSchema = mergedApplyFormSchema.required({
 
 export type BasicInformationFormSchemaType = z.infer<typeof basicInformationFormSchema>;
 export type ApplyInformationFormSchemaType = z.infer<typeof applyInformationFormSchema>;
-export type ApplyFormSchemaType = z.infer<typeof mergedApplyFormSchema>;
+export type ApplyFormSchemaType = z.infer<typeof applyFormSchema>;
