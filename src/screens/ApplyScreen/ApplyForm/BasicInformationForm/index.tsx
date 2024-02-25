@@ -218,27 +218,47 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      {/* <div>
+      <div>
         <FormField
           control={control}
           name='gender'
-          render={({ field: { value, ...restField } }) => (
-            <RadioGroup
-              {...restField}
-              aria-label='性別'
-              className='flex items-center space-x-2'
-              onValueChange={(value) => setValue('gender', parseInt(value, 10))}
-            >
-              <RadioGroupItem value='1' id='man' />
-              <Label htmlFor='man'>男性</Label>
-              <RadioGroupItem value='2' id='woman' />
-              <Label htmlFor='woman'>女性</Label>
-            </RadioGroup>
+          render={({ field: { value, onChange, ...restField } }) => (
+            <FormItem className='space-y-3'>
+              <FormLabel>性別</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  {...restField}
+                  aria-label='性別'
+                  className='flex items-center space-x-2'
+                  defaultValue={`${value}`}
+                  onValueChange={onChange}
+                >
+                  <FormItem className='flex items-center space-x-3 space-y-0'>
+                    <FormControl>
+                      <RadioGroupItem value='female' id='female' />
+                    </FormControl>
+                    <FormLabel className='font-normal' htmlFor='female'>
+                      女性
+                    </FormLabel>
+                  </FormItem>
+
+                  <FormItem className='flex items-center space-x-3 space-y-0'>
+                    <FormControl>
+                      <RadioGroupItem value='male' id='male' />
+                    </FormControl>
+                    <FormLabel className='font-normal' htmlFor='male'>
+                      男性
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
       </div>
 
-      <div>
+      {/* <div>
         <FormField
           control={control}
           name='tel'

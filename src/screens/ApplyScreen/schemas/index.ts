@@ -29,7 +29,9 @@ const createBasicInformationBaseSchema = () =>
     month: z.string(),
     day: z.string(),
 
-    // gender: z.coerce.number().min(1, { message: '性別を選択してください' }),
+    gender: z.enum(['female', 'male'], {
+      required_error: '性別を選択してください',
+    }),
 
     // // TODO: 電話番号フォーマットチェック
     // tel: z.string().min(1, { message: '電話番号を入力してください' }),

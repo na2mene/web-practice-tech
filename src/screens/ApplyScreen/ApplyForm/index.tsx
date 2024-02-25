@@ -70,10 +70,13 @@ export const ApplyForm = ({ id }: Props) => {
       //       そこでカバーする
       year: '',
       month: '',
-      day: '',
       // NOTE: RadixUI側のbugっぽく、回避策が、空文字をdefaultValuesに使うようなことが書いてあった
       // @see: https://github.com/radix-ui/primitives/issues/1808
-      // day: '',
+      day: '',
+      //
+      // TODO: 初期値がない場合は、これでいいのか？
+      //       これしかないと思っているので、明示的に設定
+      gender: undefined,
       // tel: '',
       // town: '',
       // building: '',
@@ -81,7 +84,6 @@ export const ApplyForm = ({ id }: Props) => {
       // postalCode: '',
       // password: '',
       // cityId: '',
-      // gender: undefined,
       // employmentStatus: 0,
       // TODO: undefinedを初期値とすると、Requiredのエラーがうまく出現するが、空文字だとRequiredの判定をスルーしてしまう
       //       Warning: A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components
