@@ -3,10 +3,9 @@ import { z } from 'zod';
 const createBasicInformationBaseSchema = () =>
   z
     .object({
-      // NOTE: min(1)で、必須項目を表現するっぽい
-      //       requiredは、スキーマとして存在するしないっぽい
       familyName: z
         .string()
+        // NOTE: min(1)で、必須項目を表現する
         .min(1, { message: '名字を入力してください' })
         .max(50, { message: '50文字以内で入力してください' }),
       firstName: z
@@ -14,15 +13,16 @@ const createBasicInformationBaseSchema = () =>
         .min(1, { message: '名前を入力してください' })
         .max(50, { message: '50文字以内で入力してください' }),
 
-      // TODO: ひらがなであることの表現
       familyNameKana: z
         .string()
         .min(1, { message: '名字（ひらがな）を入力してください' })
-        .max(20, { message: '名字（ふりがな）は50文字以内で入力してください' }),
+        .max(50, { message: '名字（ふりがな）は50文字以内で入力してください' })
+        .regex(/^(?:[ぁ-ゞ]+)*$/, { message: '名字（ふりがな）はひらがなで入力してください' }),
       firstNameKana: z
         .string()
         .min(1, { message: '名前（ひらがな）を入力してください' })
-        .max(20, { message: '名前（ふりがな）は50文字以内で入力してください' }),
+        .max(50, { message: '名前（ふりがな）は50文字以内で入力してください' })
+        .regex(/^(?:[ぁ-ゞ]+)*$/, { message: '名前（ふりがな）はひらがなで入力してください' }),
 
       // TODO: 相関生年月日チェック
       //       年齢チェック

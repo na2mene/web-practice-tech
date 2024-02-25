@@ -60,11 +60,11 @@ export const BasicInfomationForm = () => {
         <FormField
           control={control}
           name='familyName'
-          render={({ field: { ref, ...restField } }) => (
+          render={({ field }) => (
             <FormItem className='flex-1'>
-              <FormLabel>苗字</FormLabel>
+              <FormLabel>名字</FormLabel>
               <FormControl>
-                <Input placeholder='山田' {...restField} />
+                <Input placeholder='山田' {...field} />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -94,9 +94,9 @@ export const BasicInfomationForm = () => {
           name='familyNameKana'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              <FormLabel>苗字カナ</FormLabel>
+              <FormLabel>名字かな</FormLabel>
               <FormControl>
-                <Input placeholder='ヤマダ' {...field} />
+                <Input placeholder='やまだ' {...field} />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -109,9 +109,9 @@ export const BasicInfomationForm = () => {
           name='firstNameKana'
           render={({ field }) => (
             <FormItem className='flex-1'>
-              <FormLabel>名前カナ</FormLabel>
+              <FormLabel>名前かな</FormLabel>
               <FormControl>
-                <Input placeholder='タロウ' {...field} />
+                <Input placeholder='たろう' {...field} />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -119,7 +119,7 @@ export const BasicInfomationForm = () => {
           )}
         />
       </div>
-
+      {/*
       <div className='flex flex-row gap-x-4'>
         <FormField
           control={control}
@@ -344,7 +344,7 @@ export const BasicInfomationForm = () => {
             </RadioGroup>
           )}
         />
-      </div>
+      </div> */}
     </>
   );
 };
