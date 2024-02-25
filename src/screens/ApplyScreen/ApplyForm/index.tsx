@@ -78,20 +78,20 @@ export const ApplyForm = ({ id }: Props) => {
       firstNameKana: '',
       // NOTE: RadixUI側のbugっぽく、回避策が、空文字をdefaultValuesに使うようなことが書いてあった
       // @see: https://github.com/radix-ui/primitives/issues/1808
-      day: '',
-      tel: '',
-      town: '',
-      building: '',
-      email: '',
-      postalCode: '',
-      password: '',
-      cityId: '',
-      gender: undefined,
-      employmentStatus: 0,
+      // day: '',
+      // tel: '',
+      // town: '',
+      // building: '',
+      // email: '',
+      // postalCode: '',
+      // password: '',
+      // cityId: '',
+      // gender: undefined,
+      // employmentStatus: 0,
       // TODO: undefinedを初期値とすると、Requiredのエラーがうまく出現するが、空文字だとRequiredの判定をスルーしてしまう
       //       Warning: A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components
       // MemberCareer: undefined,
-      qualifications: [],
+      // qualifications: [],
     },
     resolver: zodResolver(applyFormSchema),
     mode: 'onBlur',
@@ -107,7 +107,7 @@ export const ApplyForm = ({ id }: Props) => {
     <Form {...forms}>
       <form onSubmit={forms.handleSubmit(onSubmit)} className='space-y-8'>
         <BasicInfomationForm />
-        <ApplyInfomationForm qualifications={data[key]} />
+        {/* <ApplyInfomationForm qualifications={data[key]} /> */}
         <Button type='submit'>応募する</Button>
       </form>
     </Form>
