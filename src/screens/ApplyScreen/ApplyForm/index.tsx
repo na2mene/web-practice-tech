@@ -77,7 +77,7 @@ export const ApplyForm = ({ id }: Props) => {
       // TODO: 初期値がない場合は、これでいいのか？
       //       これしかないと思っているので、明示的に設定
       gender: undefined,
-      // tel: '',
+      tel: '',
       // town: '',
       // building: '',
       // email: '',
