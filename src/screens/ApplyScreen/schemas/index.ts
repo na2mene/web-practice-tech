@@ -25,8 +25,6 @@ const createBasicInformationBaseSchema = () =>
       .max(50, { message: '名前（ふりがな）は50文字以内で入力してください' })
       .regex(/^(?:[ぁ-ゞ]+)*$/, { message: '名前（ふりがな）はひらがなで入力してください' }),
 
-    // TODO: 相関生年月日チェック
-    //       年齢チェック
     year: z.string(),
     month: z.string(),
     day: z.string(),
