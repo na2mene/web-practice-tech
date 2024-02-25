@@ -20,7 +20,7 @@ import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 
 export const BasicInfomationForm = () => {
-  const { control, watch, setValue } = useFormContext<BasicInformationSchemaType>();
+  const { control, watch, setValue, trigger } = useFormContext<BasicInformationSchemaType>();
 
   //
   // TODO: hooksでまとめたいけど、わからない
@@ -34,24 +34,57 @@ export const BasicInfomationForm = () => {
   const selectedMonth = watch('month');
   const selectedDay = watch('day');
 
-  const selectedPrefecture = watch('prefectureId');
+  // const selectedPrefecture = watch('prefectureId');
 
-  // 選択された年をフォームの 'year' フィールドに設定する
+  //
+  // NOTE: 選択された年をフォームの 'year' フィールドに設定する
+  //       年月日の状態によって、日を空にするため、onChange時に拡張している
+  //
   const handleYearChange = (value: string) => {
-    setValue('year', value);
     // 現在選択されている `日` が、選択されたYear, Monthでの日に存在しない場合
     if (getDaysInMonth(value, selectedMonth) < Number(selectedDay)) {
       setValue('day', '');
     }
+    setValue('year', value);
+
+    //
+    // TODO: birthdayというキーでエラーを管理しているので、
+    //       生年月日のonChangeで毎回手動でバリデーションチェックする
+    //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
+    //
+    // @ts-ignore
+    trigger('birthday');
   };
 
-  // 選択された月をフォームの 'month' フィールドに設定する
+  //
+  // NOTE: 選択された月をフォームの 'month' フィールドに設定する
+  //       年月日の状態によって、日を空にするため、onChange時に拡張している
+  //
   const handleMonthChange = (value: string) => {
-    setValue('month', value);
     // 現在選択されている `日` が、選択されたYear, Monthでの日に存在しない場合
     if (getDaysInMonth(selectedYear, value) < Number(selectedDay)) {
       setValue('day', '');
     }
+    setValue('month', value);
+
+    //
+    // TODO: birthdayというキーでエラーを管理しているので、
+    //       生年月日のonChangeで毎回手動でバリデーションチェックする
+    //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
+    //
+    // @ts-ignore
+    trigger('birthday');
+  };
+
+  const handleDayChange = (value: string) => {
+    setValue('day', value);
+    //
+    // TODO: birthdayというキーでエラーを管理しているので、
+    //       生年月日のonChangeで毎回手動でバリデーションチェックする
+    //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
+    //
+    // @ts-ignore
+    trigger('birthday');
   };
 
   return (
@@ -119,55 +152,73 @@ export const BasicInfomationForm = () => {
           )}
         />
       </div>
-      {/*
-      <div className='flex flex-row gap-x-4'>
-        <FormField
-          control={control}
-          name='year'
-          render={({ field: { ...restField } }) => (
-            <Select {...restField} onValueChange={(value) => handleYearChange(value)}>
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='西暦' />
-              </SelectTrigger>
-              <Year startYear={startYear} endYear={endYear} />
-              <FormMessage />
-            </Select>
-          )}
-        />
 
-        <FormField
-          control={control}
-          name='month'
-          render={({ field: { ref, ...restField } }) => (
-            <Select {...restField} onValueChange={(value) => handleMonthChange(value)}>
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='月' />
-              </SelectTrigger>
-              <Month />
-              <FormMessage />
-            </Select>
-          )}
-        />
-
-        <FormField
-          control={control}
-          name='day'
-          render={({ field: { ref, onChange, ...restField } }) => {
-            const selectedValue = restField.value === null ? undefined : restField.value;
-            return (
-              <Select {...restField} value={selectedValue} onValueChange={onChange}>
-                <SelectTrigger className='w-[180px]'>
-                  <SelectValue placeholder='日' />
+      <div>
+        <div className='flex flex-row gap-x-4'>
+          <FormField
+            control={control}
+            name='year'
+            render={({ field: { ref, onChange, ...restField } }) => (
+              <Select {...restField} onValueChange={handleYearChange}>
+                <SelectTrigger ref={ref} className='w-[180px]'>
+                  <SelectValue placeholder='西暦' />
                 </SelectTrigger>
-                <Day year={selectedYear} month={selectedMonth} />
+                <Year startYear={startYear} endYear={endYear} />
                 <FormMessage />
               </Select>
-            );
-          }}
+            )}
+          />
+
+          <FormField
+            control={control}
+            name='month'
+            render={({ field: { ref, onChange, ...restField } }) => (
+              <Select {...restField} onValueChange={(value) => handleMonthChange(value)}>
+                <SelectTrigger ref={ref} className='w-[180px]'>
+                  <SelectValue placeholder='月' />
+                </SelectTrigger>
+                <Month />
+                <FormMessage />
+              </Select>
+            )}
+          />
+
+          <FormField
+            control={control}
+            name='day'
+            //
+            // NOTE: shadcnuiが作るSelectは、onValueChangeのPropsで待っているので、onChange単体を取り出して、
+            //       関数をそのまま渡してあげている
+            render={({ field: { ref, onChange, ...restField } }) => {
+              return (
+                <Select {...restField} onValueChange={(value) => handleDayChange(value)}>
+                  <SelectTrigger ref={ref} className='w-[180px]'>
+                    {/*
+                    // NOTE: 本来、shadcnの仕様的に、placeholderが出力するには、
+                    //       Selectのvalueが、undefinedであることなのだが、
+                    //       空文字となる場合に表示される（バグっぽい）
+                  */}
+                    <SelectValue placeholder='日' />
+                  </SelectTrigger>
+                  <Day year={selectedYear} month={selectedMonth} />
+                  <FormMessage />
+                </Select>
+              );
+            }}
+          />
+        </div>
+
+        <FormField
+          //
+          // TODO: カスタムバリデーションのエラーメッセージを
+          //       無理やり表現した結果だが、これでいいのかは、わからない
+          // @ts-ignore
+          name='birthday'
+          render={() => <FormMessage />}
         />
       </div>
 
-      <div>
+      {/* <div>
         <FormField
           control={control}
           name='gender'

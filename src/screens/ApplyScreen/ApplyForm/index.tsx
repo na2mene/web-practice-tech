@@ -16,19 +16,8 @@ type Props = {
 
 export const ApplyForm = ({ id }: Props) => {
   // const { data } = useQuarificationQuery();
-  const data: {
-    ans: {
-      id: number;
-      name: string;
-      required: boolean;
-    }[];
-    apo: {
-      id: number;
-      name: string;
-      required: boolean;
-    }[];
-  } = {
-    ans: [
+  let apiData = {
+    qualificationData: [
       {
         id: 1,
         name: '看護師',
@@ -45,7 +34,12 @@ export const ApplyForm = ({ id }: Props) => {
         required: false,
       },
     ],
-    apo: [
+    jobCategoryData: {
+      min_age: 0,
+    },
+  };
+  if (id === '2') {
+    apiData.qualificationData = [
       {
         id: 4,
         name: '薬剤師',
@@ -56,17 +50,11 @@ export const ApplyForm = ({ id }: Props) => {
         name: '自動車運転免許',
         required: false,
       },
-    ],
-  };
-
-  type JobCategoryCode = 'ans' | 'apo';
-  let key: JobCategoryCode = 'ans';
-
-  if (id === '2') {
-    key = 'apo';
+    ];
+    apiData.jobCategoryData.min_age = 23;
   }
 
-  const applyFormSchema = createSchema(data[key]);
+  const applyFormSchema = createSchema(apiData);
 
   const forms = useForm<ApplyFormSchemaType>({
     // NOTE: 以下回避のため、デフォルト値を設定する
@@ -76,6 +64,13 @@ export const ApplyForm = ({ id }: Props) => {
       firstName: '',
       familyNameKana: '',
       firstNameKana: '',
+      //
+      // TODO: 初期値に文字列があるので、Zodのシンプルな必須チェックには引っかからない
+      //       が、相関チェックで1つでも空だった場合、生年月日を選択してくださいと出力するので、
+      //       そこでカバーする
+      year: '',
+      month: '',
+      day: '',
       // NOTE: RadixUI側のbugっぽく、回避策が、空文字をdefaultValuesに使うようなことが書いてあった
       // @see: https://github.com/radix-ui/primitives/issues/1808
       // day: '',
