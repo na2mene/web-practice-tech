@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { ApplyInformationFormSchemaType } from '../../schemas';
+import { ApplyInformationSchemaType } from '../../schemas';
 import {
   FormControl,
   FormField,
@@ -8,41 +8,67 @@ import {
   FormDescription,
   FormMessage,
 } from '@/components/ui/Form/form';
-import { Input } from '@/components/ui/Input/input';
+import { Select, SelectTrigger, SelectValue } from '@/components/ui/Select/select';
+import { Checkbox } from '@/components/ui/Checkbox/checkbox';
+import { MemberCareer } from '@/components/shared/MemberCareer';
 
-export const ApplyInfomationForm = () => {
-  const { control } = useFormContext<ApplyInformationFormSchemaType>();
+type Props = {
+  qualifications:
+    | {
+        id: number;
+        name: string;
+        required: boolean;
+      }[]
+    | [];
+};
+
+export const ApplyInfomationForm = ({ qualifications }: Props) => {
+  const { control } = useFormContext<ApplyInformationSchemaType>();
 
   return (
     <>
       <div>
         <FormField
           control={control}
-          name='MemberCareer'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>経験年数</FormLabel>
-              <FormControl>
-                <Input className='w-[180px]' placeholder='1年' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
+          name='memberCareer'
+          render={({ field: { ref, onChange, ...restField } }) => (
+            <Select {...restField} onValueChange={onChange}>
+              <SelectTrigger className='w-[180px]'>
+                <SelectValue placeholder='未設定' />
+              </SelectTrigger>
+              <MemberCareer />
               <FormMessage />
-            </FormItem>
+            </Select>
           )}
         />
       </div>
 
-      <div>
+      <div className='flex flex-row gap-x-4'>
         <FormField
           control={control}
-          name='qualification'
-          render={({ field }) => (
+          name='qualifications'
+          render={({ field: { value, ...restField } }) => (
             <FormItem>
-              <FormLabel>資格</FormLabel>
-              <FormControl>
-                <Input className='w-[180px]' placeholder='ほげ資格' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
+              <div className='mb-4'>
+                <FormLabel className='text-base'>保有資格・免許</FormLabel>
+              </div>
+              {qualifications.map((qualification, index) => (
+                <FormItem key={qualification.id}>
+                  <FormControl>
+                    <Checkbox
+                      checked={value?.includes(qualification.id)}
+                      onCheckedChange={(checked) => {
+                        return checked
+                          ? restField.onChange([...value, qualification.id])
+                          : restField.onChange(
+                              value?.filter((value) => value !== qualification.id),
+                            );
+                      }}
+                    />
+                  </FormControl>
+                  <FormLabel className='text-sm font-normal'>{qualification.name}</FormLabel>
+                </FormItem>
+              ))}
               <FormMessage />
             </FormItem>
           )}

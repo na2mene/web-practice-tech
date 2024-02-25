@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { BasicInformationFormSchemaType } from '../../schemas';
+import { BasicInformationSchemaType } from '../../schemas';
 import {
   FormControl,
   FormField,
@@ -20,7 +20,7 @@ import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 
 export const BasicInfomationForm = () => {
-  const { control, watch, setValue } = useFormContext<BasicInformationFormSchemaType>();
+  const { control, watch, setValue } = useFormContext<BasicInformationSchemaType>();
 
   //
   // TODO: hooksでまとめたいけど、わからない
@@ -34,14 +34,14 @@ export const BasicInfomationForm = () => {
   const selectedMonth = watch('month');
   const selectedDay = watch('day');
 
-  const selectedPrefecture = watch('prefecture');
+  const selectedPrefecture = watch('prefectureId');
 
   // 選択された年をフォームの 'year' フィールドに設定する
   const handleYearChange = (value: string) => {
     setValue('year', value);
     // 現在選択されている `日` が、選択されたYear, Monthでの日に存在しない場合
     if (getDaysInMonth(value, selectedMonth) < Number(selectedDay)) {
-      setValue('day', null);
+      setValue('day', '');
     }
   };
 
@@ -50,7 +50,7 @@ export const BasicInfomationForm = () => {
     setValue('month', value);
     // 現在選択されている `日` が、選択されたYear, Monthでの日に存在しない場合
     if (getDaysInMonth(selectedYear, value) < Number(selectedDay)) {
-      setValue('day', null);
+      setValue('day', '');
     }
   };
 
@@ -60,11 +60,11 @@ export const BasicInfomationForm = () => {
         <FormField
           control={control}
           name='familyName'
-          render={({ field }) => (
+          render={({ field: { ref, ...restField } }) => (
             <FormItem className='flex-1'>
               <FormLabel>苗字</FormLabel>
               <FormControl>
-                <Input placeholder='山田' {...field} />
+                <Input placeholder='山田' {...restField} />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -124,12 +124,13 @@ export const BasicInfomationForm = () => {
         <FormField
           control={control}
           name='year'
-          render={({ field: { ref, ...restField } }) => (
+          render={({ field: { ...restField } }) => (
             <Select {...restField} onValueChange={(value) => handleYearChange(value)}>
               <SelectTrigger className='w-[180px]'>
                 <SelectValue placeholder='西暦' />
               </SelectTrigger>
               <Year startYear={startYear} endYear={endYear} />
+              <FormMessage />
             </Select>
           )}
         />
@@ -143,6 +144,7 @@ export const BasicInfomationForm = () => {
                 <SelectValue placeholder='月' />
               </SelectTrigger>
               <Month />
+              <FormMessage />
             </Select>
           )}
         />
@@ -158,6 +160,7 @@ export const BasicInfomationForm = () => {
                   <SelectValue placeholder='日' />
                 </SelectTrigger>
                 <Day year={selectedYear} month={selectedMonth} />
+                <FormMessage />
               </Select>
             );
           }}
@@ -168,12 +171,12 @@ export const BasicInfomationForm = () => {
         <FormField
           control={control}
           name='gender'
-          render={({ field: { ref, onChange, ...restField } }) => (
+          render={({ field: { value, ...restField } }) => (
             <RadioGroup
               {...restField}
               aria-label='性別'
               className='flex items-center space-x-2'
-              onValueChange={onChange}
+              onValueChange={(value) => setValue('gender', parseInt(value, 10))}
             >
               <RadioGroupItem value='1' id='man' />
               <Label htmlFor='man'>男性</Label>
@@ -221,19 +224,20 @@ export const BasicInfomationForm = () => {
       <div className='flex flex-row gap-x-4'>
         <FormField
           control={control}
-          name='prefecture'
+          name='prefectureId'
           render={({ field: { ref, onChange, ...restField } }) => (
             <Select {...restField} onValueChange={onChange}>
               <SelectTrigger className='w-[180px]'>
                 <SelectValue placeholder='都道府県' />
               </SelectTrigger>
               <Prefecture />
+              <FormMessage />
             </Select>
           )}
         />
 
         <FormField
-          name='city'
+          name='cityId'
           control={control}
           render={({ field: { ref, onChange, ...restField } }) => {
             return (
@@ -246,6 +250,7 @@ export const BasicInfomationForm = () => {
                 ) : (
                   <SelectContent />
                 )}
+                <FormMessage />
               </Select>
             );
           }}
@@ -305,11 +310,11 @@ export const BasicInfomationForm = () => {
         <FormField
           control={control}
           name='password'
-          render={({ field }) => (
+          render={({ field: { ref, ...restField } }) => (
             <FormItem>
               <FormLabel>パスワード</FormLabel>
               <FormControl>
-                <Input type='password' placeholder='パスワード' {...field} />
+                <Input type='password' placeholder='パスワード' {...restField} />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -322,12 +327,12 @@ export const BasicInfomationForm = () => {
         <FormField
           name='employmentStatus'
           control={control}
-          render={({ field: { onChange, ...restField } }) => (
+          render={({ field: { value, ...restField } }) => (
             <RadioGroup
               {...restField}
               aria-label='就業状況'
               className='flex items-center space-x-2'
-              onValueChange={onChange}
+              onValueChange={(value) => setValue('employmentStatus', parseInt(value, 10))}
             >
               <RadioGroupItem value='1' id='employmentStatus1' />
               <Label htmlFor='employmentStatus1'>就業中</Label>
@@ -335,6 +340,7 @@ export const BasicInfomationForm = () => {
               <Label htmlFor='employmentStatus2'>離職中</Label>
               <RadioGroupItem value='3' id='employmentStatus3' />
               <Label htmlFor='employmentStatus3'>在学中</Label>
+              <FormMessage />
             </RadioGroup>
           )}
         />
