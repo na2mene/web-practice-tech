@@ -16,4 +16,17 @@ const getDaysInMonth = (year: string | null, month: string | null) => {
       : 31;
 };
 
-export { getDaysInMonth };
+const calcAcademicPeriodDate = (y: number, m: number, d: number) => {
+  let year = +y;
+  const month = +m;
+  const day = +d;
+
+  if (month < 4 || (month === 4 && day === 1)) {
+    year -= 1;
+  }
+
+  // YYYYMMDD
+  return year * 10000 + 400 + 1;
+};
+
+export { getDaysInMonth, calcAcademicPeriodDate };
