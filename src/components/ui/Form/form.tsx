@@ -38,7 +38,6 @@ const FormField = <
 };
 
 const useFormField = () => {
-  debugger;
   const fieldContext = React.useContext(FormFieldContext);
   const itemContext = React.useContext(FormItemContext);
   const { getFieldState, formState } = useFormContext();
@@ -50,9 +49,6 @@ const useFormField = () => {
   }
 
   const { id } = itemContext;
-
-  console.log(`fieldContext: ${JSON.stringify(fieldContext)}`);
-  console.log(`itemContext: ${JSON.stringify(itemContext)}`);
 
   return {
     id,
@@ -139,7 +135,6 @@ const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
-  debugger;
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message) : children;
 
