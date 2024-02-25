@@ -9,7 +9,7 @@ export const ApplyScreen = ({ params, searchParams }: Props) => {
   return (
     <>
       <h1>応募フォームです</h1>
-      <ApplyForm />
+      <ApplyForm id={params.id} />
     </>
   );
 };
