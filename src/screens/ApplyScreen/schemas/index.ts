@@ -33,8 +33,10 @@ const createBasicInformationBaseSchema = () =>
       required_error: '性別を選択してください',
     }),
 
-    // // TODO: 電話番号フォーマットチェック
-    // tel: z.string().min(1, { message: '電話番号を入力してください' }),
+    tel: z
+      .string()
+      .min(1, { message: '電話番号を入力してください' })
+      .regex(/^\d{10,11}$/, { message: '正しい電話番号を入力してください' }),
 
     // // TODO: 正しい郵便番号チェック
     // //       郵便番号が見つからないチェック（API）

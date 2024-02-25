@@ -258,7 +258,7 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      {/* <div>
+      <div>
         <FormField
           control={control}
           name='tel'
@@ -275,7 +275,7 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div>
+      {/* <div>
         <FormField
           control={control}
           name='postalCode'
