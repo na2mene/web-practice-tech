@@ -82,7 +82,7 @@ export const ApplyForm = ({ id }: Props) => {
       town: '',
       building: '',
       email: '',
-      // password: '',
+      password: '',
       // cityId: '',
       // employmentStatus: 0,
       // TODO: undefinedを初期値とすると、Requiredのエラーがうまく出現するが、空文字だとRequiredの判定をスルーしてしまう
