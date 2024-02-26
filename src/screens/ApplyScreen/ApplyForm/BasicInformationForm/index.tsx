@@ -451,28 +451,53 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      {/* <div>
+      <div>
         <FormField
-          name='employmentStatus'
           control={control}
-          render={({ field: { value, ...restField } }) => (
-            <RadioGroup
-              {...restField}
-              aria-label='就業状況'
-              className='flex items-center space-x-2'
-              onValueChange={(value) => setValue('employmentStatus', parseInt(value, 10))}
-            >
-              <RadioGroupItem value='1' id='employmentStatus1' />
-              <Label htmlFor='employmentStatus1'>就業中</Label>
-              <RadioGroupItem value='2' id='employmentStatus2' />
-              <Label htmlFor='employmentStatus2'>離職中</Label>
-              <RadioGroupItem value='3' id='employmentStatus3' />
-              <Label htmlFor='employmentStatus3'>在学中</Label>
+          name='employmentStatus'
+          render={({ field: { value, onChange, ...restField } }) => (
+            <FormItem className='space-y-3'>
+              <FormLabel>就業状況</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  {...restField}
+                  aria-label='就業状況'
+                  className='flex items-center space-x-2'
+                  onValueChange={onChange}
+                >
+                  <FormItem className='flex items-center space-x-3 space-y-0'>
+                    <FormControl>
+                      <RadioGroupItem value='1' id='on' />
+                    </FormControl>
+                    <FormLabel className='font-normal' htmlFor='on'>
+                      就業中
+                    </FormLabel>
+                  </FormItem>
+
+                  <FormItem className='flex items-center space-x-3 space-y-0'>
+                    <FormControl>
+                      <RadioGroupItem value='2' id='off' />
+                    </FormControl>
+                    <FormLabel className='font-normal' htmlFor='off'>
+                      離職中
+                    </FormLabel>
+                  </FormItem>
+
+                  <FormItem className='flex items-center space-x-3 space-y-0'>
+                    <FormControl>
+                      <RadioGroupItem value='3' id='student' />
+                    </FormControl>
+                    <FormLabel className='font-normal' htmlFor='student'>
+                      在学中
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
               <FormMessage />
-            </RadioGroup>
+            </FormItem>
           )}
         />
-      </div> */}
+      </div>
     </>
   );
 };
