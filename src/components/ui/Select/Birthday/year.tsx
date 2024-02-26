@@ -1,12 +1,11 @@
 import { useMemo, FC } from 'react';
 import { SelectContent, SelectItem } from '../select';
 
-type YearProps = {
-  startYear: number;
-  endYear: number;
-};
+export const Year: FC = () => {
+  const currentYear = new Date().getFullYear();
+  const startYear = currentYear - 17;
+  const endYear = 1900;
 
-export const Year: FC<YearProps> = ({ startYear, endYear }) => {
   const range = startYear - endYear + 1;
   const items = useMemo(
     () =>
