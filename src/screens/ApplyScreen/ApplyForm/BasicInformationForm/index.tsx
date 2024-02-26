@@ -9,7 +9,6 @@ import {
   FormMessage,
 } from '@/components/ui/Form/form';
 import { Input } from '@/components/ui/Input/input';
-import { Label } from '@/components/ui/Label/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
 import { Select, SelectTrigger, SelectValue, SelectContent } from '@/components/ui/Select/select';
 import { Year } from '@/components/ui/Select/Birthday/year';
@@ -120,6 +119,14 @@ export const BasicInfomationForm = () => {
         // setValue('cityId', cityId);
       }
     }
+  };
+
+  //
+  // TODO: カスタムバリデーションを任意のタイミングで実行する方法を模索したい
+  //
+  const handleEmailChange = (value: string) => {
+    setValue('email', value);
+    trigger('email');
   };
 
   return (
@@ -403,15 +410,22 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      {/* <div>
+      <div>
         <FormField
           control={control}
           name='email'
-          render={({ field }) => (
+          render={({ field: { onChange, ...restField } }) => (
             <FormItem>
               <FormLabel>メールアドレス</FormLabel>
               <FormControl>
-                <Input placeholder='メールアドレス' {...field} />
+                <Input
+                  placeholder='メールアドレス'
+                  {...restField}
+                  //
+                  // TODO: カスタムバリデーションを任意のタイミングで実行する方法を模索したい
+                  //
+                  onChange={(event) => handleEmailChange(event.target.value)}
+                />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -420,7 +434,7 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div>
+      {/* <div>
         <FormField
           control={control}
           name='password'
