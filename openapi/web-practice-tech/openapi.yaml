@@ -13,6 +13,8 @@ tags:
     name: users
   - description: 国土交通省外部API
     name: webland
+  - description: 郵便番号外部API
+    name: zipcloud
 paths:
   /posts:
     get:
@@ -274,6 +276,29 @@ paths:
       summary: 都道府県に紐づく市区町村の取得
       tags:
         - webland
+  /api/search:
+    get:
+      description: |-
+        https://zipcloud.ibsnet.co.jp/api/search のAPIを使って、
+        都道府県と市区町村のデータを取得する
+      operationId: getZipcodeOrList
+      parameters:
+        - in: query
+          name: zipcode
+          required: true
+          schema:
+            example: '2610011'
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getZipcodeOrList_200_response'
+          description: Successful response
+      summary: 郵便番号から、都道府県と市区町村を返却する.
+      tags:
+        - zipcloud
 components:
   schemas:
     GetPostsResponseBody:
@@ -514,6 +539,61 @@ components:
         - data
         - status
       type: object
+    GetZipcodeResponseBody:
+      properties: {}
+      required:
+        - message
+        - results
+        - status
+      type: object
+    GetZipcodeListResponseBody:
+      properties:
+        status:
+          type: string
+        message:
+          nullable: true
+          type: string
+        results:
+          items:
+            $ref: '#/components/schemas/zipcode-result'
+          type: array
+      required:
+        - message
+        - results
+        - status
+      type: object
+    zipcode-result:
+      properties:
+        zipcode:
+          type: string
+        prefcode:
+          type: string
+        address1:
+          type: string
+        address2:
+          type: string
+        address3:
+          type: string
+        kana1:
+          type: string
+        kana2:
+          type: string
+        kana3:
+          type: string
+      required:
+        - address1
+        - address2
+        - address3
+        - kana1
+        - kana2
+        - kana3
+        - prefcode
+        - zipcode
+      type: object
+    getZipcodeOrList_200_response:
+      oneOf:
+        - $ref: '#/components/schemas/GetZipcodeResponseBody'
+        - $ref: '#/components/schemas/GetZipcodeListResponseBody'
     GetPostCommentsResponseBody_inner:
       example:
         name: name

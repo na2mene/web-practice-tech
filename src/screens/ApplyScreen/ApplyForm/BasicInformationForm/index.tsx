@@ -18,6 +18,7 @@ import { Day } from '@/components/ui/Select/Birthday/day';
 import { getDaysInMonth } from '@/utils/days';
 import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
+import { getZipcodeOrList } from '@/__generated_REST__/zipcloud/zipcloud';
 
 export const BasicInfomationForm = () => {
   const { control, watch, setValue, trigger } = useFormContext<BasicInformationSchemaType>();
@@ -34,7 +35,11 @@ export const BasicInfomationForm = () => {
   const selectedMonth = watch('month');
   const selectedDay = watch('day');
 
-  // const selectedPrefecture = watch('prefectureId');
+  const selectedPrefecture = watch('prefectureId');
+  //
+  // TODO: 外部APIの都合上、自動反映を後回し（watchしているのでリストは作成される）
+  //
+  // const selectedCity = watch('cityId');
 
   //
   // NOTE: 選択された年をフォームの 'year' フィールドに設定する
@@ -85,6 +90,36 @@ export const BasicInfomationForm = () => {
     //
     // @ts-ignore
     trigger('birthday');
+  };
+
+  const handlePostalCodeChange = async (value: string) => {
+    setValue('postalCode', value);
+
+    if (value.length === 7) {
+      //
+      // TODO: refineで定義する必要があるか問題
+      //       onChange側でAPI呼ぶなら、同じことするだけなので無駄な気もする
+      //       そもそもonChange時にAPI通信した結果の反映がこのやり方で
+      //       正しい場合、refineの定義どうするかを考える
+      //
+      trigger('postalCode');
+      const zipcodeData = await getZipcodeOrList(
+        { zipcode: value },
+        { baseURL: 'https://zipcloud.ibsnet.co.jp' },
+      );
+      const {
+        status,
+        data: { results: data },
+      } = zipcodeData;
+      if (status === 200 && data !== null) {
+        setValue('prefectureId', data[0].prefcode);
+        setValue('town', data[0].address3);
+        //
+        // TODO: 外部APIの都合上、自動反映を後回し（watchしているのでリストは作成される）
+        //
+        // setValue('cityId', cityId);
+      }
+    }
   };
 
   return (
@@ -275,15 +310,20 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      {/* <div>
+      <div>
         <FormField
           control={control}
           name='postalCode'
-          render={({ field }) => (
+          render={({ field: { onChange, ...restField } }) => (
             <FormItem>
               <FormLabel>郵便番号</FormLabel>
               <FormControl>
-                <Input className='w-[180px]' placeholder='2610011' {...field} />
+                <Input
+                  className='w-[180px]'
+                  placeholder='2610011'
+                  {...restField}
+                  onChange={(event) => handlePostalCodeChange(event.target.value)}
+                />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -317,6 +357,9 @@ export const BasicInfomationForm = () => {
                   <SelectValue placeholder='市区町村' />
                 </SelectTrigger>
                 {selectedPrefecture ? (
+                  //
+                  // TODO: 外部APIの都合上、自動反映を後回し（watchしているのでリストは作成される）
+                  //
                   <CityWrapper prefectureCode={selectedPrefecture} />
                 ) : (
                   <SelectContent />
@@ -360,7 +403,7 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div>
+      {/* <div>
         <FormField
           control={control}
           name='email'

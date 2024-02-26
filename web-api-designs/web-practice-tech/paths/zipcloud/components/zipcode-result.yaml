@@ -1,0 +1,26 @@
+required:
+  - zipcode
+  - prefcode
+  - address1
+  - address2
+  - address3
+  - kana1
+  - kana2
+  - kana3
+properties:
+  zipcode:
+    type: string
+  prefcode:
+    type: string
+  address1:
+    type: string
+  address2:
+    type: string
+  address3:
+    type: string
+  kana1:
+    type: string
+  kana2:
+    type: string
+  kana3:
+    type: string
