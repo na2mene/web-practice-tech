@@ -15,6 +15,8 @@ tags:
     description: ユーザ
   - name: webland
     description: 国土交通省外部API
+  - name: zipcloud
+    description: 郵便番号外部API
 
 paths:
   /posts:
@@ -34,3 +36,5 @@ paths:
 ## 外部API
   /webland/api/CitySearch:
     $ref: ./paths/webland/webland__api__CitySearch.yaml
+  /api/search:
+    $ref: ./paths/zipcloud/zipcloud__api__search.yaml

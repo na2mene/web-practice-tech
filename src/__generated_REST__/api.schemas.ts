@@ -5,6 +5,10 @@
  * Web Practice Tech API
  * OpenAPI spec version: 0.0.1
  */
+export type GetZipcodeOrListParams = {
+  zipcode: string;
+};
+
 export type GetCityListParams = {
   area: string;
 };
@@ -59,6 +63,29 @@ export interface GetPostCommentsResponseBodyInner {
   name: string;
   postId: number;
 }
+
+export interface ZipcodeResult {
+  address1: string;
+  address2: string;
+  address3: string;
+  kana1: string;
+  kana2: string;
+  kana3: string;
+  prefcode: string;
+  zipcode: string;
+}
+
+export interface GetZipcodeListResponseBody {
+  message: string | null;
+  results: ZipcodeResult[];
+  status: string;
+}
+
+export interface GetZipcodeResponseBody {
+  [key: string]: any;
+}
+
+export type GetZipcodeOrList200Response = GetZipcodeResponseBody | GetZipcodeListResponseBody;
 
 export interface GetCityListResponseBody {
   data: GetCityListResponseBodyDataInner[];

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { calcAcademicPeriodDate } from '@/utils/days';
+import { getZipcodeOrList } from '@/__generated_REST__/zipcloud/zipcloud';
 
 const createBasicInformationBaseSchema = () =>
   z.object({
@@ -38,13 +39,19 @@ const createBasicInformationBaseSchema = () =>
       .min(1, { message: '電話番号を入力してください' })
       .regex(/^\d{10,11}$/, { message: '正しい電話番号を入力してください' }),
 
-    // // TODO: 正しい郵便番号チェック
-    // //       郵便番号が見つからないチェック（API）
-    // postalCode: z.string(),
-    // prefectureId: z.string().min(1, { message: '都道府県を選択してください' }),
-    // cityId: z.string().min(1, { message: '市区町村を選択してください' }),
-    // town: z.string().max(100, { message: '町名・番地は100文字以内で入力してください' }),
-    // building: z.string().max(100, { message: '建物名は100文字以内で入力してください' }),
+    postalCode: z
+      .string()
+      .max(7, { message: '正しい郵便番号を入力してください' })
+      .regex(/^\d{7}$/, { message: '正しい郵便番号を入力してください' })
+      //
+      // TODO: 必須ではないが、入力するならバリデーションを発火させたい場合の書き方？
+      // @see: https://zenn.dev/kaz_z/articles/how-to-use-zod#%E5%85%A5%E5%8A%9B%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88%E3%81%AF%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%8C%E5%BF%85%E8%A6%81%E3%81%A0%E3%81%91%E3%81%A9%E3%80%81%E7%A9%BA%E3%81%AE%E3%81%BE%E3%81%BE%E3%81%A7%E3%82%82%E3%81%84%E3%81%84
+      //
+      .or(z.literal('')),
+    prefectureId: z.string().min(1, { message: '都道府県を選択してください' }),
+    cityId: z.string().min(1, { message: '市区町村を選択してください' }),
+    town: z.string().max(100, { message: '町名・番地は100文字以内で入力してください' }).optional(),
+    building: z.string().max(100, { message: '建物名は100文字以内で入力してください' }).optional(),
 
     // // TODO: メールアドレスフォーマットチェック
     // //       登録済みかどうかチェック
@@ -132,8 +139,8 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
   // TODO: superRefineもrefineも、onBlurの挙動ではなくonSubmitで発動するっぽい
   //       onBlurに設定しても意味ないので、手動で発火させる必要があるかもしれない
   //
-  schema.superRefine((args, ctx) => {
-    const { year, month, day } = args;
+  schema.superRefine(async (args, ctx) => {
+    const { year, month, day, postalCode } = args;
 
     //
     // NOTE: 3項目での必須チェック
@@ -171,6 +178,31 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
           code: z.ZodIssueCode.invalid_date,
           message: '応募条件を満たす年齢に達していません',
           path: ['birthday'],
+        });
+      }
+    }
+
+    //
+    // NOTE: 郵便番号チェック
+    //
+    if (postalCode.length === 7) {
+      //
+      // TODO: UI側のonChangeで賄えそうなので、ここで定義する必要があるかは、
+      //       要検討。いまだと二重でAPI呼ばれる感じの実装
+      //
+      const { status } = await getZipcodeOrList(
+        {
+          zipcode: postalCode,
+        },
+        {
+          baseURL: 'https://zipcloud.ibsnet.co.jp',
+        },
+      );
+      if (status !== 200) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: '正しい郵便番号を入力してください',
+          path: ['postalCode'],
         });
       }
     }

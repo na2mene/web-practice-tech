@@ -78,10 +78,10 @@ export const ApplyForm = ({ id }: Props) => {
       //       これしかないと思っているので、明示的に設定
       gender: undefined,
       tel: '',
-      // town: '',
-      // building: '',
+      postalCode: '',
+      town: '',
+      building: '',
       // email: '',
-      // postalCode: '',
       // password: '',
       // cityId: '',
       // employmentStatus: 0,

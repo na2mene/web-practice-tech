@@ -1,0 +1,52 @@
+get:
+  summary: 郵便番号から、都道府県と市区町村を返却する.
+  description: |-
+    https://zipcloud.ibsnet.co.jp/api/search のAPIを使って、
+    都道府県と市区町村のデータを取得する
+  tags:
+    - zipcloud
+  parameters:
+  - name: zipcode
+    in: query
+    required: true
+    schema:
+      type: string
+      example: 2610011
+  operationId: getZipcodeOrList
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/GetZipcodeResponseBody"
+              - $ref: "#/components/schemas/GetZipcodeListResponseBody"
+
+components:
+  schemas:
+    GetZipcodeResponseBody:
+      type: object
+      required:
+        - status
+        - message
+        - results
+      properties:
+        $ref: './components/zipcode-result.yaml'
+
+    GetZipcodeListResponseBody:
+      type: object
+      required:
+        - status
+        - message
+        - results
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: './components/zipcode-result.yaml'
