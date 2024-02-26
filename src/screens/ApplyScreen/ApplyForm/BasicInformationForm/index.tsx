@@ -434,15 +434,15 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      {/* <div>
+      <div>
         <FormField
           control={control}
           name='password'
-          render={({ field: { ref, ...restField } }) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>パスワード</FormLabel>
               <FormControl>
-                <Input type='password' placeholder='パスワード' {...restField} />
+                <Input type='password' placeholder='パスワード' {...field} />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>
               <FormMessage />
@@ -451,7 +451,7 @@ export const BasicInfomationForm = () => {
         />
       </div>
 
-      <div>
+      {/* <div>
         <FormField
           name='employmentStatus'
           control={control}

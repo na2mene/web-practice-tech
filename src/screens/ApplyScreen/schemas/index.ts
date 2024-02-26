@@ -61,7 +61,10 @@ const createBasicInformationBaseSchema = () =>
         message: '正しいメールアドレスを入力してください',
       }),
 
-    // password: z.string().min(8, { message: '8文字以上のパスワードを入力してください' }),
+    password: z
+      .string()
+      .min(1, { message: 'パスワードを入力してください' })
+      .min(8, { message: '8文字以上のパスワードを入力してください' }),
     // employmentStatus: z.number().min(1, { message: '就業状況を選択してください' }),
   });
 // .required({
