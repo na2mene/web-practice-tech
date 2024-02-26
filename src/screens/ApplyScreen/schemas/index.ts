@@ -53,12 +53,13 @@ const createBasicInformationBaseSchema = () =>
     town: z.string().max(100, { message: '町名・番地は100文字以内で入力してください' }).optional(),
     building: z.string().max(100, { message: '建物名は100文字以内で入力してください' }).optional(),
 
-    // // TODO: メールアドレスフォーマットチェック
-    // //       登録済みかどうかチェック
-    // email: z
-    //   .string()
-    //   .min(1, { message: 'メールアドレスを入力してください' })
-    //   .max(100, { message: '100文字以内で入力してください' }),
+    email: z
+      .string()
+      .min(1, { message: 'メールアドレスを入力してください' })
+      .max(100, { message: '100文字以内で入力してください' })
+      .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
+        message: '正しいメールアドレスを入力してください',
+      }),
 
     // password: z.string().min(8, { message: '8文字以上のパスワードを入力してください' }),
     // employmentStatus: z.number().min(1, { message: '就業状況を選択してください' }),
@@ -140,7 +141,7 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
   //       onBlurに設定しても意味ないので、手動で発火させる必要があるかもしれない
   //
   schema.superRefine(async (args, ctx) => {
-    const { year, month, day, postalCode } = args;
+    const { year, month, day, postalCode, prefectureId, cityId, email } = args;
 
     //
     // NOTE: 3項目での必須チェック
@@ -155,9 +156,9 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
         //       その上で、z.NEVER;をreturnしてあげると、後続が実行されずに、
         //       ここのエラーで終わる
         // @see: https://zod.dev/?id=abort-early
-        fatal: true,
+        // fatal: true,
       });
-      return z.NEVER;
+      // return z.NEVER;
     }
 
     //
@@ -184,8 +185,10 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
 
     //
     // NOTE: 郵便番号チェック
+    // TODO: 7桁だけだと、大量に呼ばれてしまうので、他の条件も組み合わせたい
+    //       例として、都道府県 or 市区町村が選択されていない時に実施するなど
     //
-    if (postalCode.length === 7) {
+    if (postalCode.length === 7 && (!prefectureId || !cityId)) {
       //
       // TODO: UI側のonChangeで賄えそうなので、ここで定義する必要があるかは、
       //       要検討。いまだと二重でAPI呼ばれる感じの実装
@@ -206,6 +209,20 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
         });
       }
     }
+
+    //
+    // NOTE: メールアドレス存在チェック
+    // TODO: カスタムバリデーションを任意のタイミングで実行する方法を模索したい
+    //
+    // ↓イメージで、実装してない
+    // if (特定の条件で発火させる) {
+    // const data = await isExistEmail();
+    // console.log(`メールアドレス存在チェック: ${email}`);
+    // ctx.addIssue({
+    //   code: z.ZodIssueCode.custom,
+    //   message: '登録済みのメールアドレスです',
+    //   path: ['email'],
+    // });
   });
 
 //

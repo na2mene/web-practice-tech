@@ -81,7 +81,7 @@ export const ApplyForm = ({ id }: Props) => {
       postalCode: '',
       town: '',
       building: '',
-      // email: '',
+      email: '',
       // password: '',
       // cityId: '',
       // employmentStatus: 0,
