@@ -60,12 +60,39 @@ const createBasicInformationBaseSchema = () =>
       .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
         message: '正しいメールアドレスを入力してください',
       }),
-
     password: z
       .string()
       .min(1, { message: 'パスワードを入力してください' })
       .min(8, { message: '8文字以上のパスワードを入力してください' }),
-    // employmentStatus: z.number().min(1, { message: '就業状況を選択してください' }),
+
+    //
+    //  TODO: 就業状況選択の必須チェック
+    //        numberで定義した場合で色々試したけど、
+    //        refine系で定義しないとできない感じなので、
+    //        定義を変更して対応
+    //        本質的ではないので、やり方調べたい
+    //
+    employmentStatus: z.enum(['1', '2', '3'], {
+      required_error: '就業状況を選択してください',
+    }),
+    // employmentStatus: z.union([
+    //   z.undefined(),
+    //   z.string().transform((val) => (val === '' ? undefined : Number(val))),
+    // ]),
+    // employmentStatus: z.preprocess(
+    //   (value) => {
+    //     if (value === undefined) {
+    //       return NaN;
+    //     }
+    //     return Number(value);
+    //   },
+    //   z.number().min(1, { message: '就業状況を選択してください' }),
+    // ),
+    // employmentStatus: z.coerce
+    //   .number()
+    //   .min(1, { message: '就業状況を選択してください' })
+    //   .optional(),
+    // employmentStatus: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
   });
 // .required({
 //   familyName: true,
@@ -144,7 +171,7 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
   //       onBlurに設定しても意味ないので、手動で発火させる必要があるかもしれない
   //
   schema.superRefine(async (args, ctx) => {
-    const { year, month, day, postalCode, prefectureId, cityId, email } = args;
+    const { year, month, day, postalCode, prefectureId, cityId, employmentStatus } = args;
 
     //
     // NOTE: 3項目での必須チェック
@@ -226,6 +253,18 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
     //   message: '登録済みのメールアドレスです',
     //   path: ['email'],
     // });
+
+    //
+    //  TODO: 就業状況選択の必須チェック
+    //        undefinedを許容したい関係で、ここで実装になってしまっている
+    //
+    // if (employmentStatus === undefined) {
+    //   ctx.addIssue({
+    //     code: z.ZodIssueCode.custom,
+    //     message: '就業状況を選択してください',
+    //     path: ['employmentStatus'],
+    //   });
+    // }
   });
 
 //
@@ -300,6 +339,8 @@ type Props = {
 //       テクいフォームだと、だいたいこの構造になるか
 //
 export const createSchema = (apiData: Props) => {
+  let schema = null;
+
   //
   // NOTE: STEP1. フォームをコンポーネントごとに分割した単位でベースのスキーマを作成する
   //              ベースのスキーマとは、可変ではない項目を指す.
@@ -329,8 +370,8 @@ export const createSchema = (apiData: Props) => {
   //              例えば、相関チェック.
   //              生年月日が3項目である時、相関的にチェックが必要な場合を指す
   //
-  const schema = attachBasicInformationValidation(mergedSchema, apiData.jobCategoryData.min_age);
-  // attachApplyInformationValidation(schema);
+  schema = attachBasicInformationValidation(mergedSchema, apiData.jobCategoryData.min_age);
+  // schema = attachApplyInformationValidation(schema);
 
   return schema;
 };

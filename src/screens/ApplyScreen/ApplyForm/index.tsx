@@ -79,12 +79,13 @@ export const ApplyForm = ({ id }: Props) => {
       gender: undefined,
       tel: '',
       postalCode: '',
+      prefectureId: '',
+      cityId: '',
       town: '',
       building: '',
       email: '',
       password: '',
-      // cityId: '',
-      // employmentStatus: 0,
+      employmentStatus: undefined,
       // TODO: undefinedを初期値とすると、Requiredのエラーがうまく出現するが、空文字だとRequiredの判定をスルーしてしまう
       //       Warning: A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components
       // MemberCareer: undefined,
