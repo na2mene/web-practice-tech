@@ -4,7 +4,13 @@ import { getDaysInMonth } from '@/utils/days';
 import { getZipcodeOrList } from '@/__generated_REST__/zipcloud/zipcloud';
 
 export const useBasicInformaionForm = () => {
-  const { control, watch, setValue, trigger } = useFormContext<BasicInformationSchemaType>();
+  const {
+    control,
+    watch,
+    setValue,
+    trigger,
+    formState: { errors },
+  } = useFormContext<BasicInformationSchemaType>();
 
   const selectedYear = watch('year');
   const selectedMonth = watch('month');
@@ -33,7 +39,7 @@ export const useBasicInformaionForm = () => {
     //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
     //
     // @ts-ignore
-    trigger('birthday');
+    // trigger('birthday');
   };
 
   //
@@ -53,7 +59,7 @@ export const useBasicInformaionForm = () => {
     //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
     //
     // @ts-ignore
-    trigger('birthday');
+    // trigger('birthday');
   };
 
   const handleDayChange = (value: string) => {
@@ -64,7 +70,7 @@ export const useBasicInformaionForm = () => {
     //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
     //
     // @ts-ignore
-    trigger('birthday');
+    // trigger('birthday');
   };
 
   const handlePostalCodeChange = async (value: string) => {
@@ -107,6 +113,7 @@ export const useBasicInformaionForm = () => {
 
   return {
     control,
+    errors,
 
     selectedYear,
     selectedMonth,
