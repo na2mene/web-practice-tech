@@ -19,6 +19,7 @@ import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInf
 export const BasicInfomationForm = () => {
   const {
     control,
+    errors,
     selectedYear,
     selectedMonth,
     selectedPrefecture,
@@ -105,7 +106,7 @@ export const BasicInfomationForm = () => {
                   <SelectValue placeholder='西暦' />
                 </SelectTrigger>
                 <Year />
-                <FormMessage />
+                {/* <FormMessage /> */}
               </Select>
             )}
           />
@@ -119,7 +120,7 @@ export const BasicInfomationForm = () => {
                   <SelectValue placeholder='月' />
                 </SelectTrigger>
                 <Month />
-                <FormMessage />
+                {/* <FormMessage /> */}
               </Select>
             )}
           />
@@ -142,13 +143,13 @@ export const BasicInfomationForm = () => {
                     <SelectValue placeholder='日' />
                   </SelectTrigger>
                   <Day year={selectedYear} month={selectedMonth} />
-                  <FormMessage />
+                  {/* <FormMessage /> */}
                 </Select>
               );
             }}
           />
         </div>
-
+        {/* 
         <FormField
           //
           // TODO: カスタムバリデーションのエラーメッセージを
@@ -156,7 +157,14 @@ export const BasicInfomationForm = () => {
           // @ts-ignore
           name='birthday'
           render={() => <FormMessage />}
-        />
+        /> */}
+        {errors.year?.message ? (
+          <FormField name='year' render={() => <FormMessage />} />
+        ) : errors.month?.message ? (
+          <FormField name='month' render={() => <FormMessage />} />
+        ) : (
+          errors.day?.message && <FormField name='day' render={() => <FormMessage />} />
+        )}
       </div>
 
       <div>

@@ -26,9 +26,9 @@ const createBasicInformationBaseSchema = () =>
       .max(50, { message: '名前（ふりがな）は50文字以内で入力してください' })
       .regex(/^(?:[ぁ-ゞ]+)*$/, { message: '名前（ふりがな）はひらがなで入力してください' }),
 
-    year: z.string(),
-    month: z.string(),
-    day: z.string(),
+    year: z.string().min(1, { message: '生年月日をすべて選択してください' }),
+    month: z.string().min(1, { message: '生年月日をすべて選択してください' }),
+    day: z.string().min(1, { message: '生年月日をすべて選択してください' }),
 
     gender: z.enum(['female', 'male'], {
       required_error: '性別を選択してください',
