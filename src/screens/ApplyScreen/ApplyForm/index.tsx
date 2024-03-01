@@ -68,11 +68,11 @@ export const ApplyForm = ({ id }: Props) => {
       // TODO: 初期値に文字列があるので、Zodのシンプルな必須チェックには引っかからない
       //       が、相関チェックで1つでも空だった場合、生年月日を選択してくださいと出力するので、
       //       そこでカバーする
-      year: '',
-      month: '',
-      // NOTE: RadixUI側のbugっぽく、回避策が、空文字をdefaultValuesに使うようなことが書いてあった
-      // @see: https://github.com/radix-ui/primitives/issues/1808
-      day: '',
+      birthday: {
+        year: '',
+        month: '',
+        day: '',
+      },
       //
       // TODO: 初期値がない場合は、これでいいのか？
       //       これしかないと思っているので、明示的に設定

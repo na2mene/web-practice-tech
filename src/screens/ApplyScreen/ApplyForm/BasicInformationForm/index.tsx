@@ -99,35 +99,33 @@ export const BasicInfomationForm = () => {
         <div className='flex flex-row gap-x-4'>
           <FormField
             control={control}
-            name='year'
+            name='birthday.year'
             render={({ field: { ref, onChange, ...restField } }) => (
               <Select {...restField} onValueChange={handleYearChange}>
                 <SelectTrigger ref={ref} className='w-[180px]'>
                   <SelectValue placeholder='西暦' />
                 </SelectTrigger>
                 <Year />
-                {/* <FormMessage /> */}
               </Select>
             )}
           />
 
           <FormField
             control={control}
-            name='month'
+            name='birthday.month'
             render={({ field: { ref, onChange, ...restField } }) => (
               <Select {...restField} onValueChange={(value) => handleMonthChange(value)}>
                 <SelectTrigger ref={ref} className='w-[180px]'>
                   <SelectValue placeholder='月' />
                 </SelectTrigger>
                 <Month />
-                {/* <FormMessage /> */}
               </Select>
             )}
           />
 
           <FormField
             control={control}
-            name='day'
+            name='birthday.day'
             //
             // NOTE: shadcnuiが作るSelectは、onValueChangeのPropsで待っているので、onChange単体を取り出して、
             //       関数をそのまま渡してあげている
@@ -143,27 +141,23 @@ export const BasicInfomationForm = () => {
                     <SelectValue placeholder='日' />
                   </SelectTrigger>
                   <Day year={selectedYear} month={selectedMonth} />
-                  {/* <FormMessage /> */}
                 </Select>
               );
             }}
           />
         </div>
-        {/* 
-        <FormField
-          //
-          // TODO: カスタムバリデーションのエラーメッセージを
-          //       無理やり表現した結果だが、これでいいのかは、わからない
-          // @ts-ignore
-          name='birthday'
-          render={() => <FormMessage />}
-        /> */}
-        {errors.year?.message ? (
-          <FormField name='year' render={() => <FormMessage />} />
-        ) : errors.month?.message ? (
-          <FormField name='month' render={() => <FormMessage />} />
+
+        {errors.birthday?.year?.message ? (
+          <FormField name='birthday.year' render={() => <FormMessage />} />
+        ) : errors.birthday?.month?.message ? (
+          <FormField name='birthday.month' render={() => <FormMessage />} />
+        ) : errors.birthday?.day?.message ? (
+          <FormField name='birthday.day' render={() => <FormMessage />} />
         ) : (
-          errors.day?.message && <FormField name='day' render={() => <FormMessage />} />
+          // @ts-ignore
+          errors.birthday?.ageIneligible?.message && (
+            <FormField name='birthday.ageIneligible' render={() => <FormMessage />} />
+          )
         )}
       </div>
 
