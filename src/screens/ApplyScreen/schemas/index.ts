@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { calcAcademicPeriodDate } from '@/utils/days';
 import { getZipcodeOrList } from '@/__generated_REST__/zipcloud/zipcloud';
 
-const createBasicInformationBaseSchema = () =>
+const createBasicInformationBaseSchema = (minAge: number = 0) =>
   z.object({
     familyName: z
       .string()
@@ -26,9 +26,38 @@ const createBasicInformationBaseSchema = () =>
       .max(50, { message: '名前（ふりがな）は50文字以内で入力してください' })
       .regex(/^(?:[ぁ-ゞ]+)*$/, { message: '名前（ふりがな）はひらがなで入力してください' }),
 
-    year: z.string().min(1, { message: '生年月日をすべて選択してください' }),
-    month: z.string().min(1, { message: '生年月日をすべて選択してください' }),
-    day: z.string().min(1, { message: '生年月日をすべて選択してください' }),
+    birthday: z
+      .object({
+        year: z.string().min(1, { message: '生年月日をすべて選択してください' }),
+        month: z.string().min(1, { message: '生年月日をすべて選択してください' }),
+        day: z.string().min(1, { message: '生年月日をすべて選択してください' }),
+      })
+      .refine(
+        ({ year, month, day }) => {
+          //
+          // NOTE: 必須応募資格の年齢チェック
+          //
+          if (minAge !== 0) {
+            const birthdayPeriod = calcAcademicPeriodDate(+year, +month, +day);
+            const now = new Date();
+            const jobPeriod = calcAcademicPeriodDate(
+              now.getFullYear() + 1 - (minAge + 1),
+              now.getMonth() + 1,
+              now.getDate(),
+            );
+            // NOTE: チェック用途テスト
+            if (birthdayPeriod <= 20230401) {
+              // if (birthdayPeriod <= jobPeriod) {
+              return false;
+            }
+          }
+          return true;
+        },
+        {
+          message: '応募条件を満たす年齢に達していません',
+          path: ['ageIneligible'],
+        },
+      ),
 
     gender: z.enum(['female', 'male'], {
       required_error: '性別を選択してください',
@@ -165,53 +194,13 @@ const mergeSchema = (
 
 export type ApplyFormSchemaType = z.infer<ReturnType<typeof mergeSchema>>;
 
-const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>, minAge: number) =>
+const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>) =>
   //
   // TODO: superRefineもrefineも、onBlurの挙動ではなくonSubmitで発動するっぽい
   //       onBlurに設定しても意味ないので、手動で発火させる必要があるかもしれない
   //
   schema.superRefine(async (args, ctx) => {
-    const { year, month, day, postalCode, prefectureId, cityId, employmentStatus } = args;
-
-    //
-    // NOTE: 3項目での必須チェック
-    //
-    if (year === '' || month === '' || day === '') {
-      ctx.addIssue({
-        code: z.ZodIssueCode.invalid_date,
-        message: '生年月日をすべて選択してください',
-        path: ['birthday'],
-        //
-        // NOTE: ここのエラーでコケた時に、後続のバリデーションを動作させたくない時に設定する
-        //       その上で、z.NEVER;をreturnしてあげると、後続が実行されずに、
-        //       ここのエラーで終わる
-        // @see: https://zod.dev/?id=abort-early
-        // fatal: true,
-      });
-      // return z.NEVER;
-    }
-
-    //
-    // NOTE: 必須応募資格の年齢チェック
-    //
-    if (minAge !== 0) {
-      const birthdayPeriod = calcAcademicPeriodDate(+year, +month, +day);
-      const now = new Date();
-      const jobPeriod = calcAcademicPeriodDate(
-        now.getFullYear() + 1 - (minAge + 1),
-        now.getMonth() + 1,
-        now.getDate(),
-      );
-      // NOTE: チェック用途テスト
-      // if (birthdayPeriod <= 20230401) {
-      if (birthdayPeriod <= jobPeriod) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.invalid_date,
-          message: '応募条件を満たす年齢に達していません',
-          path: ['birthday'],
-        });
-      }
-    }
+    const { postalCode, prefectureId, cityId, employmentStatus } = args;
 
     //
     // NOTE: 郵便番号チェック
@@ -267,46 +256,6 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
     // }
   });
 
-//
-// NOTE: superRefineのほうが柔軟的、だがこちらのほうがシンプル
-//
-// schema
-//   .refine(
-//     ({ year, month, day }) => {
-//       if (year === '' || month === '' || day === '') {
-//         return false;
-//       }
-//       return true;
-//     },
-//     {
-//       message: '生年月日をすべて選択してください',
-//       path: ['birthday'],
-//     },
-//   )
-//   .refine(
-//     ({ year, month, day }) => {
-//       if (minAge !== 0) {
-//         const birthdayPeriod = calcAcademicPeriodDate(+year, +month, +day);
-//         const now = new Date();
-//         const jobPeriod = calcAcademicPeriodDate(
-//           now.getFullYear() + 1 - (minAge + 1),
-//           now.getMonth() + 1,
-//           now.getDate(),
-//         );
-//         // NOTE: チェック用途テスト
-//         if (birthdayPeriod <= 20230401) {
-//           // if (birthdayPeriod <= jobPeriod) {
-//           return false;
-//         }
-//       }
-//       return true;
-//     },
-//     {
-//       message: '応募条件を満たす年齢に達していません',
-//       path: ['birthday'],
-//     },
-//   );
-
 // const attachApplyInformationValidation = (schema: ReturnType<typeof mergeSchema>) =>
 //   schema.refine(
 //     ({ qualifications }) => {
@@ -319,7 +268,7 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
 //     },
 //     {
 //       message: '生年月日をすべて選択してください',
-//       path: ['birthDay'],
+//       path: ['birthday'],
 //     },
 //   );
 
@@ -345,7 +294,9 @@ export const createSchema = (apiData: Props) => {
   // NOTE: STEP1. フォームをコンポーネントごとに分割した単位でベースのスキーマを作成する
   //              ベースのスキーマとは、可変ではない項目を指す.
   //
-  const basicInformationBaseSchema = createBasicInformationBaseSchema();
+  const basicInformationBaseSchema = createBasicInformationBaseSchema(
+    apiData.jobCategoryData.min_age,
+  );
   const applyInformationBaseSchema = createApplyInformationBaseSchema();
 
   //
@@ -370,7 +321,7 @@ export const createSchema = (apiData: Props) => {
   //              例えば、相関チェック.
   //              生年月日が3項目である時、相関的にチェックが必要な場合を指す
   //
-  schema = attachBasicInformationValidation(mergedSchema, apiData.jobCategoryData.min_age);
+  schema = attachBasicInformationValidation(mergedSchema);
   // schema = attachApplyInformationValidation(schema);
 
   return schema;

@@ -12,9 +12,9 @@ export const useBasicInformaionForm = () => {
     formState: { errors },
   } = useFormContext<BasicInformationSchemaType>();
 
-  const selectedYear = watch('year');
-  const selectedMonth = watch('month');
-  const selectedDay = watch('day');
+  const selectedYear = watch('birthday.year');
+  const selectedMonth = watch('birthday.month');
+  const selectedDay = watch('birthday.day');
 
   const selectedPrefecture = watch('prefectureId');
   //
@@ -29,17 +29,10 @@ export const useBasicInformaionForm = () => {
   const handleYearChange = (value: string) => {
     // 現在選択されている `日` が、選択されたYear, Monthでの日に存在しない場合
     if (getDaysInMonth(value, selectedMonth) < Number(selectedDay)) {
-      setValue('day', '');
+      setValue('birthday.day', '');
     }
-    setValue('year', value);
-
-    //
-    // TODO: birthdayというキーでエラーを管理しているので、
-    //       生年月日のonChangeで毎回手動でバリデーションチェックする
-    //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
-    //
-    // @ts-ignore
-    // trigger('birthday');
+    setValue('birthday.year', value);
+    trigger('birthday');
   };
 
   //
@@ -49,28 +42,15 @@ export const useBasicInformaionForm = () => {
   const handleMonthChange = (value: string) => {
     // 現在選択されている `日` が、選択されたYear, Monthでの日に存在しない場合
     if (getDaysInMonth(selectedYear, value) < Number(selectedDay)) {
-      setValue('day', '');
+      setValue('birthday.day', '');
     }
-    setValue('month', value);
-
-    //
-    // TODO: birthdayというキーでエラーを管理しているので、
-    //       生年月日のonChangeで毎回手動でバリデーションチェックする
-    //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
-    //
-    // @ts-ignore
-    // trigger('birthday');
+    setValue('birthday.month', value);
+    trigger('birthday');
   };
 
   const handleDayChange = (value: string) => {
-    setValue('day', value);
-    //
-    // TODO: birthdayというキーでエラーを管理しているので、
-    //       生年月日のonChangeで毎回手動でバリデーションチェックする
-    //       refineのpathがbirthdayなので、こういう書き方しかできないかもしれない
-    //
-    // @ts-ignore
-    // trigger('birthday');
+    setValue('birthday.day', value);
+    trigger('birthday');
   };
 
   const handlePostalCodeChange = async (value: string) => {
