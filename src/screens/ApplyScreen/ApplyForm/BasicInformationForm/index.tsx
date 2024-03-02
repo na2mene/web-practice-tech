@@ -101,12 +101,17 @@ export const BasicInfomationForm = () => {
             control={control}
             name='birthday.year'
             render={({ field: { ref, onChange, ...restField } }) => (
-              <Select {...restField} onValueChange={handleYearChange}>
-                <SelectTrigger ref={ref} className='w-[180px]'>
-                  <SelectValue placeholder='西暦' />
-                </SelectTrigger>
-                <Year />
-              </Select>
+              <FormItem>
+                <FormLabel>西暦</FormLabel>
+                <Select {...restField} onValueChange={handleYearChange}>
+                  <FormControl>
+                    <SelectTrigger ref={ref} className='w-[180px]'>
+                      <SelectValue placeholder='西暦' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <Year />
+                </Select>
+              </FormItem>
             )}
           />
 
@@ -114,36 +119,36 @@ export const BasicInfomationForm = () => {
             control={control}
             name='birthday.month'
             render={({ field: { ref, onChange, ...restField } }) => (
-              <Select {...restField} onValueChange={(value) => handleMonthChange(value)}>
-                <SelectTrigger ref={ref} className='w-[180px]'>
-                  <SelectValue placeholder='月' />
-                </SelectTrigger>
-                <Month />
-              </Select>
+              <FormItem>
+                <FormLabel>月</FormLabel>
+                <Select {...restField} onValueChange={handleMonthChange}>
+                  <FormControl>
+                    <SelectTrigger ref={ref} className='w-[180px]'>
+                      <SelectValue placeholder='月' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <Month />
+                </Select>
+              </FormItem>
             )}
           />
 
           <FormField
             control={control}
             name='birthday.day'
-            //
-            // NOTE: shadcnuiが作るSelectは、onValueChangeのPropsで待っているので、onChange単体を取り出して、
-            //       関数をそのまま渡してあげている
-            render={({ field: { ref, onChange, ...restField } }) => {
-              return (
-                <Select {...restField} onValueChange={(value) => handleDayChange(value)}>
-                  <SelectTrigger ref={ref} className='w-[180px]'>
-                    {/*
-                    // NOTE: 本来、shadcnの仕様的に、placeholderが出力するには、
-                    //       Selectのvalueが、undefinedであることなのだが、
-                    //       空文字となる場合に表示される（バグっぽい）
-                  */}
-                    <SelectValue placeholder='日' />
-                  </SelectTrigger>
+            render={({ field: { ref, onChange, ...restField } }) => (
+              <FormItem>
+                <FormLabel>日</FormLabel>
+                <Select {...restField} onValueChange={handleDayChange}>
+                  <FormControl>
+                    <SelectTrigger ref={ref} className='w-[180px]'>
+                      <SelectValue placeholder='日' />
+                    </SelectTrigger>
+                  </FormControl>
                   <Day year={selectedYear} month={selectedMonth} />
                 </Select>
-              );
-            }}
+              </FormItem>
+            )}
           />
         </div>
 
@@ -156,6 +161,9 @@ export const BasicInfomationForm = () => {
         ) : (
           // @ts-ignore
           errors.birthday?.ageIneligible?.message && (
+            //
+            // TODO: ts-ignoreが存在してしまうが、意味合い的にわかりやすいpathで設定してみた
+            //
             <FormField name='birthday.ageIneligible' render={() => <FormMessage />} />
           )
         )}
@@ -245,37 +253,42 @@ export const BasicInfomationForm = () => {
           control={control}
           name='prefectureId'
           render={({ field: { ref, onChange, ...restField } }) => (
-            <Select {...restField} onValueChange={onChange}>
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='都道府県' />
-              </SelectTrigger>
-              <Prefecture />
-              <FormMessage />
-            </Select>
+            <FormItem>
+              <FormLabel>都道府県</FormLabel>
+              <Select {...restField} onValueChange={onChange}>
+                <FormControl>
+                  <SelectTrigger ref={ref} className='w-[180px]'>
+                    <SelectValue placeholder='都道府県' />
+                  </SelectTrigger>
+                </FormControl>
+                <Prefecture />
+                <FormMessage />
+              </Select>
+            </FormItem>
           )}
         />
 
         <FormField
           name='cityId'
           control={control}
-          render={({ field: { ref, onChange, ...restField } }) => {
-            return (
+          render={({ field: { ref, onChange, ...restField } }) => (
+            <FormItem>
+              <FormLabel>市区町村</FormLabel>
               <Select {...restField} onValueChange={onChange}>
-                <SelectTrigger className='w-[180px]'>
-                  <SelectValue placeholder='市区町村' />
-                </SelectTrigger>
+                <FormControl>
+                  <SelectTrigger ref={ref} className='w-[180px]'>
+                    <SelectValue placeholder='市区町村' />
+                  </SelectTrigger>
+                </FormControl>
                 {selectedPrefecture ? (
-                  //
-                  // TODO: 外部APIの都合上、自動反映を後回し（watchしているのでリストは作成される）
-                  //
                   <CityWrapper prefectureCode={selectedPrefecture} />
                 ) : (
                   <SelectContent />
                 )}
                 <FormMessage />
               </Select>
-            );
-          }}
+            </FormItem>
+          )}
         />
       </div>
 
