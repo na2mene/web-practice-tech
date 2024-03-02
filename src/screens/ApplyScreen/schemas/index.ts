@@ -142,7 +142,7 @@ export type BasicInformationSchemaType = z.infer<
 
 const createApplyInformationBaseSchema = () =>
   z.object({
-    // memberCareer: z.string().min(1, { message: '経験年数を選択してください' }),
+    memberCareer: z.string(),
     // TODO: 面接希望日時（行追加のネスト）あとで
     // prefferdDateTime: z.array(
     //   z.object({

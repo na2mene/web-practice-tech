@@ -12,17 +12,18 @@ import { Select, SelectTrigger, SelectValue } from '@/components/ui/Select/selec
 import { Checkbox } from '@/components/ui/Checkbox/checkbox';
 import { MemberCareer } from '@/components/shared/MemberCareer';
 
-type Props = {
-  qualifications:
-    | {
-        id: number;
-        name: string;
-        required: boolean;
-      }[]
-    | [];
-};
+// type Props = {
+//   qualifications:
+//     | {
+//         id: number;
+//         name: string;
+//         required: boolean;
+//       }[]
+//     | [];
+// };
 
-export const ApplyInfomationForm = ({ qualifications }: Props) => {
+// export const ApplyInfomationForm = ({ qualifications }: Props) => {
+export const ApplyInfomationForm = () => {
   const { control } = useFormContext<ApplyInformationSchemaType>();
 
   return (
@@ -32,17 +33,22 @@ export const ApplyInfomationForm = ({ qualifications }: Props) => {
           control={control}
           name='memberCareer'
           render={({ field: { ref, onChange, ...restField } }) => (
-            <Select {...restField} onValueChange={onChange}>
-              <SelectTrigger className='w-[180px]'>
-                <SelectValue placeholder='未設定' />
-              </SelectTrigger>
-              <MemberCareer />
+            <FormItem>
+              <FormLabel>経験年数</FormLabel>
+              <Select {...restField} onValueChange={onChange}>
+                <FormControl>
+                  <SelectTrigger ref={ref} className='w-[180px]'>
+                    <SelectValue placeholder='未設定' />
+                  </SelectTrigger>
+                </FormControl>
+                <MemberCareer />
+              </Select>
               <FormMessage />
-            </Select>
+            </FormItem>
           )}
         />
       </div>
-
+      {/*
       <div className='flex flex-row gap-x-4'>
         <FormField
           control={control}
@@ -73,7 +79,7 @@ export const ApplyInfomationForm = ({ qualifications }: Props) => {
             </FormItem>
           )}
         />
-      </div>
+      </div> */}
     </>
   );
 };
