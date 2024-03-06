@@ -1,30 +1,27 @@
-import { useFormContext } from 'react-hook-form';
-import { ApplyInformationSchemaType } from '../../schemas';
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormDescription,
   FormMessage,
 } from '@/components/ui/Form/form';
 import { Select, SelectTrigger, SelectValue } from '@/components/ui/Select/select';
 import { Checkbox } from '@/components/ui/Checkbox/checkbox';
 import { MemberCareer } from '@/components/shared/MemberCareer';
+import { useApplyInformationForm } from '@/screens/ApplyScreen/ApplyForm/ApplyInfomationForm/useApplyInformationForm';
 
-// type Props = {
-//   qualifications:
-//     | {
-//         id: number;
-//         name: string;
-//         required: boolean;
-//       }[]
-//     | [];
-// };
+type Props = {
+  qualifications:
+    | {
+        id: number;
+        name: string;
+        required: boolean;
+      }[]
+    | [];
+};
 
-// export const ApplyInfomationForm = ({ qualifications }: Props) => {
-export const ApplyInfomationForm = () => {
-  const { control } = useFormContext<ApplyInformationSchemaType>();
+export const ApplyInfomationForm = ({ qualifications }: Props) => {
+  const { control, handleQualificationChange } = useApplyInformationForm();
 
   return (
     <>
@@ -48,38 +45,40 @@ export const ApplyInfomationForm = () => {
           )}
         />
       </div>
-      {/*
+
       <div className='flex flex-row gap-x-4'>
         <FormField
           control={control}
           name='qualifications'
-          render={({ field: { value, ...restField } }) => (
+          render={() => (
             <FormItem>
-              <div className='mb-4'>
-                <FormLabel className='text-base'>保有資格・免許</FormLabel>
-              </div>
+              <FormLabel>保有資格・免許</FormLabel>
               {qualifications.map((qualification, index) => (
-                <FormItem key={qualification.id}>
-                  <FormControl>
-                    <Checkbox
-                      checked={value?.includes(qualification.id)}
-                      onCheckedChange={(checked) => {
-                        return checked
-                          ? restField.onChange([...value, qualification.id])
-                          : restField.onChange(
-                              value?.filter((value) => value !== qualification.id),
-                            );
-                      }}
-                    />
-                  </FormControl>
-                  <FormLabel className='text-sm font-normal'>{qualification.name}</FormLabel>
-                </FormItem>
+                <FormField
+                  key={index}
+                  control={control}
+                  name='qualifications'
+                  render={({ field: { value, onChange, ...restField } }) => (
+                    <FormItem key={index}>
+                      <FormControl>
+                        <Checkbox
+                          {...restField}
+                          checked={value?.includes(qualification.id)}
+                          onCheckedChange={(checked: boolean) =>
+                            handleQualificationChange(checked, value, qualification.id)
+                          }
+                        />
+                      </FormControl>
+                      <FormLabel className='text-sm font-normal'>{qualification.name}</FormLabel>
+                    </FormItem>
+                  )}
+                />
               ))}
               <FormMessage />
             </FormItem>
           )}
         />
-      </div> */}
+      </div>
     </>
   );
 };
