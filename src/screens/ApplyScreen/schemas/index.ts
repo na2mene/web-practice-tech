@@ -140,9 +140,21 @@ export type BasicInformationSchemaType = z.infer<
   ReturnType<typeof createBasicInformationBaseSchema>
 >;
 
-const createApplyInformationBaseSchema = () =>
+const createApplyInformationBaseSchema = (qualificationDataList: Props['qualificationData']) =>
   z.object({
     memberCareer: z.string(),
+    qualifications: z.array(z.number()).refine(
+      (qualifications) => {
+        const isRequiredIdList = qualificationDataList
+          .filter((data) => data.required)
+          .map((data) => data.id);
+        return isRequiredIdList.some((requiredId) => qualifications.includes(requiredId));
+      },
+      {
+        message:
+          '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
+      },
+    ),
     // TODO: 面接希望日時（行追加のネスト）あとで
     // prefferdDateTime: z.array(
     //   z.object({
@@ -153,54 +165,24 @@ const createApplyInformationBaseSchema = () =>
     // ),
   });
 
-const attachApplyInformationDynamicSchema = (
-  applyInformationBaseSchema: ReturnType<typeof createApplyInformationBaseSchema>,
-  qualifications: Props['qualificationData'],
-) => {
-  //
-  // TODO: 多分動的だけど、refineで表現するしかなさそうな気がしたので、いったんコメントアウトする
-  //
-
-  // let dynamicSchema = z.object({});
-
-  // qualifications.forEach((qualification, index) => {
-  //   const key = `${qualification.name}_${index}`;
-  //   let qualificationSchema = z.object({
-  //     [key]: z.string(),
-  //   });
-  //   if (qualification.required) {
-  //     qualificationSchema = z.object({
-  //       [key]: z.string().min(1, { message: '必須項目です' }),
-  //     });
-  //   }
-  //   dynamicSchema.merge(qualificationSchema);
-  // });
-
-  return applyInformationBaseSchema.merge(
-    z.object({
-      qualifications: z.number().array().optional(),
-    }),
-  );
-};
-
 export type ApplyInformationSchemaType = z.infer<
-  ReturnType<typeof attachApplyInformationDynamicSchema>
+  ReturnType<typeof createApplyInformationBaseSchema>
 >;
 
 const mergeSchema = (
   basicInformationBaseSchema: ReturnType<typeof createBasicInformationBaseSchema>,
-  applyInformationBaseSchema: ReturnType<typeof attachApplyInformationDynamicSchema>,
+  applyInformationBaseSchema: ReturnType<typeof createApplyInformationBaseSchema>,
 ) => basicInformationBaseSchema.merge(applyInformationBaseSchema);
 
 export type ApplyFormSchemaType = z.infer<ReturnType<typeof mergeSchema>>;
 
-const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>) =>
+const attachCustomValidation = (schema: ReturnType<typeof mergeSchema>) =>
   //
   // TODO: superRefineもrefineも、onBlurの挙動ではなくonSubmitで発動するっぽい
   //       onBlurに設定しても意味ないので、手動で発火させる必要があるかもしれない
   //
   schema.superRefine(async (args, ctx) => {
-    const { postalCode, prefectureId, cityId, employmentStatus } = args;
+    const { postalCode, prefectureId, cityId } = args;
 
     //
     // NOTE: 郵便番号チェック
@@ -256,22 +238,6 @@ const attachBasicInformationValidation = (schema: ReturnType<typeof mergeSchema>
     // }
   });
 
-// const attachApplyInformationValidation = (schema: ReturnType<typeof mergeSchema>) =>
-//   schema.refine(
-//     ({ qualifications }) => {
-//       qualifications;
-//       const { year, month, day } = data;
-//       if (year !== null && month !== null && day !== null) {
-//         return true;
-//       }
-//       return false;
-//     },
-//     {
-//       message: '生年月日をすべて選択してください',
-//       path: ['birthday'],
-//     },
-//   );
-
 type Props = {
   qualificationData: {
     id: number;
@@ -297,32 +263,28 @@ export const createSchema = (apiData: Props) => {
   const basicInformationBaseSchema = createBasicInformationBaseSchema(
     apiData.jobCategoryData.min_age,
   );
-  const applyInformationBaseSchema = createApplyInformationBaseSchema();
+  const applyInformationBaseSchema = createApplyInformationBaseSchema(apiData.qualificationData);
 
   //
   // NOTE: STEP2. 状態によって可変するフォーム項目のスキーマをアタッチする.
   //              何かの条件によって、可変な項目はここで、それぞれのベーススキーマにアタッチする形で
   //              スキーマを仕上げていく
   //
-  const applyInformationSchema = attachApplyInformationDynamicSchema(
-    applyInformationBaseSchema,
-    apiData.qualificationData,
-  );
+  // いらないかも
 
   //
   // NOTE: STEP3. すべて定義したら、mergeする
   //              これは対象フォーム全体のベーススキーマを表す
   //              Zodの型の問題で先に項目のマージを優先する.
   //
-  const mergedSchema = mergeSchema(basicInformationBaseSchema, applyInformationSchema);
+  const mergedSchema = mergeSchema(basicInformationBaseSchema, applyInformationBaseSchema);
 
   //
   // NOTE: STEP4. 基本系以外のバリデーションを付与する
   //              例えば、相関チェック.
   //              生年月日が3項目である時、相関的にチェックが必要な場合を指す
   //
-  schema = attachBasicInformationValidation(mergedSchema);
-  // schema = attachApplyInformationValidation(schema);
+  schema = attachCustomValidation(mergedSchema);
 
   return schema;
 };

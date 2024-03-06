@@ -89,15 +89,14 @@ export const ApplyForm = ({ id }: Props) => {
       memberCareer: '',
       // TODO: undefinedを初期値とすると、Requiredのエラーがうまく出現するが、空文字だとRequiredの判定をスルーしてしまう
       //       Warning: A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components
-      // MemberCareer: undefined,
-      // qualifications: [],
+      qualifications: [],
     },
     resolver: zodResolver(applyFormSchema),
     mode: 'onBlur',
   });
 
   const onSubmit: SubmitHandler<ApplyFormSchemaType> = (data) => {
-    console.log(data);
+    window.alert(JSON.stringify(data));
   };
 
   console.log(forms.formState.errors);
@@ -106,7 +105,7 @@ export const ApplyForm = ({ id }: Props) => {
     <Form {...forms}>
       <form onSubmit={forms.handleSubmit(onSubmit)} className='space-y-8'>
         <BasicInfomationForm />
-        <ApplyInfomationForm />
+        <ApplyInfomationForm qualifications={apiData.qualificationData} />
         <Button type='submit'>応募する</Button>
       </form>
     </Form>
