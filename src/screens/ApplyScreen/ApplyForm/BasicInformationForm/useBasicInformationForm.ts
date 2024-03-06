@@ -53,6 +53,23 @@ export const useBasicInformaionForm = () => {
     trigger('birthday');
   };
 
+  const handlePrefectureChange = (value: string) => {
+    //
+    // NOTE: ハンドラーを設定した場合は、この2つは必須と考えていい.
+    //       ハンドラーを定義するとRHFのonChangeをオーバーライドしているのと同じなので、
+    //       useFormで指定しているonBlurなどが効いてないみたいな感じとなる.
+    //       ゆえに、setValueとtriggerは必須となる.
+    //
+    setValue('prefectureId', value);
+    trigger('prefectureId');
+
+    //
+    // NOTE: 明示的に空を設定しないと、shadcn/uiのSelectValueが表示されないため
+    //       このハンドラーが必要となる
+    //
+    setValue('cityId', '');
+  };
+
   const handlePostalCodeChange = async (value: string) => {
     setValue('postalCode', value);
 
@@ -79,6 +96,10 @@ export const useBasicInformaionForm = () => {
         // TODO: 外部APIの都合上、自動反映を後回し（watchしているのでリストは作成される）
         //
         // setValue('cityId', cityId);
+
+        trigger('prefectureId');
+        // trigger('cityId');
+        trigger('town');
       }
     }
   };
@@ -102,6 +123,7 @@ export const useBasicInformaionForm = () => {
     handleYearChange,
     handleMonthChange,
     handleDayChange,
+    handlePrefectureChange,
     handlePostalCodeChange,
     handleEmailChange,
   };
