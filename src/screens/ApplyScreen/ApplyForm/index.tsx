@@ -57,6 +57,7 @@ export const ApplyForm = ({ id }: Props) => {
   const applyFormSchema = createSchema(apiData);
 
   const forms = useForm<ApplyFormSchemaType>({
+    //
     // NOTE: 以下回避のため、デフォルト値を設定する
     // @see: https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable
     defaultValues: {
@@ -64,10 +65,6 @@ export const ApplyForm = ({ id }: Props) => {
       firstName: '',
       familyNameKana: '',
       firstNameKana: '',
-      //
-      // TODO: 初期値に文字列があるので、Zodのシンプルな必須チェックには引っかからない
-      //       が、相関チェックで1つでも空だった場合、生年月日を選択してくださいと出力するので、
-      //       そこでカバーする
       birthday: {
         year: '',
         month: '',
@@ -87,8 +84,6 @@ export const ApplyForm = ({ id }: Props) => {
       password: '',
       employmentStatus: undefined,
       memberCareer: '',
-      // TODO: undefinedを初期値とすると、Requiredのエラーがうまく出現するが、空文字だとRequiredの判定をスルーしてしまう
-      //       Warning: A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components
       qualifications: [],
     },
     resolver: zodResolver(applyFormSchema),

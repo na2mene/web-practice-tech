@@ -26,6 +26,7 @@ export const BasicInfomationForm = () => {
     handleYearChange,
     handleMonthChange,
     handleDayChange,
+    handlePrefectureChange,
     handlePostalCodeChange,
     handleEmailChange,
   } = useBasicInformaionForm();
@@ -159,13 +160,7 @@ export const BasicInfomationForm = () => {
         ) : errors.birthday?.day?.message ? (
           <FormField name='birthday.day' render={() => <FormMessage />} />
         ) : (
-          // @ts-ignore
-          errors.birthday?.ageIneligible?.message && (
-            //
-            // TODO: ts-ignoreが存在してしまうが、意味合い的にわかりやすいpathで設定してみた
-            //
-            <FormField name='birthday.ageIneligible' render={() => <FormMessage />} />
-          )
+          errors.birthday?.message && <FormField name='birthday' render={() => <FormMessage />} />
         )}
       </div>
 
@@ -255,7 +250,7 @@ export const BasicInfomationForm = () => {
           render={({ field: { ref, onChange, ...restField } }) => (
             <FormItem>
               <FormLabel>都道府県</FormLabel>
-              <Select {...restField} onValueChange={onChange}>
+              <Select {...restField} onValueChange={handlePrefectureChange}>
                 <FormControl>
                   <SelectTrigger ref={ref} className='w-[180px]'>
                     <SelectValue placeholder='都道府県' />

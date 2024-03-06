@@ -1,9 +1,8 @@
 import { z } from 'zod';
 
 import { calcAcademicPeriodDate } from '@/utils/days';
-import { getZipcodeOrList } from '@/__generated_REST__/zipcloud/zipcloud';
 
-const createBasicInformationBaseSchema = (minAge: number = 0) =>
+const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
     familyName: z
       .string()
@@ -35,6 +34,22 @@ const createBasicInformationBaseSchema = (minAge: number = 0) =>
       .refine(
         ({ year, month, day }) => {
           //
+          // NOTE: 生年月日の必須チェックをカスタムバリデーションに寄せた
+          //       どれが1つでも選択されると、必須応募資格の年齢チェックが動作してしまうので
+          //       許容できる範囲の動作だが、相関的にも担保したため、二重の実装
+          //
+          if (year === '' || month === '' || day === '') {
+            return false;
+          }
+          return true;
+        },
+        {
+          message: '生年月日をすべて選択してください',
+        },
+      )
+      .refine(
+        ({ year, month, day }) => {
+          //
           // NOTE: 必須応募資格の年齢チェック
           //
           if (minAge !== 0) {
@@ -55,7 +70,6 @@ const createBasicInformationBaseSchema = (minAge: number = 0) =>
         },
         {
           message: '応募条件を満たす年齢に達していません',
-          path: ['ageIneligible'],
         },
       ),
 
@@ -77,6 +91,7 @@ const createBasicInformationBaseSchema = (minAge: number = 0) =>
       // @see: https://zenn.dev/kaz_z/articles/how-to-use-zod#%E5%85%A5%E5%8A%9B%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88%E3%81%AF%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%8C%E5%BF%85%E8%A6%81%E3%81%A0%E3%81%91%E3%81%A9%E3%80%81%E7%A9%BA%E3%81%AE%E3%81%BE%E3%81%BE%E3%81%A7%E3%82%82%E3%81%84%E3%81%84
       //
       .or(z.literal('')),
+
     prefectureId: z.string().min(1, { message: '都道府県を選択してください' }),
     cityId: z.string().min(1, { message: '市区町村を選択してください' }),
     town: z.string().max(100, { message: '町名・番地は100文字以内で入力してください' }).optional(),
@@ -123,24 +138,10 @@ const createBasicInformationBaseSchema = (minAge: number = 0) =>
     //   .optional(),
     // employmentStatus: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
   });
-// .required({
-//   familyName: true,
-//   firstName: true,
-//   familyNameKana: true,
-//   firstNameKana: true,
-//   gender: true,
-//   tel: true,
-//   postalCode: true,
-//   prefecture: true,
-//   city: true,
-//   employmentStatus: true,
-// });
 
-export type BasicInformationSchemaType = z.infer<
-  ReturnType<typeof createBasicInformationBaseSchema>
->;
+export type BasicInformationSchemaType = z.infer<ReturnType<typeof createBasicInformationSchema>>;
 
-const createApplyInformationBaseSchema = (qualificationDataList: Props['qualificationData']) =>
+const createApplyInformationSchema = (qualificationDataList: Props['qualificationData']) =>
   z.object({
     memberCareer: z.string(),
     qualifications: z.array(z.number()).refine(
@@ -165,14 +166,12 @@ const createApplyInformationBaseSchema = (qualificationDataList: Props['qualific
     // ),
   });
 
-export type ApplyInformationSchemaType = z.infer<
-  ReturnType<typeof createApplyInformationBaseSchema>
->;
+export type ApplyInformationSchemaType = z.infer<ReturnType<typeof createApplyInformationSchema>>;
 
 const mergeSchema = (
-  basicInformationBaseSchema: ReturnType<typeof createBasicInformationBaseSchema>,
-  applyInformationBaseSchema: ReturnType<typeof createApplyInformationBaseSchema>,
-) => basicInformationBaseSchema.merge(applyInformationBaseSchema);
+  basicInformationSchema: ReturnType<typeof createBasicInformationSchema>,
+  applyInformationSchema: ReturnType<typeof createApplyInformationSchema>,
+) => basicInformationSchema.merge(applyInformationSchema);
 
 export type ApplyFormSchemaType = z.infer<ReturnType<typeof mergeSchema>>;
 
@@ -183,33 +182,6 @@ const attachCustomValidation = (schema: ReturnType<typeof mergeSchema>) =>
   //
   schema.superRefine(async (args, ctx) => {
     const { postalCode, prefectureId, cityId } = args;
-
-    //
-    // NOTE: 郵便番号チェック
-    // TODO: 7桁だけだと、大量に呼ばれてしまうので、他の条件も組み合わせたい
-    //       例として、都道府県 or 市区町村が選択されていない時に実施するなど
-    //
-    if (postalCode.length === 7 && (!prefectureId || !cityId)) {
-      //
-      // TODO: UI側のonChangeで賄えそうなので、ここで定義する必要があるかは、
-      //       要検討。いまだと二重でAPI呼ばれる感じの実装
-      //
-      const { status } = await getZipcodeOrList(
-        {
-          zipcode: postalCode,
-        },
-        {
-          baseURL: 'https://zipcloud.ibsnet.co.jp',
-        },
-      );
-      if (status !== 200) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: '正しい郵便番号を入力してください',
-          path: ['postalCode'],
-        });
-      }
-    }
 
     //
     // NOTE: メールアドレス存在チェック
@@ -224,18 +196,6 @@ const attachCustomValidation = (schema: ReturnType<typeof mergeSchema>) =>
     //   message: '登録済みのメールアドレスです',
     //   path: ['email'],
     // });
-
-    //
-    //  TODO: 就業状況選択の必須チェック
-    //        undefinedを許容したい関係で、ここで実装になってしまっている
-    //
-    // if (employmentStatus === undefined) {
-    //   ctx.addIssue({
-    //     code: z.ZodIssueCode.custom,
-    //     message: '就業状況を選択してください',
-    //     path: ['employmentStatus'],
-    //   });
-    // }
   });
 
 type Props = {
@@ -248,6 +208,7 @@ type Props = {
     min_age: number;
   };
 };
+
 //
 // NOTE: エントリーポイント.
 //       可変項目のスキーマの動的生成と追加
@@ -260,31 +221,12 @@ export const createSchema = (apiData: Props) => {
   // NOTE: STEP1. フォームをコンポーネントごとに分割した単位でベースのスキーマを作成する
   //              ベースのスキーマとは、可変ではない項目を指す.
   //
-  const basicInformationBaseSchema = createBasicInformationBaseSchema(
-    apiData.jobCategoryData.min_age,
-  );
-  const applyInformationBaseSchema = createApplyInformationBaseSchema(apiData.qualificationData);
+  const basicInformationSchema = createBasicInformationSchema(apiData.jobCategoryData.min_age);
+  const applyInformationSchema = createApplyInformationSchema(apiData.qualificationData);
 
   //
-  // NOTE: STEP2. 状態によって可変するフォーム項目のスキーマをアタッチする.
-  //              何かの条件によって、可変な項目はここで、それぞれのベーススキーマにアタッチする形で
-  //              スキーマを仕上げていく
-  //
-  // いらないかも
-
-  //
-  // NOTE: STEP3. すべて定義したら、mergeする
+  // NOTE: STEP2. すべて定義したら、mergeする
   //              これは対象フォーム全体のベーススキーマを表す
-  //              Zodの型の問題で先に項目のマージを優先する.
   //
-  const mergedSchema = mergeSchema(basicInformationBaseSchema, applyInformationBaseSchema);
-
-  //
-  // NOTE: STEP4. 基本系以外のバリデーションを付与する
-  //              例えば、相関チェック.
-  //              生年月日が3項目である時、相関的にチェックが必要な場合を指す
-  //
-  schema = attachCustomValidation(mergedSchema);
-
-  return schema;
+  return mergeSchema(basicInformationSchema, applyInformationSchema);
 };
