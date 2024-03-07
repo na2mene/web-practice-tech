@@ -105,7 +105,7 @@ export const useBasicInformaionForm = () => {
   };
 
   //
-  // TODO: カスタムバリデーションを任意のタイミングで実行する方法を模索したい
+  // NOTE: onSubmit時に、重複チェック後に、モーダルを出力して注意喚起する
   //
   const handleEmailChange = (value: string) => {
     setValue('email', value);
