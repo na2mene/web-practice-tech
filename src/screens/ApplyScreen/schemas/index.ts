@@ -8,6 +8,8 @@ import { generateBirthdayValidation } from '@/components/ui/Select/Birthday';
 import { generateGenderValidation } from '@/components/ui/RadioGroup/Gender';
 import { generateTelValidation } from '@/components/ui/Input/Tel';
 import { generatePostalCodeValidation } from '@/components/ui/Input/PostalCode';
+import { generatePrefectureValidation } from '@/components/ui/Select/Prefecture';
+import { generateCityValidation } from '@/components/ui/Select/City';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -19,9 +21,9 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateGenderValidation(),
     ...generateTelValidation(),
     ...generatePostalCodeValidation(),
+    ...generatePrefectureValidation(),
+    ...generateCityValidation(),
 
-    prefectureId: z.string().min(1, { message: '都道府県を選択してください' }),
-    cityId: z.string().min(1, { message: '市区町村を選択してください' }),
     town: z.string().max(100, { message: '町名・番地は100文字以内で入力してください' }).optional(),
     building: z.string().max(100, { message: '建物名は100文字以内で入力してください' }).optional(),
 

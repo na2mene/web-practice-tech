@@ -8,9 +8,6 @@ import {
 } from '@/components/ui/Form/form';
 import { Input } from '@/components/ui/Input/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
-import { Select, SelectTrigger, SelectValue, SelectContent } from '@/components/ui/Select/select';
-import { Prefecture } from '@/components/ui/Select/Prefecture';
-import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';
 import { FamilyName } from '@/components/ui/Input/FamilyName';
 import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
@@ -20,6 +17,8 @@ import { Birthday } from '@/components/ui/Select/Birthday';
 import { Gender } from '@/components/ui/RadioGroup/Gender';
 import { Tel } from '@/components/ui/Input/Tel';
 import { PostalCode } from '@/components/ui/Input/PostalCode';
+import { Prefecture } from '@/components/ui/Select/Prefecture';
+import { City } from '@/components/ui/Select/City';
 
 export const BasicInfomationForm = () => {
   const {
@@ -82,47 +81,8 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div className='flex flex-row gap-x-4'>
-        <FormField
-          control={control}
-          name='prefectureId'
-          render={({ field: { ref, onChange, ...restField } }) => (
-            <FormItem>
-              <FormLabel>都道府県</FormLabel>
-              <Select {...restField} onValueChange={handlePrefectureChange}>
-                <FormControl>
-                  <SelectTrigger ref={ref} className='w-[180px]'>
-                    <SelectValue placeholder='都道府県' />
-                  </SelectTrigger>
-                </FormControl>
-                <Prefecture />
-                <FormMessage />
-              </Select>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          name='cityId'
-          control={control}
-          render={({ field: { ref, onChange, ...restField } }) => (
-            <FormItem>
-              <FormLabel>市区町村</FormLabel>
-              <Select {...restField} onValueChange={onChange}>
-                <FormControl>
-                  <SelectTrigger ref={ref} className='w-[180px]'>
-                    <SelectValue placeholder='市区町村' />
-                  </SelectTrigger>
-                </FormControl>
-                {selectedPrefecture ? (
-                  <CityWrapper prefectureCode={selectedPrefecture} />
-                ) : (
-                  <SelectContent />
-                )}
-                <FormMessage />
-              </Select>
-            </FormItem>
-          )}
-        />
+        <Prefecture handlePrefectureChange={handlePrefectureChange} />
+        <City selectedPrefecture={selectedPrefecture} />
       </div>
 
       <div>
