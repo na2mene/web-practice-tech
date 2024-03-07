@@ -48,6 +48,11 @@ export const useBasicInformaionForm = () => {
     trigger('birthday');
   };
 
+  //
+  // NOTE: 一見、必要になさそうに見えるが、birthdayのrefineを即時実行させるために、必要
+  //       birthday単位に対して、triggerをかけるとうまくいくので、
+  //       そのような意図で、handlerを定義している.
+  //
   const handleDayChange = (value: string) => {
     setValue('birthday.day', value);
     trigger('birthday');
@@ -76,11 +81,11 @@ export const useBasicInformaionForm = () => {
 
     if (value.length === 7) {
       //
-      // TODO: refineで定義する必要があるか問題
-      //       onChange側でAPI呼ぶなら、同じことするだけなので無駄な気もする
-      //       そもそもonChange時にAPI通信した結果の反映がこのやり方で
-      //       正しい場合、refineの定義どうするかを考える
+      // TODO: 本来、refineで定義する様な内容とフォームへ反映するという2つの機能が包括されている
+      //       入力された郵便番号が正しいかのチェックとそれを踏まえて都道府県、市区町村、町名・番地への反映
+      //       このユースケースの場合、結局、onChangeの中で全部やるしかない気がしたので、こっちに寄せた.
       //
+      //       ここもTanstack経由のメリットがないので、axiosで呼ぶでOK
       const zipcodeData = await getZipcodeOrList(
         { zipcode: value },
         { baseURL: 'https://zipcloud.ibsnet.co.jp' },
