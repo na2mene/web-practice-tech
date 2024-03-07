@@ -15,6 +15,7 @@ import { Day } from '@/components/ui/Select/Birthday/day';
 import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';
+import { FamilyName } from '@/components/ui/Input/FamilyName';
 
 export const BasicInfomationForm = () => {
   const {
@@ -33,20 +34,7 @@ export const BasicInfomationForm = () => {
   return (
     <>
       <div className='flex flex-row gap-x-4'>
-        <FormField
-          control={control}
-          name='familyName'
-          render={({ field }) => (
-            <FormItem className='flex-1'>
-              <FormLabel>名字</FormLabel>
-              <FormControl>
-                <Input placeholder='山田' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FamilyName control={control} />
 
         <FormField
           control={control}
