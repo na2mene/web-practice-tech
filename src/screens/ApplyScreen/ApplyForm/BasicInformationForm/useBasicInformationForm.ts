@@ -72,6 +72,7 @@ export const useBasicInformaionForm = () => {
 
   const handlePostalCodeChange = async (value: string) => {
     setValue('postalCode', value);
+    trigger('postalCode');
 
     if (value.length === 7) {
       //
@@ -80,7 +81,6 @@ export const useBasicInformaionForm = () => {
       //       そもそもonChange時にAPI通信した結果の反映がこのやり方で
       //       正しい場合、refineの定義どうするかを考える
       //
-      trigger('postalCode');
       const zipcodeData = await getZipcodeOrList(
         { zipcode: value },
         { baseURL: 'https://zipcloud.ibsnet.co.jp' },
