@@ -5,11 +5,11 @@ import { GetCityListResponseBodyDataInner } from '@/__generated_REST__/api.schem
 //
 // TODO: 外部APIの都合上、自動反映を後回し（watchしているのでリストは作成される）
 //
-type CityProps = {
+type Props = {
   cityList?: GetCityListResponseBodyDataInner[];
 };
 
-export const City: FC<CityProps> = ({ cityList }) => {
+export const City: FC<Props> = ({ cityList }: Props) => {
   const items = useMemo(() => {
     return cityList?.map((element, index) => {
       return (

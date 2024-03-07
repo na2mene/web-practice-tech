@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/Form/form';
 import { Input } from '@/components/ui/Input/input';
 
-type firstNameKanaSchema = {
+type firstNameKanaSchemaType = {
   firstNameKana: string;
 };
 
-const firstNameKanaDefaultValidation: PartialFormValidation<firstNameKanaSchema> = {
+const firstNameKanaDefaultValidation: PartialFormValidation<firstNameKanaSchemaType> = {
   firstNameKana: z
     .string()
     .min(1, { message: '名前（ひらがな）を入力してください' })
@@ -30,7 +30,7 @@ const generateFirstNameKanaValidation = () => {
 };
 
 const FirstNameKana: FC = () => {
-  const { control } = useFormContext<firstNameKanaSchema>();
+  const { control } = useFormContext<firstNameKanaSchemaType>();
 
   return (
     <FormField

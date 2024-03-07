@@ -1,12 +1,12 @@
 import { useMemo, FC } from 'react';
 import { SelectContent, SelectItem } from '../../select';
 
-type MonthProps = {
+type Props = {
   startMonth?: number;
   isZeroPadding?: boolean;
 };
 
-export const Month: FC<MonthProps> = ({ startMonth = 1, isZeroPadding = false }) => {
+export const Month: FC<Props> = ({ startMonth = 1, isZeroPadding = false }: Props) => {
   const items = useMemo(() => {
     return Array.from({ length: 12 }, (_, index) => {
       const month = ((index + startMonth - 1) % 12) + 1;
