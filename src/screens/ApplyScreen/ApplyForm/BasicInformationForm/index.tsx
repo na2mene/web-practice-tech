@@ -16,6 +16,9 @@ import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';
 import { FamilyName } from '@/components/ui/Input/FamilyName';
+import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
+import { FirstName } from '@/components/ui/Input/FirstName';
+import { FirstNameKana } from '@/components/ui/Input/FirstNameKana';
 
 export const BasicInfomationForm = () => {
   const {
@@ -35,53 +38,12 @@ export const BasicInfomationForm = () => {
     <>
       <div className='flex flex-row gap-x-4'>
         <FamilyName />
-
-        <FormField
-          control={control}
-          name='firstName'
-          render={({ field }) => (
-            <FormItem className='flex-1'>
-              <FormLabel>名前</FormLabel>
-              <FormControl>
-                <Input placeholder='太郎' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FirstName />
       </div>
 
       <div className='flex flex-row gap-x-4'>
-        <FormField
-          control={control}
-          name='familyNameKana'
-          render={({ field }) => (
-            <FormItem className='flex-1'>
-              <FormLabel>名字かな</FormLabel>
-              <FormControl>
-                <Input placeholder='やまだ' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={control}
-          name='firstNameKana'
-          render={({ field }) => (
-            <FormItem className='flex-1'>
-              <FormLabel>名前かな</FormLabel>
-              <FormControl>
-                <Input placeholder='たろう' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <FamilyNameKana />
+        <FirstNameKana />
       </div>
 
       <div>

@@ -2,25 +2,16 @@ import { z } from 'zod';
 
 import { calcAcademicPeriodDate } from '@/utils/days';
 import { generateFamilyNameValidation } from '@/components/ui/Input/FamilyName';
+import { generateFamilyNameKanaValidation } from '@/components/ui/Input/FamilyNameKana';
+import { generateFirstNameValidation } from '@/components/ui/Input/FirstName';
+import { generateFirstNameKanaValidation } from '@/components/ui/Input/FirstNameKana';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
     ...generateFamilyNameValidation(),
-    firstName: z
-      .string()
-      .min(1, { message: '名前を入力してください' })
-      .max(50, { message: '50文字以内で入力してください' }),
-
-    familyNameKana: z
-      .string()
-      .min(1, { message: '名字（ひらがな）を入力してください' })
-      .max(50, { message: '名字（ふりがな）は50文字以内で入力してください' })
-      .regex(/^(?:[ぁ-ゞ]+)*$/, { message: '名字（ふりがな）はひらがなで入力してください' }),
-    firstNameKana: z
-      .string()
-      .min(1, { message: '名前（ひらがな）を入力してください' })
-      .max(50, { message: '名前（ふりがな）は50文字以内で入力してください' })
-      .regex(/^(?:[ぁ-ゞ]+)*$/, { message: '名前（ふりがな）はひらがなで入力してください' }),
+    ...generateFirstNameValidation(),
+    ...generateFamilyNameKanaValidation(),
+    ...generateFirstNameKanaValidation(),
 
     birthday: z
       .object({
