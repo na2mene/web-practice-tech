@@ -1,15 +1,15 @@
 import { useMemo, FC } from 'react';
 import { SelectContent, SelectItem } from '../../select';
 import { getDaysInMonth } from '@/utils/days';
-import { BirthdaySchema } from '@/components/ui/Select/Birthday';
+import { BirthdaySchemaType } from '@/components/ui/Select/Birthday';
 
-type DayProps = {
-  year: BirthdaySchema['birthday']['year'];
-  month: BirthdaySchema['birthday']['month'];
+type Props = {
+  year: BirthdaySchemaType['birthday']['year'];
+  month: BirthdaySchemaType['birthday']['month'];
   isZeroPadding?: boolean;
 };
 
-export const Day: FC<DayProps> = ({ year, month, isZeroPadding = false }) => {
+export const Day: FC<Props> = ({ year, month, isZeroPadding = false }: Props) => {
   const daysInMonth = getDaysInMonth(year, month);
 
   const items = useMemo(() => {

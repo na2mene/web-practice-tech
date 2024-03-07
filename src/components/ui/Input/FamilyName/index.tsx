@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/Form/form';
 import { Input } from '@/components/ui/Input/input';
 
-type FamilyNameSchema = {
+type FamilyNameSchemaType = {
   familyName: string;
 };
 
-const familyNameDefaultValidation: PartialFormValidation<FamilyNameSchema> = {
+const familyNameDefaultValidation: PartialFormValidation<FamilyNameSchemaType> = {
   familyName: z
     .string()
     .min(1, { message: '名字を入力してください' })
@@ -38,7 +38,7 @@ const generateFamilyNameValidation = (isRequired: boolean = true) => {
 };
 
 const FamilyName: FC = () => {
-  const { control } = useFormContext<FamilyNameSchema>();
+  const { control } = useFormContext<FamilyNameSchemaType>();
 
   return (
     <FormField

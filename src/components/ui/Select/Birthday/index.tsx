@@ -10,7 +10,7 @@ import { Year } from '@/components/ui/Select/Birthday/Year';
 import { Month } from '@/components/ui/Select/Birthday/Month';
 import { Day } from '@/components/ui/Select/Birthday/Day';
 
-export type BirthdaySchema = {
+export type BirthdaySchemaType = {
   birthday: {
     year: string;
     month: string;
@@ -18,7 +18,7 @@ export type BirthdaySchema = {
   };
 };
 
-const birthdayDefaultValidation: PartialFormValidation<BirthdaySchema> = {
+const birthdayDefaultValidation: PartialFormValidation<BirthdaySchemaType> = {
   birthday: z
     .object({
       year: z.string().min(1, { message: '生年月日をすべて選択してください' }),
@@ -114,7 +114,7 @@ const Birthday: FC<Props> = ({
   selectedYear,
   selectedMonth,
 }: Props) => {
-  const { control } = useFormContext<BirthdaySchema>();
+  const { control } = useFormContext<BirthdaySchemaType>();
 
   return (
     <>

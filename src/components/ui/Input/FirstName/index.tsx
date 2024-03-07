@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/Form/form';
 import { Input } from '@/components/ui/Input/input';
 
-type firstNameSchema = {
+type firstNameSchemaType = {
   firstName: string;
 };
 
-const firstNameDefaultValidation: PartialFormValidation<firstNameSchema> = {
+const firstNameDefaultValidation: PartialFormValidation<firstNameSchemaType> = {
   firstName: z
     .string()
     .min(1, { message: '名前を入力してください' })
@@ -29,7 +29,7 @@ const generateFirstNameValidation = () => {
 };
 
 const FirstName: FC = () => {
-  const { control } = useFormContext<firstNameSchema>();
+  const { control } = useFormContext<firstNameSchemaType>();
 
   return (
     <FormField

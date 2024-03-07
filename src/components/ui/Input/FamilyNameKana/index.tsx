@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/Form/form';
 import { Input } from '@/components/ui/Input/input';
 
-type FamilyNameKanaSchema = {
+type FamilyNameKanaSchemaType = {
   familyNameKana: string;
 };
 
-const familyNameKanaDefaultValidation: PartialFormValidation<FamilyNameKanaSchema> = {
+const familyNameKanaDefaultValidation: PartialFormValidation<FamilyNameKanaSchemaType> = {
   familyNameKana: z
     .string()
     .min(1, { message: '名字（ひらがな）を入力してください' })
@@ -30,7 +30,7 @@ const generateFamilyNameKanaValidation = () => {
 };
 
 const FamilyNameKana: FC = () => {
-  const { control } = useFormContext<FamilyNameKanaSchema>();
+  const { control } = useFormContext<FamilyNameKanaSchemaType>();
 
   return (
     <FormField
