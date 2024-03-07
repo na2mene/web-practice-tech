@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { z } from 'zod';
 import { PartialFormValidation } from '@/libs/zod-utils';
+import { useFormContext } from 'react-hook-form';
 
 import {
   FormControl,
@@ -36,10 +37,9 @@ const generateFamilyNameValidation = (isRequired: boolean = true) => {
   return familyNameValidation;
 };
 
-type Props = {
-  control: any;
-};
-const FamilyName: FC<Props> = ({ control }) => {
+const FamilyName: FC = () => {
+  const { control } = useFormContext<FamilyNameSchema>();
+
   return (
     <FormField
       control={control}

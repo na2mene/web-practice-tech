@@ -34,7 +34,7 @@ export const BasicInfomationForm = () => {
   return (
     <>
       <div className='flex flex-row gap-x-4'>
-        <FamilyName control={control} />
+        <FamilyName />
 
         <FormField
           control={control}
