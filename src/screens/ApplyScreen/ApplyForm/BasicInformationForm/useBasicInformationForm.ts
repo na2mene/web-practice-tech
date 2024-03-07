@@ -104,9 +104,6 @@ export const useBasicInformaionForm = () => {
     }
   };
 
-  //
-  // NOTE: onSubmit時に、重複チェック後に、モーダルを出力して注意喚起する
-  //
   const handleEmailChange = (value: string) => {
     setValue('email', value);
     trigger('email');
