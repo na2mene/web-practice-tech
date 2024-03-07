@@ -17,6 +17,7 @@ import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
 import { FirstName } from '@/components/ui/Input/FirstName';
 import { FirstNameKana } from '@/components/ui/Input/FirstNameKana';
 import { Birthday } from '@/components/ui/Select/Birthday';
+import { Gender } from '@/components/ui/RadioGroup/Gender';
 
 export const BasicInfomationForm = () => {
   const {
@@ -67,43 +68,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='gender'
-          render={({ field: { value, onChange, ...restField } }) => (
-            <FormItem className='space-y-3'>
-              <FormLabel>性別</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  {...restField}
-                  aria-label='性別'
-                  className='flex items-center space-x-2'
-                  defaultValue={`${value}`}
-                  onValueChange={onChange}
-                >
-                  <FormItem className='flex items-center space-x-3 space-y-0'>
-                    <FormControl>
-                      <RadioGroupItem value='female' id='female' />
-                    </FormControl>
-                    <FormLabel className='font-normal' htmlFor='female'>
-                      女性
-                    </FormLabel>
-                  </FormItem>
-
-                  <FormItem className='flex items-center space-x-3 space-y-0'>
-                    <FormControl>
-                      <RadioGroupItem value='male' id='male' />
-                    </FormControl>
-                    <FormLabel className='font-normal' htmlFor='male'>
-                      男性
-                    </FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Gender />
       </div>
 
       <div>
