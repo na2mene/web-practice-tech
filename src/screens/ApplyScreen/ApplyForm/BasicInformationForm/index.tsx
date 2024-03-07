@@ -19,6 +19,7 @@ import { FirstNameKana } from '@/components/ui/Input/FirstNameKana';
 import { Birthday } from '@/components/ui/Select/Birthday';
 import { Gender } from '@/components/ui/RadioGroup/Gender';
 import { Tel } from '@/components/ui/Input/Tel';
+import { PostalCode } from '@/components/ui/Input/PostalCode';
 
 export const BasicInfomationForm = () => {
   const {
@@ -77,25 +78,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='postalCode'
-          render={({ field: { onChange, ...restField } }) => (
-            <FormItem>
-              <FormLabel>郵便番号</FormLabel>
-              <FormControl>
-                <Input
-                  className='w-[180px]'
-                  placeholder='2610011'
-                  {...restField}
-                  onChange={(event) => handlePostalCodeChange(event.target.value)}
-                />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <PostalCode handlePostalCodeChange={handlePostalCodeChange} />
       </div>
 
       <div className='flex flex-row gap-x-4'>
