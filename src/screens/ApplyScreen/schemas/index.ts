@@ -5,6 +5,7 @@ import { generateFamilyNameKanaValidation } from '@/components/ui/Input/FamilyNa
 import { generateFirstNameValidation } from '@/components/ui/Input/FirstName';
 import { generateFirstNameKanaValidation } from '@/components/ui/Input/FirstNameKana';
 import { generateBirthdayValidation } from '@/components/ui/Select/Birthday';
+import { generateGenderValidation } from '@/components/ui/RadioGroup/Gender';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -13,10 +14,7 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateFamilyNameKanaValidation(),
     ...generateFirstNameKanaValidation(),
     ...generateBirthdayValidation(minAge),
-
-    gender: z.enum(['female', 'male'], {
-      required_error: '性別を選択してください',
-    }),
+    ...generateGenderValidation(),
 
     tel: z
       .string()
