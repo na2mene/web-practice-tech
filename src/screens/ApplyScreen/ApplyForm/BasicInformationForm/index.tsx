@@ -9,9 +9,6 @@ import {
 import { Input } from '@/components/ui/Input/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
 import { Select, SelectTrigger, SelectValue, SelectContent } from '@/components/ui/Select/select';
-import { Year } from '@/components/ui/Select/Birthday/year';
-import { Month } from '@/components/ui/Select/Birthday/month';
-import { Day } from '@/components/ui/Select/Birthday/day';
 import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';
@@ -19,6 +16,7 @@ import { FamilyName } from '@/components/ui/Input/FamilyName';
 import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
 import { FirstName } from '@/components/ui/Input/FirstName';
 import { FirstNameKana } from '@/components/ui/Input/FirstNameKana';
+import { Birthday } from '@/components/ui/Select/Birthday';
 
 export const BasicInfomationForm = () => {
   const {
@@ -48,58 +46,12 @@ export const BasicInfomationForm = () => {
 
       <div>
         <div className='flex flex-row gap-x-4'>
-          <FormField
-            control={control}
-            name='birthday.year'
-            render={({ field: { ref, onChange, ...restField } }) => (
-              <FormItem>
-                <FormLabel>西暦</FormLabel>
-                <Select {...restField} onValueChange={handleYearChange}>
-                  <FormControl>
-                    <SelectTrigger ref={ref} className='w-[180px]'>
-                      <SelectValue placeholder='西暦' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <Year />
-                </Select>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
-            name='birthday.month'
-            render={({ field: { ref, onChange, ...restField } }) => (
-              <FormItem>
-                <FormLabel>月</FormLabel>
-                <Select {...restField} onValueChange={handleMonthChange}>
-                  <FormControl>
-                    <SelectTrigger ref={ref} className='w-[180px]'>
-                      <SelectValue placeholder='月' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <Month />
-                </Select>
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={control}
-            name='birthday.day'
-            render={({ field: { ref, onChange, ...restField } }) => (
-              <FormItem>
-                <FormLabel>日</FormLabel>
-                <Select {...restField} onValueChange={handleDayChange}>
-                  <FormControl>
-                    <SelectTrigger ref={ref} className='w-[180px]'>
-                      <SelectValue placeholder='日' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <Day year={selectedYear} month={selectedMonth} />
-                </Select>
-              </FormItem>
-            )}
+          <Birthday
+            handleYearChange={handleYearChange}
+            handleMonthChange={handleMonthChange}
+            handleDayChange={handleDayChange}
+            selectedYear={selectedYear}
+            selectedMonth={selectedMonth}
           />
         </div>
 

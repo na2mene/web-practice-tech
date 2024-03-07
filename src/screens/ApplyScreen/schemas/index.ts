@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-import { calcAcademicPeriodDate } from '@/utils/days';
 import { generateFamilyNameValidation } from '@/components/ui/Input/FamilyName';
 import { generateFamilyNameKanaValidation } from '@/components/ui/Input/FamilyNameKana';
 import { generateFirstNameValidation } from '@/components/ui/Input/FirstName';
 import { generateFirstNameKanaValidation } from '@/components/ui/Input/FirstNameKana';
+import { generateBirthdayValidation } from '@/components/ui/Select/Birthday';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -12,54 +12,7 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateFirstNameValidation(),
     ...generateFamilyNameKanaValidation(),
     ...generateFirstNameKanaValidation(),
-
-    birthday: z
-      .object({
-        year: z.string().min(1, { message: '生年月日をすべて選択してください' }),
-        month: z.string().min(1, { message: '生年月日をすべて選択してください' }),
-        day: z.string().min(1, { message: '生年月日をすべて選択してください' }),
-      })
-      .refine(
-        ({ year, month, day }) => {
-          //
-          // NOTE: 生年月日の必須チェックをカスタムバリデーションに寄せた
-          //       どれが1つでも選択されると、必須応募資格の年齢チェックが動作してしまうので
-          //       許容できる範囲の動作だが、相関的にも担保したため、二重の実装
-          //
-          if (year === '' || month === '' || day === '') {
-            return false;
-          }
-          return true;
-        },
-        {
-          message: '生年月日をすべて選択してください',
-        },
-      )
-      .refine(
-        ({ year, month, day }) => {
-          //
-          // NOTE: 必須応募資格の年齢チェック
-          //
-          if (minAge !== 0) {
-            const birthdayPeriod = calcAcademicPeriodDate(+year, +month, +day);
-            const now = new Date();
-            const jobPeriod = calcAcademicPeriodDate(
-              now.getFullYear() + 1 - (minAge + 1),
-              now.getMonth() + 1,
-              now.getDate(),
-            );
-            // NOTE: チェック用途テスト
-            if (birthdayPeriod <= 20230401) {
-              // if (birthdayPeriod <= jobPeriod) {
-              return false;
-            }
-          }
-          return true;
-        },
-        {
-          message: '応募条件を満たす年齢に達していません',
-        },
-      ),
+    ...generateBirthdayValidation(minAge),
 
     gender: z.enum(['female', 'male'], {
       required_error: '性別を選択してください',

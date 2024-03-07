@@ -1,5 +1,5 @@
 import { useMemo, FC } from 'react';
-import { SelectContent, SelectItem } from '../select';
+import { SelectContent, SelectItem } from '../../select';
 
 export const Year: FC = () => {
   const currentYear = new Date().getFullYear();

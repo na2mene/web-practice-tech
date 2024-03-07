@@ -1,11 +1,11 @@
 import { useMemo, FC } from 'react';
-import { SelectContent, SelectItem } from '../select';
-import { BasicInformationFormSchemaType } from '@/screens/ApplyScreen/schemas';
+import { SelectContent, SelectItem } from '../../select';
 import { getDaysInMonth } from '@/utils/days';
+import { BirthdaySchema } from '@/components/ui/Select/Birthday';
 
 type DayProps = {
-  year: BasicInformationFormSchemaType['year'];
-  month: BasicInformationFormSchemaType['month'];
+  year: BirthdaySchema['birthday']['year'];
+  month: BirthdaySchema['birthday']['month'];
   isZeroPadding?: boolean;
 };
 
