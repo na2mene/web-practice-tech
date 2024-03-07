@@ -103,7 +103,25 @@ const createBasicInformationSchema = (minAge: number = 0) =>
       .max(100, { message: '100文字以内で入力してください' })
       .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
         message: '正しいメールアドレスを入力してください',
-      }),
+      })
+      .refine(
+        (email) => {
+          //
+          // NOTE: メールアドレス存在チェック
+          //
+          let data = {
+            exist: true,
+          };
+          // const data = await isExistEmail(email);
+          if (false) {
+            return false;
+          }
+          return true;
+        },
+        {
+          message: '登録済みのメールアドレスです',
+        },
+      ),
     password: z
       .string()
       .min(1, { message: 'パスワードを入力してください' })
@@ -182,20 +200,6 @@ const attachCustomValidation = (schema: ReturnType<typeof mergeSchema>) =>
   //
   schema.superRefine(async (args, ctx) => {
     const { postalCode, prefectureId, cityId } = args;
-
-    //
-    // NOTE: メールアドレス存在チェック
-    // TODO: カスタムバリデーションを任意のタイミングで実行する方法を模索したい
-    //
-    // ↓イメージで、実装してない
-    // if (特定の条件で発火させる) {
-    // const data = await isExistEmail();
-    // console.log(`メールアドレス存在チェック: ${email}`);
-    // ctx.addIssue({
-    //   code: z.ZodIssueCode.custom,
-    //   message: '登録済みのメールアドレスです',
-    //   path: ['email'],
-    // });
   });
 
 type Props = {

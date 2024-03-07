@@ -330,10 +330,9 @@ export const BasicInfomationForm = () => {
                 <Input
                   placeholder='メールアドレス'
                   {...restField}
-                  //
-                  // TODO: カスタムバリデーションを任意のタイミングで実行する方法を模索したい
-                  //
-                  onChange={(event) => handleEmailChange(event.target.value)}
+                  onChange={(event) => {
+                    handleEmailChange(event.target.value);
+                  }}
                 />
               </FormControl>
               <FormDescription>ここは説明箇所です.</FormDescription>

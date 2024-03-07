@@ -104,9 +104,6 @@ export const useBasicInformaionForm = () => {
     }
   };
 
-  //
-  // TODO: カスタムバリデーションを任意のタイミングで実行する方法を模索したい
-  //
   const handleEmailChange = (value: string) => {
     setValue('email', value);
     trigger('email');
