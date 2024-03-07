@@ -47,6 +47,9 @@ const generateBirthdayValidation = (minAge: number = 0) => {
   return minAge === 0
     ? birthdayDefaultValidation
     : {
+        //
+        // TODO: ここの重複なんとかならないか？
+        //
         birthday: z
           .object({
             year: z.string().min(1, { message: '生年月日をすべて選択してください' }),
