@@ -6,6 +6,7 @@ import { generateFirstNameValidation } from '@/components/ui/Input/FirstName';
 import { generateFirstNameKanaValidation } from '@/components/ui/Input/FirstNameKana';
 import { generateBirthdayValidation } from '@/components/ui/Select/Birthday';
 import { generateGenderValidation } from '@/components/ui/RadioGroup/Gender';
+import { generateTelValidation } from '@/components/ui/Input/Tel';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -15,11 +16,7 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateFirstNameKanaValidation(),
     ...generateBirthdayValidation(minAge),
     ...generateGenderValidation(),
-
-    tel: z
-      .string()
-      .min(1, { message: '電話番号を入力してください' })
-      .regex(/^\d{10,11}$/, { message: '正しい電話番号を入力してください' }),
+    ...generateTelValidation(),
 
     postalCode: z
       .string()

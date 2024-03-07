@@ -18,6 +18,7 @@ import { FirstName } from '@/components/ui/Input/FirstName';
 import { FirstNameKana } from '@/components/ui/Input/FirstNameKana';
 import { Birthday } from '@/components/ui/Select/Birthday';
 import { Gender } from '@/components/ui/RadioGroup/Gender';
+import { Tel } from '@/components/ui/Input/Tel';
 
 export const BasicInfomationForm = () => {
   const {
@@ -72,20 +73,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='tel'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>電話番号</FormLabel>
-              <FormControl>
-                <Input className='w-[180px]' placeholder='09012345678' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Tel />
       </div>
 
       <div>
