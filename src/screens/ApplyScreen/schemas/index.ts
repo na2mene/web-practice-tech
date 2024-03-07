@@ -1,14 +1,11 @@
 import { z } from 'zod';
 
 import { calcAcademicPeriodDate } from '@/utils/days';
+import { generateFamilyNameValidation } from '@/components/ui/Input/FamilyName';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
-    familyName: z
-      .string()
-      // NOTE: min(1)で、必須項目を表現する
-      .min(1, { message: '名字を入力してください' })
-      .max(50, { message: '50文字以内で入力してください' }),
+    ...generateFamilyNameValidation(),
     firstName: z
       .string()
       .min(1, { message: '名前を入力してください' })
