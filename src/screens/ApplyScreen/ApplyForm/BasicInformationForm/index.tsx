@@ -9,9 +9,6 @@ import {
 import { Input } from '@/components/ui/Input/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
 import { Select, SelectTrigger, SelectValue, SelectContent } from '@/components/ui/Select/select';
-import { Year } from '@/components/ui/Select/Birthday/Year';
-import { Month } from '@/components/ui/Select/Birthday/Month';
-import { Day } from '@/components/ui/Select/Birthday/Day';
 import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
 import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';

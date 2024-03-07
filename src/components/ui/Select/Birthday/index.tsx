@@ -1,16 +1,10 @@
 import { FC } from 'react';
-import { ZodEffects, z } from 'zod';
+import { z } from 'zod';
 import { PartialFormValidation } from '@/libs/zod-utils';
 import { useFormContext } from 'react-hook-form';
 import { calcAcademicPeriodDate } from '@/utils/days';
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/Form/form';
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form/form';
 import { Select, SelectTrigger, SelectValue } from '@/components/ui/Select/select';
 import { Year } from '@/components/ui/Select/Birthday/Year';
 import { Month } from '@/components/ui/Select/Birthday/Month';
