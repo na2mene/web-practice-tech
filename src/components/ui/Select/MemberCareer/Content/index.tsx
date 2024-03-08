@@ -16,7 +16,7 @@ const careers = [
   { id: 11, name: '10年以上' },
 ];
 
-export const MemberCareer: FC = () => {
+export const MemberCareerContent: FC = () => {
   // TODO: なんでエラーなのかわかってない
   // const items = useMemo(() => {
   //   careers.map((career, index) => {
