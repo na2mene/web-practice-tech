@@ -16,6 +16,7 @@ import { generateEmailValidation } from '@/components/ui/Input/Email';
 import { generatePasswordValidation } from '@/components/ui/Input/Password';
 import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/EmploymentStatus';
 import { generateMemberCareerValidation } from '@/components/ui/Select/MemberCareer';
+import { generateQualificationValidation } from '@/components/ui/Checkbox/Qualifications';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -60,18 +61,8 @@ export type BasicInformationSchemaType = z.infer<ReturnType<typeof createBasicIn
 const createApplyInformationSchema = (qualificationDataList: Props['qualificationData']) =>
   z.object({
     ...generateMemberCareerValidation(),
-    qualifications: z.array(z.number()).refine(
-      (qualifications) => {
-        const isRequiredIdList = qualificationDataList
-          .filter((data) => data.required)
-          .map((data) => data.id);
-        return isRequiredIdList.some((requiredId) => qualifications.includes(requiredId));
-      },
-      {
-        message:
-          '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
-      },
-    ),
+    ...generateQualificationValidation(qualificationDataList),
+
     // TODO: 面接希望日時（行追加のネスト）あとで
     // prefferdDateTime: z.array(
     //   z.object({
