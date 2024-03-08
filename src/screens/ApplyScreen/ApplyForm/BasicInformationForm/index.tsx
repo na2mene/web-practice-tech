@@ -21,6 +21,7 @@ import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { City } from '@/components/ui/Select/City';
 import { Town } from '@/components/ui/Input/Town';
 import { Building } from '@/components/ui/Input/Building';
+import { Email } from '@/components/ui/Input/Email';
 
 export const BasicInfomationForm = () => {
   const {
@@ -96,26 +97,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='email'
-          render={({ field: { onChange, ...restField } }) => (
-            <FormItem>
-              <FormLabel>メールアドレス</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder='メールアドレス'
-                  {...restField}
-                  onChange={(event) => {
-                    handleEmailChange(event.target.value);
-                  }}
-                />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Email handleEmailChange={handleEmailChange} />
       </div>
 
       <div>
