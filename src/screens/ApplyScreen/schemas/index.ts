@@ -15,6 +15,7 @@ import { generateBuildingValidation } from '@/components/ui/Input/Building';
 import { generateEmailValidation } from '@/components/ui/Input/Email';
 import { generatePasswordValidation } from '@/components/ui/Input/Password';
 import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/EmploymentStatus';
+import { generateMemberCareerValidation } from '@/components/ui/Select/MemberCareer';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -58,7 +59,7 @@ export type BasicInformationSchemaType = z.infer<ReturnType<typeof createBasicIn
 
 const createApplyInformationSchema = (qualificationDataList: Props['qualificationData']) =>
   z.object({
-    memberCareer: z.string(),
+    ...generateMemberCareerValidation(),
     qualifications: z.array(z.number()).refine(
       (qualifications) => {
         const isRequiredIdList = qualificationDataList
