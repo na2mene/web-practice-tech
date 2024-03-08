@@ -17,21 +17,11 @@ const careers = [
 ];
 
 export const MemberCareerContent: FC = () => {
-  // TODO: なんでエラーなのかわかってない
-  // const items = useMemo(() => {
-  //   careers.map((career, index) => {
-  //     return (
-  //       <SelectItem key={index} value={String(career.id)}>
-  //         {career.name}
-  //       </SelectItem>
-  //     )
-  //   }, []);
-
   const items = useMemo(() => {
-    return Array.from({ length: careers.length }, (_, index) => {
+    return careers.map((career, index) => {
       return (
-        <SelectItem key={index + 1} value={String(careers[index].id)}>
-          {careers[index].name}
+        <SelectItem key={index + 1} value={String(career.id)}>
+          {career.name}
         </SelectItem>
       );
     });
