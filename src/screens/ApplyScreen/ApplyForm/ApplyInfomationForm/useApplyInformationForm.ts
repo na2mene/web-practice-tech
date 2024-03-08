@@ -3,7 +3,6 @@ import { ApplyInformationSchemaType } from '../../schemas';
 
 export const useApplyInformationForm = () => {
   const {
-    control,
     setValue,
     trigger,
     formState: { errors },
@@ -26,7 +25,6 @@ export const useApplyInformationForm = () => {
   };
 
   return {
-    control,
     errors,
 
     handleQualificationChange,
