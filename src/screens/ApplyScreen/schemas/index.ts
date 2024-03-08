@@ -12,6 +12,7 @@ import { generatePrefectureValidation } from '@/components/ui/Select/Prefecture'
 import { generateCityValidation } from '@/components/ui/Select/City';
 import { generateTownValidation } from '@/components/ui/Input/Town';
 import { generateBuildingValidation } from '@/components/ui/Input/Building';
+import { generateEmailValidation } from '@/components/ui/Input/Email';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -27,32 +28,8 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateCityValidation(),
     ...generateTownValidation(),
     ...generateBuildingValidation(),
+    ...generateEmailValidation(),
 
-    email: z
-      .string()
-      .min(1, { message: 'メールアドレスを入力してください' })
-      .max(100, { message: '100文字以内で入力してください' })
-      .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, {
-        message: '正しいメールアドレスを入力してください',
-      })
-      .refine(
-        (email) => {
-          //
-          // NOTE: メールアドレス存在チェック
-          //
-          let data = {
-            exist: true,
-          };
-          // const data = await isExistEmail(email);
-          if (false) {
-            return false;
-          }
-          return true;
-        },
-        {
-          message: '登録済みのメールアドレスです',
-        },
-      ),
     password: z
       .string()
       .min(1, { message: 'パスワードを入力してください' })
