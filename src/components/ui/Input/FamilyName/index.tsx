@@ -27,6 +27,7 @@ const familyNameDefaultValidation: PartialFormValidation<FamilyNameSchemaType> =
 //
 // NOTE: この画面では、必須、必須ではないみたいなものに対応するために、
 //       一律でexportするのは関数とした.
+// TODO: カスタム以外のバリデーションでの差異がある場合は、書き直し必須か・・・？
 //
 const generateFamilyNameValidation = (isRequired: boolean = true) => {
   const familyNameValidation = isRequired
