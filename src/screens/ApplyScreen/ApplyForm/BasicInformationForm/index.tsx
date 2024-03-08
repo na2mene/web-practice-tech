@@ -3,10 +3,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormDescription,
   FormMessage,
 } from '@/components/ui/Form/form';
-import { Input } from '@/components/ui/Input/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
 import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';
 import { FamilyName } from '@/components/ui/Input/FamilyName';
@@ -22,6 +20,7 @@ import { City } from '@/components/ui/Select/City';
 import { Town } from '@/components/ui/Input/Town';
 import { Building } from '@/components/ui/Input/Building';
 import { Email } from '@/components/ui/Input/Email';
+import { Password } from '@/components/ui/Input/Password';
 
 export const BasicInfomationForm = () => {
   const {
@@ -101,20 +100,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='password'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>パスワード</FormLabel>
-              <FormControl>
-                <Input type='password' placeholder='パスワード' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Password />
       </div>
 
       <div>
