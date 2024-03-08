@@ -13,6 +13,7 @@ import { generateCityValidation } from '@/components/ui/Select/City';
 import { generateTownValidation } from '@/components/ui/Input/Town';
 import { generateBuildingValidation } from '@/components/ui/Input/Building';
 import { generateEmailValidation } from '@/components/ui/Input/Email';
+import { generatePasswordValidation } from '@/components/ui/Input/Password';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -29,12 +30,7 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateTownValidation(),
     ...generateBuildingValidation(),
     ...generateEmailValidation(),
-
-    password: z
-      .string()
-      .min(1, { message: 'パスワードを入力してください' })
-      .min(8, { message: '8文字以上のパスワードを入力してください' }),
-
+    ...generatePasswordValidation(),
     //
     //  TODO: 就業状況選択の必須チェック
     //        numberで定義した場合で色々試したけど、
