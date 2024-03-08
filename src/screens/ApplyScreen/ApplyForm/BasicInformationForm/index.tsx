@@ -19,6 +19,8 @@ import { Tel } from '@/components/ui/Input/Tel';
 import { PostalCode } from '@/components/ui/Input/PostalCode';
 import { Prefecture } from '@/components/ui/Select/Prefecture';
 import { City } from '@/components/ui/Select/City';
+import { Town } from '@/components/ui/Input/Town';
+import { Building } from '@/components/ui/Input/Building';
 
 export const BasicInfomationForm = () => {
   const {
@@ -86,35 +88,11 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='town'
-          render={({ field }) => (
-            <FormItem className='w-[380px]'>
-              <FormControl>
-                <Input placeholder='町名・番地' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Town />
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='building'
-          render={({ field }) => (
-            <FormItem className='w-[380px]'>
-              <FormControl>
-                <Input placeholder='建物名' {...field} />
-              </FormControl>
-              <FormDescription>ここは説明箇所です.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <Building />
       </div>
 
       <div>
