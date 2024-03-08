@@ -5,7 +5,6 @@ import { getZipcodeOrList } from '@/__generated_REST__/zipcloud/zipcloud';
 
 export const useBasicInformaionForm = () => {
   const {
-    control,
     watch,
     setValue,
     trigger,
@@ -115,7 +114,6 @@ export const useBasicInformaionForm = () => {
   };
 
   return {
-    control,
     errors,
 
     selectedYear,

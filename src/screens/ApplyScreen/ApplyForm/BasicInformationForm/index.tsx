@@ -1,11 +1,4 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/Form/form';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
+import { FormField, FormMessage } from '@/components/ui/Form/form';
 import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';
 import { FamilyName } from '@/components/ui/Input/FamilyName';
 import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
@@ -21,10 +14,10 @@ import { Town } from '@/components/ui/Input/Town';
 import { Building } from '@/components/ui/Input/Building';
 import { Email } from '@/components/ui/Input/Email';
 import { Password } from '@/components/ui/Input/Password';
+import { EmploymentStatus } from '@/components/ui/RadioGroup/EmploymentStatus';
 
 export const BasicInfomationForm = () => {
   const {
-    control,
     errors,
     selectedYear,
     selectedMonth,
@@ -104,51 +97,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <FormField
-          control={control}
-          name='employmentStatus'
-          render={({ field: { value, onChange, ...restField } }) => (
-            <FormItem className='space-y-3'>
-              <FormLabel>就業状況</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  {...restField}
-                  aria-label='就業状況'
-                  className='flex items-center space-x-2'
-                  onValueChange={onChange}
-                >
-                  <FormItem className='flex items-center space-x-3 space-y-0'>
-                    <FormControl>
-                      <RadioGroupItem value='1' id='on' />
-                    </FormControl>
-                    <FormLabel className='font-normal' htmlFor='on'>
-                      就業中
-                    </FormLabel>
-                  </FormItem>
-
-                  <FormItem className='flex items-center space-x-3 space-y-0'>
-                    <FormControl>
-                      <RadioGroupItem value='2' id='off' />
-                    </FormControl>
-                    <FormLabel className='font-normal' htmlFor='off'>
-                      離職中
-                    </FormLabel>
-                  </FormItem>
-
-                  <FormItem className='flex items-center space-x-3 space-y-0'>
-                    <FormControl>
-                      <RadioGroupItem value='3' id='student' />
-                    </FormControl>
-                    <FormLabel className='font-normal' htmlFor='student'>
-                      在学中
-                    </FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <EmploymentStatus />
       </div>
     </>
   );

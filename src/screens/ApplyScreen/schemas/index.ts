@@ -14,6 +14,7 @@ import { generateTownValidation } from '@/components/ui/Input/Town';
 import { generateBuildingValidation } from '@/components/ui/Input/Building';
 import { generateEmailValidation } from '@/components/ui/Input/Email';
 import { generatePasswordValidation } from '@/components/ui/Input/Password';
+import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/EmploymentStatus';
 
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
@@ -31,16 +32,8 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateBuildingValidation(),
     ...generateEmailValidation(),
     ...generatePasswordValidation(),
-    //
-    //  TODO: 就業状況選択の必須チェック
-    //        numberで定義した場合で色々試したけど、
-    //        refine系で定義しないとできない感じなので、
-    //        定義を変更して対応
-    //        本質的ではないので、やり方調べたい
-    //
-    employmentStatus: z.enum(['1', '2', '3'], {
-      required_error: '就業状況を選択してください',
-    }),
+    ...generateEmploymentStatusValidation(),
+
     // employmentStatus: z.union([
     //   z.undefined(),
     //   z.string().transform((val) => (val === '' ? undefined : Number(val))),
