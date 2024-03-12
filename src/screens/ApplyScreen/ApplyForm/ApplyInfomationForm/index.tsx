@@ -1,3 +1,5 @@
+'use client';
+
 import { useApplyInformationForm } from '@/screens/ApplyScreen/ApplyForm/ApplyInfomationForm/useApplyInformationForm';
 import { MemberCareer } from '@/components/ui/Select/MemberCareer';
 import { Qualifications } from '@/components/ui/Checkbox/Qualifications';

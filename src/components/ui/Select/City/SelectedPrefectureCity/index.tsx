@@ -1,7 +1,7 @@
 'use client';
 
 import { CityContent } from '@/components/ui/Select/City/Content';
-import { useGetCityListQuery } from '@/components/ui/Select/City/Content/useGetCitiesQuery';
+import { useGetCityListQuery } from './useGetCitiesQuery';
 import { FC } from 'react';
 
 //
@@ -11,7 +11,7 @@ type Props = {
   prefectureCode: string;
 };
 
-export const CityWrapper: FC<Props> = ({ prefectureCode }) => {
+export const SelectedPrefectureCity: FC<Props> = ({ prefectureCode }) => {
   const { data: response } = useGetCityListQuery(String(prefectureCode).padStart(2, '0'));
 
   return <CityContent cityList={response?.data.data} />;

@@ -25,17 +25,11 @@ const familyNameDefaultValidation: PartialFormValidation<FamilyNameSchemaType> =
 };
 
 //
-// NOTE: この画面では、必須、必須ではないみたいなものに対応するために、
-//       一律でexportするのは関数とした.
-// TODO: カスタム以外のバリデーションでの差異がある場合は、書き直し必須か・・・？
+// NOTE: schemaを構築するindex.tsは、ここの関数を呼び出して、展開して使用する.
+//       呼び出し元イメージ: ...generateFamilyNameValidation(),
 //
-const generateFamilyNameValidation = (isRequired: boolean = true) => {
-  const familyNameValidation = isRequired
-    ? familyNameDefaultValidation
-    : {
-        familyName: z.string().max(50, { message: '50文字以内で入力してください' }),
-      };
-  return familyNameValidation;
+const generateFamilyNameValidation = () => {
+  return familyNameDefaultValidation;
 };
 
 const FamilyName: FC = () => {

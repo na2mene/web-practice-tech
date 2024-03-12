@@ -18,6 +18,9 @@ import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/E
 import { generateMemberCareerValidation } from '@/components/ui/Select/MemberCareer';
 import { generateQualificationValidation } from '@/components/ui/Checkbox/Qualifications';
 
+//
+// NOTE: BasicInformationコンポーネントのスキーマ
+//
 const createBasicInformationSchema = (minAge: number = 0) =>
   z.object({
     ...generateFamilyNameValidation(),
@@ -56,8 +59,15 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     // employmentStatus: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
   });
 
+//
+// NOTE: Formもコンポーネントで分割されることが想像されるので、
+//       分割されたコンポーネントで型が欲しいので出力する.
+//
 export type BasicInformationSchemaType = z.infer<ReturnType<typeof createBasicInformationSchema>>;
 
+//
+// NOTE: ApplyInformationコンポーネントのスキーマ
+//
 const createApplyInformationSchema = (qualificationDataList: Props['qualificationData']) =>
   z.object({
     ...generateMemberCareerValidation(),
@@ -73,23 +83,24 @@ const createApplyInformationSchema = (qualificationDataList: Props['qualificatio
     // ),
   });
 
+//
+// NOTE: Formもコンポーネントで分割されることが想像されるので、
+//       分割されたコンポーネントで型が欲しいので出力する.
+//
 export type ApplyInformationSchemaType = z.infer<ReturnType<typeof createApplyInformationSchema>>;
 
+//
+// NOTE: 最終的にFormすべてのスキーマを作り上げる必要があるのでマージする.
+//
 const mergeSchema = (
   basicInformationSchema: ReturnType<typeof createBasicInformationSchema>,
   applyInformationSchema: ReturnType<typeof createApplyInformationSchema>,
 ) => basicInformationSchema.merge(applyInformationSchema);
 
+//
+// NOTE: Formをまとめる親コンポーネントが使用する型（useFormに渡す型）
+//
 export type ApplyFormSchemaType = z.infer<ReturnType<typeof mergeSchema>>;
-
-const attachCustomValidation = (schema: ReturnType<typeof mergeSchema>) =>
-  //
-  // TODO: superRefineもrefineも、onBlurの挙動ではなくonSubmitで発動するっぽい
-  //       onBlurに設定しても意味ないので、手動で発火させる必要があるかもしれない
-  //
-  schema.superRefine(async (args, ctx) => {
-    const { postalCode, prefectureId, cityId } = args;
-  });
 
 type Props = {
   qualificationData: {
@@ -104,22 +115,16 @@ type Props = {
 
 //
 // NOTE: エントリーポイント.
-//       可変項目のスキーマの動的生成と追加
-//       テクいフォームだと、だいたいこの構造になるか
 //
 export const createSchema = (apiData: Props) => {
-  let schema = null;
-
   //
-  // NOTE: STEP1. フォームをコンポーネントごとに分割した単位でベースのスキーマを作成する
-  //              ベースのスキーマとは、可変ではない項目を指す.
+  // NOTE: STEP1. フォームをコンポーネントごとに分割した単位でのスキーマを作成する
   //
   const basicInformationSchema = createBasicInformationSchema(apiData.jobCategoryData.min_age);
   const applyInformationSchema = createApplyInformationSchema(apiData.qualificationData);
 
   //
-  // NOTE: STEP2. すべて定義したら、mergeする
-  //              これは対象フォーム全体のベーススキーマを表す
+  // TODO: STEP2. すべて定義したら、mergeする
   //
   return mergeSchema(basicInformationSchema, applyInformationSchema);
 };
