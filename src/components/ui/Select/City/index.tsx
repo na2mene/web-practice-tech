@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from '@/components/ui/Form/form';
 import { Select, SelectTrigger, SelectValue, SelectContent } from '@/components/ui/Select/select';
-import { CityWrapper } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/CityWrapper';
+import { SelectedPrefectureCity } from '@/components/ui/Select/City/SelectedPrefectureCity';
 
 export type CitySchemaType = {
   cityId: string;
@@ -45,7 +45,7 @@ const City: FC<Props> = ({ selectedPrefecture }: Props) => {
               </SelectTrigger>
             </FormControl>
             {selectedPrefecture ? (
-              <CityWrapper prefectureCode={selectedPrefecture} />
+              <SelectedPrefectureCity prefectureCode={selectedPrefecture} />
             ) : (
               <SelectContent />
             )}

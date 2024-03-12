@@ -57,9 +57,6 @@ export const ApplyForm = ({ id }: Props) => {
   const applyFormSchema = createSchema(apiData);
 
   const forms = useForm<ApplyFormSchemaType>({
-    //
-    // NOTE: 以下回避のため、デフォルト値を設定する
-    // @see: https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable
     defaultValues: {
       familyName: '',
       firstName: '',

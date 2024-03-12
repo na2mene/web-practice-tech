@@ -1,8 +1,10 @@
+'use client';
+
 import { FormField, FormMessage } from '@/components/ui/Form/form';
-import { useBasicInformaionForm } from '@/screens/ApplyScreen/ApplyForm/BasicInformationForm/useBasicInformationForm';
+import { useBasicInformaionForm } from './useBasicInformationForm';
 import { FamilyName } from '@/components/ui/Input/FamilyName';
-import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
 import { FirstName } from '@/components/ui/Input/FirstName';
+import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
 import { FirstNameKana } from '@/components/ui/Input/FirstNameKana';
 import { Birthday } from '@/components/ui/Select/Birthday';
 import { Gender } from '@/components/ui/RadioGroup/Gender';
@@ -29,6 +31,7 @@ export const BasicInfomationForm = () => {
     handlePostalCodeChange,
     handleEmailChange,
   } = useBasicInformaionForm();
+
   return (
     <>
       <div className='flex flex-row gap-x-4'>
