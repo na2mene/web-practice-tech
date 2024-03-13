@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { ApplyInformationSchemaType } from '../../schemas';
 
 export const useApplyInformationForm = () => {
-  const { setValue, trigger } = useFormContext<ApplyInformationSchemaType>();
+  const { setValue, trigger, getValues } = useFormContext<ApplyInformationSchemaType>();
 
   const handleQualificationChange = (
     checked: boolean,
@@ -20,7 +20,14 @@ export const useApplyInformationForm = () => {
     trigger('qualifications');
   };
 
+  const handlePreferredDatetimeChange = (value: string) => {
+    // 2024年03月13日(水)
+  };
+
   return {
+    getValues,
+
     handleQualificationChange,
+    handlePreferredDatetimeChange,
   };
 };

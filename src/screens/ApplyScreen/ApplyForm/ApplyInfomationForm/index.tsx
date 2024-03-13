@@ -3,6 +3,7 @@
 import { useApplyInformationForm } from '@/screens/ApplyScreen/ApplyForm/ApplyInfomationForm/useApplyInformationForm';
 import { MemberCareer } from '@/components/ui/Select/MemberCareer';
 import { Qualifications } from '@/components/ui/Checkbox/Qualifications';
+import { PreferredDatetime } from '@/components/ui/Select/PreferredDatetime';
 
 type Props = {
   qualifications:
@@ -15,7 +16,7 @@ type Props = {
 };
 
 export const ApplyInfomationForm = ({ qualifications }: Props) => {
-  const { handleQualificationChange } = useApplyInformationForm();
+  const { handleQualificationChange, handlePreferredDatetimeChange } = useApplyInformationForm();
 
   return (
     <>
@@ -28,6 +29,10 @@ export const ApplyInfomationForm = ({ qualifications }: Props) => {
           qualifications={qualifications}
           handleQualificationChange={handleQualificationChange}
         />
+      </div>
+
+      <div>
+        <PreferredDatetime handlePreferredDatetimeChange={handlePreferredDatetimeChange} />
       </div>
     </>
   );

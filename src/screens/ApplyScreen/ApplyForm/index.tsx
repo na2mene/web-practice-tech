@@ -82,6 +82,17 @@ export const ApplyForm = ({ id }: Props) => {
       employmentStatus: undefined,
       memberCareer: '',
       qualifications: [],
+      preferredDatetime: [
+        {
+          preferredDate: '',
+          preferredTime: [
+            {
+              hour: '',
+              minute: '00',
+            },
+          ],
+        },
+      ],
     },
     resolver: zodResolver(applyFormSchema),
     mode: 'onBlur',
