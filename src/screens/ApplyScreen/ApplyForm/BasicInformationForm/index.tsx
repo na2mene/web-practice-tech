@@ -61,8 +61,17 @@ export const BasicInfomationForm = () => {
           <FormField name='birthday.month' render={() => <FormMessage />} />
         ) : errors.birthday?.day?.message ? (
           <FormField name='birthday.day' render={() => <FormMessage />} />
+        ) : errors.birthday?.message ? (
+          <FormField name='birthday' render={() => <FormMessage />} />
         ) : (
-          errors.birthday?.message && <FormField name='birthday' render={() => <FormMessage />} />
+          //
+          // TODO: グローバルエラーの取り扱いが、onChange系とonSubmitで二重管理になっているのをなんとかしたい
+          //       とりあえずは、rootも指定することで最悪の事態は避ける.
+          // @see: https://github.com/react-hook-form/resolvers/issues/561
+          //
+          errors.birthday?.root?.message && (
+            <FormField name='birthday.root' render={() => <FormMessage />} />
+          )
         )}
       </div>
 
