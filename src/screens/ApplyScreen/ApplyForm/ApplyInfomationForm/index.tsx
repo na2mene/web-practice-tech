@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const ApplyInfomationForm = ({ qualifications }: Props) => {
-  const { handleQualificationChange, handlePreferredDatetimeChange } = useApplyInformationForm();
+  const { handleQualificationChange } = useApplyInformationForm();
 
   return (
     <>
@@ -32,7 +32,7 @@ export const ApplyInfomationForm = ({ qualifications }: Props) => {
       </div>
 
       <div>
-        <PreferredDatetime handlePreferredDatetimeChange={handlePreferredDatetimeChange} />
+        <PreferredDatetime />
       </div>
     </>
   );

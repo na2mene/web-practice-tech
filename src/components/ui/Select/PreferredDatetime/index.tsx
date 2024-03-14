@@ -5,19 +5,10 @@ import { z } from 'zod';
 import { PartialFormValidation } from '@/libs/zod-utils';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from '@/components/ui/Form/form';
-import { Select, SelectTrigger, SelectValue } from '@/components/ui/Select/select';
-import { PreferredDateContent } from '@/components/ui/Select/PreferredDatetime/PreferredDateContent';
-import { PreferredHourContent } from '@/components/ui/Select/PreferredDatetime/PreferredHourContent';
-import { PreferredMinuteContent } from '@/components/ui/Select/PreferredDatetime/PreferredMinuteContent';
+import { PreferredDate } from '@/components/ui/Select/PreferredDatetime/PreferredDate';
+import { PreferredTime } from '@/components/ui/Select/PreferredDatetime/PreferredTime';
 import { Button } from '@/components/ui/Button/button';
+import { FormLabel, FormDescription } from '@/components/ui/Form/form';
 
 export type preferredDatetimeSchemaType = {
   preferredDatetime: {
@@ -47,15 +38,13 @@ const generatepreferredDatetimeValidation = () => {
   return preferredDatetimeDefaultValidation;
 };
 
-type Props = {
-  handlePreferredDatetimeChange: (value: string) => void;
-};
-const PreferredDatetime: FC<Props> = ({ handlePreferredDatetimeChange }: Props) => {
+const MAX_PREFERRED_DATETIME_LENGTH = 3;
+
+const PreferredDatetime: FC = () => {
   const { control } = useFormContext<preferredDatetimeSchemaType>();
   const {
     fields: preferredDatetimeFields,
     append,
-    replace,
     remove,
   } = useFieldArray({
     control,
@@ -63,134 +52,51 @@ const PreferredDatetime: FC<Props> = ({ handlePreferredDatetimeChange }: Props) 
   });
 
   return (
-    <>
-      {preferredDatetimeFields.map((preferredDatetime, preferredDateIndex) => {
-        console.log(preferredDatetime);
+    <Fragment>
+      <FormLabel>面接希望日</FormLabel>
+      <FormDescription>日程調整をスムーズにするポイント</FormDescription>
+      <FormDescription>・本日から7日前後の日程を選択する</FormDescription>
+      <FormDescription>・複数の日程を選択する</FormDescription>
+      <FormDescription>
+        ※選択した時間から1時間以内を希望時間とします。時間を選択しない場合は「終日可」と伝えます。面接の実施や日程は確定ではありません。
+      </FormDescription>
+
+      {preferredDatetimeFields.map((preferredDateItem, preferredDateIndex) => {
+        console.log(preferredDateItem);
         return (
-          <Fragment key={`preferredDate-${preferredDateIndex}`}>
-            <FormField
-              control={control}
-              name={`preferredDatetime.${preferredDateIndex}.preferredDate`}
-              render={({ field: { ref, onChange, ...restField } }) => (
-                <FormItem>
-                  <FormLabel>面接希望日</FormLabel>
-                  <FormDescription>日程調整をスムーズにするポイント</FormDescription>
-                  <FormDescription>・本日から7日前後の日程を選択する</FormDescription>
-                  <FormDescription>・複数の日程を選択する</FormDescription>
-                  <FormDescription>
-                    ※選択した時間から1時間以内を希望時間とします。時間を選択しない場合は「終日可」と伝えます。面接の実施や日程は確定ではありません。
-                  </FormDescription>
-                  <Select {...restField} onValueChange={onChange}>
-                    <FormControl>
-                      <SelectTrigger ref={ref} className='w-[430px]'>
-                        <SelectValue placeholder='日付' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <PreferredDateContent />
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div>
-              {preferredDatetime.preferredTime.map((item, preferredTimeIndex) => {
-                console.log(item);
-                return (
-                  <div
-                    key={`preferredDate-${preferredDateIndex}-preferredTime-${preferredTimeIndex}`}
-                  >
-                    <div className='flex flex-row gap-x-4 mt-6'>
-                      <FormField
-                        control={control}
-                        name={`preferredDatetime.${preferredDateIndex}.preferredTime.${preferredTimeIndex}.hour`}
-                        render={({ field: { ref, onChange, ...restField } }) => (
-                          <FormItem>
-                            <Select {...restField} onValueChange={onChange}>
-                              <FormControl>
-                                <SelectTrigger ref={ref} className='w-[145px]'>
-                                  <SelectValue placeholder='時' />
-                                </SelectTrigger>
-                              </FormControl>
-                              <PreferredHourContent />
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <FormField
-                        control={control}
-                        name={`preferredDatetime.${preferredDateIndex}.preferredTime.${preferredTimeIndex}.minute`}
-                        render={({ field: { ref, onChange, ...restField } }) => (
-                          <FormItem>
-                            <Select {...restField} onValueChange={onChange}>
-                              <FormControl>
-                                <SelectTrigger ref={ref} className='w-[145px]'>
-                                  <SelectValue placeholder='分' />
-                                </SelectTrigger>
-                              </FormControl>
-                              <PreferredMinuteContent />
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <Button
-                        type='button'
-                        variant='destructive'
-                        data-preferred-time-index={preferredTimeIndex}
-                        onClick={(event) => {
-                          debugger;
-                          const position = event.currentTarget.dataset.preferredTimeIndex;
-                          // const preferredDatetimeList = preferredDatetimeFields[
-                          //   Number(position)
-                          // ].preferredTime.filter((_, index) => {
-                          //   index !== preferredTimeIndex;
-                          // });
-
-                          const preferredDatetimeList = preferredDatetimeFields[
-                            preferredDateIndex
-                          ].preferredTime.toSpliced(Number(position), 1);
-
-                          // const values = [...preferredDatetimeFields];
-                          const values = JSON.parse(JSON.stringify(preferredDatetimeFields));
-                          values[preferredDateIndex].preferredTime = preferredDatetimeList;
-                          replace(values);
-                          // update(preferredDateIndex, {
-                          //   ...preferredDatetimeFields[preferredDateIndex],
-                          //   preferredTime: preferredDatetimeList,
-                          // });
-                        }}
-                      >
-                        時間を削除
-                      </Button>
-                    </div>
-                  </div>
-                );
-              })}
-
-              <Button
-                disabled={preferredDatetimeFields[preferredDateIndex].preferredTime.length >= 3}
-                type='button'
-                onClick={() => {
-                  const values = JSON.parse(JSON.stringify(preferredDatetimeFields));
-                  values[preferredDateIndex].preferredTime.push({
-                    hour: '',
-                    minute: '00',
-                  });
-                  // update(preferredDateIndex, preferredDatetimeList[preferredDateIndex]);
-                  replace(values);
-                }}
-              >
-                時間の追加
-              </Button>
-            </div>
+          //
+          // NOTE: ここがかなり重要っぽくて、useFieldArrayから配列を取得すると、
+          //       要素ごとに一意のuuid振ってくれるので、それを使わないと、appendとかremoveの挙動がおかしくなる
+          //       (e.g.) useFieldArrayの内部stateは正常なのに、
+          //              UI側が削除したものが生きてて、削除してないものが削除しているように見えるといった感じ
+          //
+          <Fragment key={preferredDateItem.id}>
+            <PreferredDate preferredDateIndex={preferredDateIndex} />
+            <PreferredTime preferredDateIndex={preferredDateIndex} />
+            <Button type='button' variant='destructive' onClick={() => remove(preferredDateIndex)}>
+              希望日を削除する
+            </Button>
           </Fragment>
         );
       })}
-    </>
+      <Button
+        disabled={preferredDatetimeFields.length >= MAX_PREFERRED_DATETIME_LENGTH}
+        type='button'
+        onClick={() =>
+          append({
+            preferredDate: '',
+            preferredTime: [
+              {
+                hour: '',
+                minute: '00',
+              },
+            ],
+          })
+        }
+      >
+        面接希望日を追加する
+      </Button>
+    </Fragment>
   );
 };
 

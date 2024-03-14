@@ -20,14 +20,9 @@ export const useApplyInformationForm = () => {
     trigger('qualifications');
   };
 
-  const handlePreferredDatetimeChange = (value: string) => {
-    // 2024年03月13日(水)
-  };
-
   return {
     getValues,
 
     handleQualificationChange,
-    handlePreferredDatetimeChange,
   };
 };
