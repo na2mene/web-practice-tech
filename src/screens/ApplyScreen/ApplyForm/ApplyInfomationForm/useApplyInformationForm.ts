@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { ApplyInformationSchemaType } from '../../schemas';
 
 export const useApplyInformationForm = () => {
-  const { setValue, trigger } = useFormContext<ApplyInformationSchemaType>();
+  const { setValue, trigger, getValues } = useFormContext<ApplyInformationSchemaType>();
 
   const handleQualificationChange = (
     checked: boolean,
@@ -21,6 +21,8 @@ export const useApplyInformationForm = () => {
   };
 
   return {
+    getValues,
+
     handleQualificationChange,
   };
 };

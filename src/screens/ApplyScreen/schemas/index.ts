@@ -17,6 +17,7 @@ import { generatePasswordValidation } from '@/components/ui/Input/Password';
 import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/EmploymentStatus';
 import { generateMemberCareerValidation } from '@/components/ui/Select/MemberCareer';
 import { generateQualificationValidation } from '@/components/ui/Checkbox/Qualifications';
+import { generatepreferredDatetimeValidation } from '@/components/ui/Select/PreferredDatetime';
 
 //
 // NOTE: BasicInformationコンポーネントのスキーマ
@@ -72,13 +73,13 @@ const createApplyInformationSchema = (qualificationDataList: Props['qualificatio
   z.object({
     ...generateMemberCareerValidation(),
     ...generateQualificationValidation(qualificationDataList),
-
+    ...generatepreferredDatetimeValidation(),
     // TODO: 面接希望日時（行追加のネスト）あとで
     // prefferdDateTime: z.array(
     //   z.object({
-    //     prefferdDate: z.date(),
-    //     prefferdHour: z.array(z.string()),
-    //     prefferdMinutes: z.array(z.string()),
+    // prefferdDate: z.date(),
+    // prefferdHour: z.array(z.string()),
+    // prefferdMinutes: z.array(z.string()),
     //   }),
     // ),
   });
