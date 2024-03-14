@@ -60,25 +60,34 @@ const PreferredDatetime: FC = () => {
       <FormDescription>
         ※選択した時間から1時間以内を希望時間とします。時間を選択しない場合は「終日可」と伝えます。面接の実施や日程は確定ではありません。
       </FormDescription>
-
-      {preferredDatetimeFields.map((preferredDateItem, preferredDateIndex) => {
-        console.log(preferredDateItem);
-        return (
-          //
-          // NOTE: ここがかなり重要っぽくて、useFieldArrayから配列を取得すると、
-          //       要素ごとに一意のuuid振ってくれるので、それを使わないと、appendとかremoveの挙動がおかしくなる
-          //       (e.g.) useFieldArrayの内部stateは正常なのに、
-          //              UI側が削除したものが生きてて、削除してないものが削除しているように見えるといった感じ
-          //
-          <Fragment key={preferredDateItem.id}>
-            <PreferredDate preferredDateIndex={preferredDateIndex} />
-            <PreferredTime preferredDateIndex={preferredDateIndex} />
-            <Button type='button' variant='destructive' onClick={() => remove(preferredDateIndex)}>
-              希望日を削除する
-            </Button>
-          </Fragment>
-        );
-      })}
+      <div className='my-6'>
+        {preferredDatetimeFields.map((preferredDateItem, preferredDateIndex) => {
+          console.log(preferredDateItem);
+          return (
+            //
+            // NOTE: ここがかなり重要っぽくて、useFieldArrayから配列を取得すると、
+            //       要素ごとに一意のuuid振ってくれるので、それを使わないと、appendとかremoveの挙動がおかしくなる
+            //       (e.g.) useFieldArrayの内部stateは正常なのに、
+            //              UI側が削除したものが生きてて、削除してないものが削除しているように見えるといった感じ
+            //
+            <div className='my-8 max-w-fit' key={preferredDateItem.id}>
+              <Fragment>
+                <PreferredDate preferredDateIndex={preferredDateIndex} />
+                <PreferredTime preferredDateIndex={preferredDateIndex} />
+                <div className='text-right'>
+                  <Button
+                    type='button'
+                    variant='destructive'
+                    onClick={() => remove(preferredDateIndex)}
+                  >
+                    希望日を削除する
+                  </Button>
+                </div>
+              </Fragment>
+            </div>
+          );
+        })}
+      </div>
       <Button
         disabled={preferredDatetimeFields.length >= MAX_PREFERRED_DATETIME_LENGTH}
         type='button'

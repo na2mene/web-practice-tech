@@ -41,7 +41,7 @@ export const PreferredTime: FC<Props> = ({ preferredDateIndex }: Props) => {
           //              UI側が削除したものが生きてて、削除してないものが削除しているように見えるといった感じ
           //
           <Fragment key={preferredTimeItem.id}>
-            <div className='flex flex-row gap-x-4 mt-6'>
+            <div className='flex flex-row gap-x-4 mt-3'>
               <FormField
                 control={control}
                 name={`preferredDatetime.${preferredDateIndex}.preferredTime.${preferredTimeIndex}.hour`}
@@ -94,8 +94,9 @@ export const PreferredTime: FC<Props> = ({ preferredDateIndex }: Props) => {
         );
       })}
 
-      <div className='mt-6'>
+      <div className='mt-6 mb-2'>
         <Button
+          className='w-full'
           disabled={preferredTimeFields.length >= MAX_PREFERRED_TIME_LENGTH}
           type='button'
           onClick={() => {
