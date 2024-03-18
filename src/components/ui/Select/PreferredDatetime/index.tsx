@@ -21,17 +21,84 @@ export type preferredDatetimeSchemaType = {
 };
 
 const preferredDatetimeDefaultValidation: PartialFormValidation<preferredDatetimeSchemaType> = {
-  preferredDatetime: z.array(
-    z.object({
-      preferredDate: z.string(),
-      preferredTime: z.array(
-        z.object({
-          hour: z.string(),
-          minute: z.string(),
-        }),
-      ),
+  preferredDatetime: z
+    .array(
+      z.object({
+        preferredDate: z.string().min(1, { message: '日付を選択してください' }),
+        preferredTime: z.array(
+          z.object({
+            hour: z.string().min(1, { message: '時間を選択してください' }),
+            minute: z.string().min(1, { message: '分を選択してください' }),
+          }),
+        ),
+      }),
+    )
+    //
+    // NOTE: 日付の重複チェックと日付ごとの時分の重複チェック
+    //
+    .superRefine((preferredDatetime, ctx) => {
+      // (e.g) { "2月28日 (火)": [0, 2], "2月25日 (土)": [1] }
+      const dateMap: {
+        [date: string]: number[];
+      } = {};
+      preferredDatetime.forEach(({ preferredDate, preferredTime }, datetimeIndex) => {
+        if (dateMap[preferredDate]) {
+          // 既にキーが存在する場合はインデックスを追加
+          dateMap[preferredDate].push(datetimeIndex);
+        } else {
+          // キーが存在しない場合は新しい配列を作成
+          dateMap[preferredDate] = [datetimeIndex];
+        }
+
+        //
+        // NOTE: 時間の文字列をキーとしたマップを作成して、
+        //       同じキーに対応するインデックスのリストを保持する
+        //       (e.g) { "16:00": [0, 2], "17:00": [1] }
+        //
+        const timeMap: {
+          [date: string]: number[];
+        } = {};
+
+        preferredTime.forEach(({ hour, minute }, timeIndex) => {
+          const timeString = `${hour}:${minute}`;
+          if (timeMap[timeString]) {
+            // 既にキーが存在する場合はインデックスを追加
+            timeMap[timeString].push(timeIndex);
+          } else {
+            // キーが存在しない場合は新しい配列を作成
+            timeMap[timeString] = [timeIndex];
+          }
+        });
+
+        // マップを走査して重複がある時間に対してエラーを追加
+        Object.entries(timeMap).forEach(([timeString, indices]) => {
+          if (indices.length > 1) {
+            // 重複がある場合、すべてのインデックスに対してエラーを追加
+            indices.forEach((targetIndex) => {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: '時間が重複しています',
+                path: [`${datetimeIndex}.preferredTime.${targetIndex}.hour`],
+              });
+            });
+          }
+        });
+      });
+
+      // マップを走査して重複がある時間に対してエラーを追加
+      Object.entries(dateMap).forEach(([dateString, indices]) => {
+        if (indices.length > 1) {
+          // 重複がある場合、すべてのインデックスに対してエラーを追加
+          indices.forEach((targetIndex) => {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: '日付が重複しています',
+              path: [`${targetIndex}.preferredDate`],
+            });
+          });
+        }
+      });
     }),
-  ),
 };
 
 const generatepreferredDatetimeValidation = () => {
@@ -40,7 +107,24 @@ const generatepreferredDatetimeValidation = () => {
 
 const MAX_PREFERRED_DATETIME_LENGTH = 3;
 
-const PreferredDatetime: FC = () => {
+type Props = {
+  handlePreferredDateChange: (value: string, preferredDateIndex: number) => void;
+  handlePreferredTimeHourChange: (
+    value: string,
+    preferredDateIndex: number,
+    preferredTimeIndex: number,
+  ) => void;
+  handlePreferredTimeMinuteChange: (
+    value: string,
+    preferredDateIndex: number,
+    preferredTimeIndex: number,
+  ) => void;
+};
+const PreferredDatetime: FC<Props> = ({
+  handlePreferredDateChange,
+  handlePreferredTimeHourChange,
+  handlePreferredTimeMinuteChange,
+}: Props) => {
   const { control } = useFormContext<preferredDatetimeSchemaType>();
   const {
     fields: preferredDatetimeFields,
@@ -62,7 +146,6 @@ const PreferredDatetime: FC = () => {
       </FormDescription>
       <div className='my-6'>
         {preferredDatetimeFields.map((preferredDateItem, preferredDateIndex) => {
-          console.log(preferredDateItem);
           return (
             //
             // NOTE: ここがかなり重要っぽくて、useFieldArrayから配列を取得すると、
@@ -72,8 +155,15 @@ const PreferredDatetime: FC = () => {
             //
             <div className='my-8 max-w-fit' key={preferredDateItem.id}>
               <Fragment>
-                <PreferredDate preferredDateIndex={preferredDateIndex} />
-                <PreferredTime preferredDateIndex={preferredDateIndex} />
+                <PreferredDate
+                  handlePreferredDateChange={handlePreferredDateChange}
+                  preferredDateIndex={preferredDateIndex}
+                />
+                <PreferredTime
+                  handlePreferredTimeHourChange={handlePreferredTimeHourChange}
+                  handlePreferredTimeMinuteChange={handlePreferredTimeMinuteChange}
+                  preferredDateIndex={preferredDateIndex}
+                />
                 <div className='text-right'>
                   <Button
                     type='button'
