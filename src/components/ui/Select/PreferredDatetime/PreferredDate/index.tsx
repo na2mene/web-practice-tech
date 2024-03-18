@@ -10,9 +10,13 @@ import { preferredDatetimeSchemaType } from '..';
 
 type Props = {
   preferredDateIndex: number;
+  handlePreferredDateChange: (value: string, preferredDateIndex: number) => void;
 };
 
-export const PreferredDate: FC<Props> = ({ preferredDateIndex }: Props) => {
+export const PreferredDate: FC<Props> = ({
+  preferredDateIndex,
+  handlePreferredDateChange,
+}: Props) => {
   const { control } = useFormContext<preferredDatetimeSchemaType>();
 
   return (
@@ -22,7 +26,10 @@ export const PreferredDate: FC<Props> = ({ preferredDateIndex }: Props) => {
         name={`preferredDatetime.${preferredDateIndex}.preferredDate`}
         render={({ field: { ref, onChange, ...restField } }) => (
           <FormItem>
-            <Select {...restField} onValueChange={onChange}>
+            <Select
+              {...restField}
+              onValueChange={(value) => handlePreferredDateChange(value, preferredDateIndex)}
+            >
               <FormControl>
                 <SelectTrigger ref={ref} className='w-[430px]'>
                   <SelectValue placeholder='日付' />

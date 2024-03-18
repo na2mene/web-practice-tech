@@ -14,8 +14,22 @@ const MAX_PREFERRED_TIME_LENGTH = 3;
 
 type Props = {
   preferredDateIndex: number;
+  handlePreferredTimeHourChange: (
+    value: string,
+    preferredDateIndex: number,
+    preferredTimeIndex: number,
+  ) => void;
+  handlePreferredTimeMinuteChange: (
+    value: string,
+    preferredDateIndex: number,
+    preferredTimeIndex: number,
+  ) => void;
 };
-export const PreferredTime: FC<Props> = ({ preferredDateIndex }: Props) => {
+export const PreferredTime: FC<Props> = ({
+  preferredDateIndex,
+  handlePreferredTimeHourChange,
+  handlePreferredTimeMinuteChange,
+}: Props) => {
   const { control } = useFormContext<preferredDatetimeSchemaType>();
   const {
     fields: preferredTimeFields,
@@ -26,13 +40,9 @@ export const PreferredTime: FC<Props> = ({ preferredDateIndex }: Props) => {
     name: `preferredDatetime.${preferredDateIndex}.preferredTime` as 'preferredDatetime.0.preferredTime',
   });
 
-  console.log('preferredTimeコンポーネント');
-  console.log('%o', preferredTimeFields);
-
   return (
     <div>
       {preferredTimeFields.map((preferredTimeItem, preferredTimeIndex) => {
-        console.log('%o', preferredTimeItem);
         return (
           //
           // NOTE: ここがかなり重要っぽくて、useFieldArrayから配列を取得すると、
@@ -47,7 +57,12 @@ export const PreferredTime: FC<Props> = ({ preferredDateIndex }: Props) => {
                 name={`preferredDatetime.${preferredDateIndex}.preferredTime.${preferredTimeIndex}.hour`}
                 render={({ field: { ref, onChange, ...restField } }) => (
                   <FormItem>
-                    <Select {...restField} onValueChange={onChange}>
+                    <Select
+                      {...restField}
+                      onValueChange={(value) =>
+                        handlePreferredTimeHourChange(value, preferredDateIndex, preferredTimeIndex)
+                      }
+                    >
                       <FormControl>
                         <SelectTrigger ref={ref} className='w-[145px]'>
                           <SelectValue placeholder='時' />
@@ -65,7 +80,16 @@ export const PreferredTime: FC<Props> = ({ preferredDateIndex }: Props) => {
                 name={`preferredDatetime.${preferredDateIndex}.preferredTime.${preferredTimeIndex}.minute`}
                 render={({ field: { ref, onChange, ...restField } }) => (
                   <FormItem>
-                    <Select {...restField} onValueChange={onChange}>
+                    <Select
+                      {...restField}
+                      onValueChange={(value) =>
+                        handlePreferredTimeMinuteChange(
+                          value,
+                          preferredDateIndex,
+                          preferredTimeIndex,
+                        )
+                      }
+                    >
                       <FormControl>
                         <SelectTrigger ref={ref} className='w-[145px]'>
                           <SelectValue placeholder='分' />
@@ -82,9 +106,7 @@ export const PreferredTime: FC<Props> = ({ preferredDateIndex }: Props) => {
                 type='button'
                 variant='destructive'
                 onClick={() => {
-                  console.log('%o', preferredTimeFields);
                   remove(preferredTimeIndex);
-                  console.log('%o', preferredTimeFields);
                 }}
               >
                 時間を削除
