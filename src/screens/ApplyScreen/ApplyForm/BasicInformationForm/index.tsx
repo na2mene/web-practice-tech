@@ -20,7 +20,6 @@ import { EmploymentStatus } from '@/components/ui/RadioGroup/EmploymentStatus';
 
 export const BasicInfomationForm = () => {
   const {
-    errors,
     selectedYear,
     selectedMonth,
     selectedPrefecture,
@@ -45,34 +44,13 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <div className='flex flex-row gap-x-4'>
-          <Birthday
-            handleYearChange={handleYearChange}
-            handleMonthChange={handleMonthChange}
-            handleDayChange={handleDayChange}
-            selectedYear={selectedYear}
-            selectedMonth={selectedMonth}
-          />
-        </div>
-
-        {errors.birthday?.year?.message ? (
-          <FormField name='birthday.year' render={() => <FormMessage />} />
-        ) : errors.birthday?.month?.message ? (
-          <FormField name='birthday.month' render={() => <FormMessage />} />
-        ) : errors.birthday?.day?.message ? (
-          <FormField name='birthday.day' render={() => <FormMessage />} />
-        ) : errors.birthday?.message ? (
-          <FormField name='birthday' render={() => <FormMessage />} />
-        ) : (
-          //
-          // TODO: グローバルエラーの取り扱いが、onChange系とonSubmitで二重管理になっているのをなんとかしたい
-          //       とりあえずは、rootも指定することで最悪の事態は避ける.
-          // @see: https://github.com/react-hook-form/resolvers/issues/561
-          //
-          errors.birthday?.root?.message && (
-            <FormField name='birthday.root' render={() => <FormMessage />} />
-          )
-        )}
+        <Birthday
+          handleYearChange={handleYearChange}
+          handleMonthChange={handleMonthChange}
+          handleDayChange={handleDayChange}
+          selectedYear={selectedYear}
+          selectedMonth={selectedMonth}
+        />
       </div>
 
       <div>
