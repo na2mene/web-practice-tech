@@ -4,12 +4,7 @@ import { getDaysInMonth } from '@/utils/days';
 import { getZipcodeOrList } from '@/__generated_REST__/zipcloud/zipcloud';
 
 export const useBasicInformaionForm = () => {
-  const {
-    watch,
-    setValue,
-    trigger,
-    formState: { errors },
-  } = useFormContext<BasicInformationSchemaType>();
+  const { watch, setValue, trigger } = useFormContext<BasicInformationSchemaType>();
 
   const selectedYear = watch('birthday.year');
   const selectedMonth = watch('birthday.month');
@@ -114,8 +109,6 @@ export const useBasicInformaionForm = () => {
   };
 
   return {
-    errors,
-
     selectedYear,
     selectedMonth,
     selectedPrefecture,

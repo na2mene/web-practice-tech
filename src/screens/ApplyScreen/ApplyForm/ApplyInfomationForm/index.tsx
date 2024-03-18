@@ -37,13 +37,11 @@ export const ApplyInfomationForm = ({ qualifications }: Props) => {
       </div>
 
       <div>
-        <div>
-          <PreferredDatetime
-            handlePreferredDateChange={handlePreferredDateChange}
-            handlePreferredTimeHourChange={handlePreferredTimeHourChange}
-            handlePreferredTimeMinuteChange={handlePreferredTimeMinuteChange}
-          />
-        </div>
+        <PreferredDatetime
+          handlePreferredDateChange={handlePreferredDateChange}
+          handlePreferredTimeHourChange={handlePreferredTimeHourChange}
+          handlePreferredTimeMinuteChange={handlePreferredTimeMinuteChange}
+        />
       </div>
     </>
   );

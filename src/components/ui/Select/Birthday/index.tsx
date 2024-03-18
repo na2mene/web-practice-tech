@@ -4,7 +4,13 @@ import { PartialFormValidation } from '@/libs/zod-utils';
 import { useFormContext } from 'react-hook-form';
 import { calcAcademicPeriodDate } from '@/utils/days';
 
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/Form/form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/Form/form';
 import { Select, SelectTrigger, SelectValue } from '@/components/ui/Select/select';
 import { Year } from '@/components/ui/Select/Birthday/Year';
 import { Month } from '@/components/ui/Select/Birthday/Month';
@@ -39,6 +45,7 @@ const birthdayDefaultValidation: PartialFormValidation<BirthdaySchemaType> = {
       },
       {
         message: '生年月日をすべて選択してください',
+        path: [''],
       },
     ),
 };
@@ -70,6 +77,7 @@ const generateBirthdayValidation = (minAge: number = 0) => {
           },
           {
             message: '応募条件を満たす年齢に達していません',
+            path: [''],
           },
         ),
       };
@@ -89,63 +97,78 @@ const Birthday: FC<Props> = ({
   selectedYear,
   selectedMonth,
 }: Props) => {
-  const { control } = useFormContext<BirthdaySchemaType>();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<BirthdaySchemaType>();
 
   return (
     <>
-      <FormField
-        control={control}
-        name='birthday.year'
-        render={({ field: { ref, onChange, ...restField } }) => (
-          <FormItem>
-            <FormLabel>西暦</FormLabel>
-            <Select {...restField} onValueChange={handleYearChange}>
-              <FormControl>
-                <SelectTrigger ref={ref} className='w-[180px]'>
-                  <SelectValue placeholder='西暦' />
-                </SelectTrigger>
-              </FormControl>
-              <Year />
-            </Select>
-          </FormItem>
-        )}
-      />
+      <div className='flex flex-row gap-x-4'>
+        <FormField
+          control={control}
+          name='birthday.year'
+          render={({ field: { ref, onChange, ...restField } }) => (
+            <FormItem>
+              <FormLabel>西暦</FormLabel>
+              <Select {...restField} onValueChange={handleYearChange}>
+                <FormControl>
+                  <SelectTrigger ref={ref} className='w-[180px]'>
+                    <SelectValue placeholder='西暦' />
+                  </SelectTrigger>
+                </FormControl>
+                <Year />
+              </Select>
+            </FormItem>
+          )}
+        />
 
-      <FormField
-        control={control}
-        name='birthday.month'
-        render={({ field: { ref, onChange, ...restField } }) => (
-          <FormItem>
-            <FormLabel>月</FormLabel>
-            <Select {...restField} onValueChange={handleMonthChange}>
-              <FormControl>
-                <SelectTrigger ref={ref} className='w-[180px]'>
-                  <SelectValue placeholder='月' />
-                </SelectTrigger>
-              </FormControl>
-              <Month />
-            </Select>
-          </FormItem>
-        )}
-      />
+        <FormField
+          control={control}
+          name='birthday.month'
+          render={({ field: { ref, onChange, ...restField } }) => (
+            <FormItem>
+              <FormLabel>月</FormLabel>
+              <Select {...restField} onValueChange={handleMonthChange}>
+                <FormControl>
+                  <SelectTrigger ref={ref} className='w-[180px]'>
+                    <SelectValue placeholder='月' />
+                  </SelectTrigger>
+                </FormControl>
+                <Month />
+              </Select>
+            </FormItem>
+          )}
+        />
 
-      <FormField
-        control={control}
-        name='birthday.day'
-        render={({ field: { ref, onChange, ...restField } }) => (
-          <FormItem>
-            <FormLabel>日</FormLabel>
-            <Select {...restField} onValueChange={handleDayChange}>
-              <FormControl>
-                <SelectTrigger ref={ref} className='w-[180px]'>
-                  <SelectValue placeholder='日' />
-                </SelectTrigger>
-              </FormControl>
-              <Day year={selectedYear} month={selectedMonth} />
-            </Select>
-          </FormItem>
-        )}
-      />
+        <FormField
+          control={control}
+          name='birthday.day'
+          render={({ field: { ref, onChange, ...restField } }) => (
+            <FormItem>
+              <FormLabel>日</FormLabel>
+              <Select {...restField} onValueChange={handleDayChange}>
+                <FormControl>
+                  <SelectTrigger ref={ref} className='w-[180px]'>
+                    <SelectValue placeholder='日' />
+                  </SelectTrigger>
+                </FormControl>
+                <Day year={selectedYear} month={selectedMonth} />
+              </Select>
+            </FormItem>
+          )}
+        />
+      </div>
+
+      {errors.birthday?.year?.message ? (
+        <FormField name='birthday.year' render={() => <FormMessage />} />
+      ) : errors.birthday?.month?.message ? (
+        <FormField name='birthday.month' render={() => <FormMessage />} />
+      ) : errors.birthday?.day?.message ? (
+        <FormField name='birthday.day' render={() => <FormMessage />} />
+      ) : (
+        <FormField name='birthday' render={() => <FormMessage />} />
+      )}
     </>
   );
 };
