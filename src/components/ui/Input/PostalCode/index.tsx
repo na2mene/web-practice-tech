@@ -20,7 +20,6 @@ type PostalCodeSchemaType = {
 const postalCodeDefaultValidation: PartialFormValidation<PostalCodeSchemaType> = {
   postalCode: z
     .string()
-    .max(8, { message: '正しい郵便番号を入力してください' })
     .regex(/^(?:\d{7}|\d{3}-\d{4})$/, { message: '正しい郵便番号を入力してください' })
     //
     // TODO: 必須ではないが、入力するならバリデーションを発火させたい場合の書き方？

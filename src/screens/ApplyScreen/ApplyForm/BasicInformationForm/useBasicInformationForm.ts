@@ -87,7 +87,7 @@ export const useBasicInformaionForm = () => {
       //
       //       ここもTanstack経由のメリットがないので、axiosで呼ぶでOK
       const zipcodeData = await getZipcodeOrList(
-        { zipcode: value },
+        { zipcode: sanitizedPostalCode },
         { baseURL: 'https://zipcloud.ibsnet.co.jp' },
       );
       const {
