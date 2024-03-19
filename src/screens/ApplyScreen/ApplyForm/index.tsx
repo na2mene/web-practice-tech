@@ -99,7 +99,11 @@ export const ApplyForm = ({ id }: Props) => {
   });
 
   const onSubmit: SubmitHandler<ApplyFormSchemaType> = (data) => {
-    window.alert(JSON.stringify(data));
+    window.alert(`変換前: ${JSON.stringify(data)}`);
+
+    data.postalCode = data.postalCode.replace(/-/g, '');
+
+    window.alert(`変換後: ${JSON.stringify(data)}`);
   };
 
   console.log(forms.formState.errors);

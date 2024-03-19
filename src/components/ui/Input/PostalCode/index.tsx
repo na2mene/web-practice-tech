@@ -20,8 +20,8 @@ type PostalCodeSchemaType = {
 const postalCodeDefaultValidation: PartialFormValidation<PostalCodeSchemaType> = {
   postalCode: z
     .string()
-    .max(7, { message: '正しい郵便番号を入力してください' })
-    .regex(/^\d{7}$/, { message: '正しい郵便番号を入力してください' })
+    .max(8, { message: '正しい郵便番号を入力してください' })
+    .regex(/^(?:\d{7}|\d{3}-\d{4})$/, { message: '正しい郵便番号を入力してください' })
     //
     // TODO: 必須ではないが、入力するならバリデーションを発火させたい場合の書き方？
     // @see: https://zenn.dev/kaz_z/articles/how-to-use-zod#%E5%85%A5%E5%8A%9B%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88%E3%81%AF%E3%83%90%E3%83%AA%E3%83%87%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%8C%E5%BF%85%E8%A6%81%E3%81%A0%E3%81%91%E3%81%A9%E3%80%81%E7%A9%BA%E3%81%AE%E3%81%BE%E3%81%BE%E3%81%A7%E3%82%82%E3%81%84%E3%81%84
