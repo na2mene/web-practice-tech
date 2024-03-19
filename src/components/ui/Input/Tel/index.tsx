@@ -21,7 +21,10 @@ const telDefaultValidation: PartialFormValidation<TelSchemaType> = {
   tel: z
     .string()
     .min(1, { message: '電話番号を入力してください' })
-    .regex(/^\d{10,11}$/, { message: '正しい電話番号を入力してください' }),
+    .max(13, { message: '正しい電話番号を入力してください' })
+    .regex(/^(?:\d{2,5}-?\d{1,4}-?\d{4}|\d{10,11})$/, {
+      message: '正しい電話番号を入力してください',
+    }),
 };
 
 const generateTelValidation = () => {

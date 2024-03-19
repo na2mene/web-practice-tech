@@ -102,6 +102,7 @@ export const ApplyForm = ({ id }: Props) => {
     window.alert(`変換前: ${JSON.stringify(data)}`);
 
     data.postalCode = data.postalCode.replace(/-/g, '');
+    data.tel = data.tel.replace(/-/g, '');
 
     window.alert(`変換後: ${JSON.stringify(data)}`);
   };
