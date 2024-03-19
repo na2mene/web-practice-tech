@@ -73,7 +73,13 @@ export const useBasicInformaionForm = () => {
     setValue('postalCode', value);
     trigger('postalCode');
 
-    if (value.length === 7) {
+    //
+    // NOTE: ハイフンを許容したUIのため、Stateを変更せず、
+    //       ロジックで対応する
+    //
+    const sanitizedPostalCode = value.replace(/-/g, '');
+
+    if (sanitizedPostalCode.length === 7) {
       //
       // TODO: 本来、refineで定義する様な内容とフォームへ反映するという2つの機能が包括されている
       //       入力された郵便番号が正しいかのチェックとそれを踏まえて都道府県、市区町村、町名・番地への反映
