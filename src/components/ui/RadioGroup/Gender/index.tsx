@@ -13,7 +13,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
 
 type genderSchemaType = {
-  gender: 'female' | 'male' | '';
+  gender: 'female' | 'male';
 };
 
 const genderDefaultValidation: PartialFormValidation<genderSchemaType> = {
@@ -26,7 +26,10 @@ const generateGenderValidation = () => {
   return genderDefaultValidation;
 };
 
-const Gender: FC = () => {
+type Props = {
+  handleGenderChange: (value: string) => void;
+};
+const Gender: FC<Props> = ({ handleGenderChange }: Props) => {
   const { control } = useFormContext<genderSchemaType>();
 
   return (
@@ -42,7 +45,7 @@ const Gender: FC = () => {
               aria-label='性別'
               className='flex items-center space-x-2'
               defaultValue={`${value}`}
-              onValueChange={onChange}
+              onValueChange={handleGenderChange}
             >
               <FormItem className='flex items-center space-x-3 space-y-0'>
                 <FormControl>

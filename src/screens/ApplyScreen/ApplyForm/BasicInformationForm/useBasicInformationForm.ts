@@ -52,6 +52,19 @@ export const useBasicInformaionForm = () => {
     trigger('birthday');
   };
 
+  //
+  // NOTE: RHFのmode: onBlurだと、ラジオボタンは反応しない（選択後、他の場所をクリックしないと反応しない）
+  //       ので、ラジオボタンだけは、onChangeな動きで反応させるために、handlerを切る
+  //
+  const handleGenderChange = (value: string) => {
+    if (value === 'male' || value === 'female') {
+      setValue('gender', value);
+    } else {
+      console.error('male | female以外の値が設定されようとしています。');
+    }
+    trigger('gender');
+  };
+
   const handlePrefectureChange = (value: string) => {
     //
     // NOTE: ハンドラーを設定した場合は、この2つは必須と考えていい.
@@ -114,6 +127,19 @@ export const useBasicInformaionForm = () => {
     trigger('email');
   };
 
+  //
+  // NOTE: RHFのmode: onBlurだと、ラジオボタンは反応しない（選択後、他の場所をクリックしないと反応しない）
+  //       ので、ラジオボタンだけは、onChangeな動きで反応させるために、handlerを切る
+  //
+  const handleEmploymentStatusChange = (value: string) => {
+    if (value === '1' || value === '2' || value === '3') {
+      setValue('employmentStatus', value);
+    } else {
+      console.error('1 | 2 | 3 以外の値が設定されようとしています。');
+    }
+    trigger('employmentStatus');
+  };
+
   return {
     selectedYear,
     selectedMonth,
@@ -122,8 +148,10 @@ export const useBasicInformaionForm = () => {
     handleYearChange,
     handleMonthChange,
     handleDayChange,
+    handleGenderChange,
     handlePrefectureChange,
     handlePostalCodeChange,
     handleEmailChange,
+    handleEmploymentStatusChange,
   };
 };

@@ -26,9 +26,11 @@ export const BasicInfomationForm = () => {
     handleYearChange,
     handleMonthChange,
     handleDayChange,
+    handleGenderChange,
     handlePrefectureChange,
     handlePostalCodeChange,
     handleEmailChange,
+    handleEmploymentStatusChange,
   } = useBasicInformaionForm();
 
   return (
@@ -54,7 +56,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <Gender />
+        <Gender handleGenderChange={handleGenderChange} />
       </div>
 
       <div>
@@ -87,7 +89,7 @@ export const BasicInfomationForm = () => {
       </div>
 
       <div>
-        <EmploymentStatus />
+        <EmploymentStatus handleEmploymentStatusChange={handleEmploymentStatusChange} />
       </div>
     </>
   );
