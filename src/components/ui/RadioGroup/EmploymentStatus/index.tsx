@@ -13,7 +13,7 @@ import {
 import { RadioGroup, RadioGroupItem } from '@/components/ui/RadioGroup/radio-group';
 
 type EmploymentStatusSchemaType = {
-  employmentStatus: '1' | '2' | '3' | '';
+  employmentStatus: '1' | '2' | '3';
 };
 
 const employmentStatusDefaultValidation: PartialFormValidation<EmploymentStatusSchemaType> = {
@@ -33,7 +33,10 @@ const generateEmploymentStatusValidation = () => {
   return employmentStatusDefaultValidation;
 };
 
-const EmploymentStatus: FC = () => {
+type Props = {
+  handleEmploymentStatusChange: (value: string) => void;
+};
+const EmploymentStatus: FC<Props> = ({ handleEmploymentStatusChange }: Props) => {
   const { control } = useFormContext<EmploymentStatusSchemaType>();
 
   return (
@@ -48,7 +51,7 @@ const EmploymentStatus: FC = () => {
               {...restField}
               aria-label='就業状況'
               className='flex items-center space-x-2'
-              onValueChange={onChange}
+              onValueChange={handleEmploymentStatusChange}
             >
               <FormItem className='flex items-center space-x-3 space-y-0'>
                 <FormControl>
