@@ -12,5 +12,9 @@ export const QualificationsAcquisitionScheduledButton: FC<Props> = ({
   if (isHidden) {
     return <></>;
   }
-  return <Button onClick={onClick}>取得予定（1年以内）の資格・免許を追加する</Button>;
+  return (
+    <Button className='w-fit' onClick={onClick}>
+      取得予定（1年以内）の資格・免許を追加する
+    </Button>
+  );
 };

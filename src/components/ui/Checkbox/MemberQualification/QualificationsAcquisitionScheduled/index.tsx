@@ -43,35 +43,43 @@ export const QualificationsAcquisitionScheduled: FC<Props> = ({
       name='memberQualifications.qualificationsAcquisitionScheduled'
       render={() => (
         <FormItem>
-          <FormLabel>取得予定（1年以内）の資格・免許</FormLabel>
-          {qualificationsAcquisitionScheduled.map((qualificationAcquisitionScheduled, index) => (
-            <FormField
-              key={index}
-              control={control}
-              name='memberQualifications.qualificationsAcquisitionScheduled'
-              render={({ field: { value, onChange, ...restField } }) => (
-                <FormItem key={index}>
-                  <FormControl>
-                    <Checkbox
-                      {...restField}
-                      checked={value?.includes(qualificationAcquisitionScheduled.id)}
-                      onCheckedChange={(checked: boolean) =>
-                        handleQualificationsAcquisitionScheduledChange(
-                          checked,
-                          value,
-                          qualificationAcquisitionScheduled.id,
-                        )
-                      }
+          <div className='flex flex-row'>
+            <FormLabel className='w-36'>取得予定（1年以内）の資格・免許</FormLabel>
+            <div>
+              <FormMessage className='mb-2' />
+              <div className='flex flex-row gap-x-4'>
+                {qualificationsAcquisitionScheduled.map(
+                  (qualificationAcquisitionScheduled, index) => (
+                    <FormField
+                      key={index}
+                      control={control}
+                      name='memberQualifications.qualificationsAcquisitionScheduled'
+                      render={({ field: { value, onChange, ...restField } }) => (
+                        <FormItem key={index} className='flex flex-row items-center space-y-0'>
+                          <FormControl>
+                            <Checkbox
+                              {...restField}
+                              checked={value?.includes(qualificationAcquisitionScheduled.id)}
+                              onCheckedChange={(checked: boolean) =>
+                                handleQualificationsAcquisitionScheduledChange(
+                                  checked,
+                                  value,
+                                  qualificationAcquisitionScheduled.id,
+                                )
+                              }
+                            />
+                          </FormControl>
+                          <FormLabel className='ml-1 text-sm font-normal'>
+                            {qualificationAcquisitionScheduled.name}
+                          </FormLabel>
+                        </FormItem>
+                      )}
                     />
-                  </FormControl>
-                  <FormLabel className='text-sm font-normal'>
-                    {qualificationAcquisitionScheduled.name}
-                  </FormLabel>
-                </FormItem>
-              )}
-            />
-          ))}
-          <FormMessage />
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
         </FormItem>
       )}
     />
