@@ -40,56 +40,77 @@ const generateMemberQualificationValidation = (
   const isRequiredIdList = qualificationDataList
     .filter((data) => data.required)
     .map((data) => data.id);
+
   return {
     memberQualifications: z
       .object({
-        qualifications: z.array(z.number()).refine(
-          (qualifications) => {
-            return isRequiredIdList.some((requiredId) => qualifications.includes(requiredId));
-          },
-          {
-            message:
-              '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
-          },
-        ),
-        qualificationsAcquisitionScheduled: z
-          .array(z.number())
-          .optional()
-          .refine(
-            (qualificationsAcquisitionScheduled) => {
-              //
-              // NOTE: こちらは基本的にバリデーションをかけないが、入力があるときだけ発火させたいので、
-              //       空の場合は、基本的にtrueを返す.
-              //
-              if (qualificationsAcquisitionScheduled?.length === 0) return true;
-              return isRequiredIdList.some((requiredId) =>
-                qualificationsAcquisitionScheduled?.includes(requiredId),
-              );
-            },
-            {
+        qualifications: z.array(z.number()),
+        qualificationsAcquisitionScheduled: z.array(z.number()),
+      })
+      .superRefine(({ qualifications, qualificationsAcquisitionScheduled }, ctx) => {
+        //
+        // NOTE: qualificationsAcquisitionScheduledが存在するかどうかでバリデーションの範囲が変化する
+        //       存在する場合は、全体のチェックボックスとして、バリデーションを計算する
+        //
+        if (qualificationsAcquisitionScheduled?.length === 0) {
+          //
+          // NOTE: qualificationsの応募条件を満たしているか.
+          //       qualificationsの選択肢だけを基にバリデーションを組めばよい.
+          //
+          const hasRequiredIdForQualification = isRequiredIdList.some((requiredId) =>
+            qualifications.includes(requiredId),
+          );
+          if (!hasRequiredIdForQualification) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
               message:
                 '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
-            },
-          ),
-      })
-      .refine(
-        ({ qualifications, qualificationsAcquisitionScheduled }) => {
+              path: ['qualifications'],
+            });
+          }
+        } else {
           //
-          // NOTE: 相関チェックとしても、入力があるときだけバリデーションロジックが走るようにする.
+          // NOTE: qualifications と qualificationsAcquisitionScheduledを含めて、応募条件を満たしているか.
+          //       選択されている場合のみ、バリデーションが発火するように制御している.
+          //       重複を許可した形で、配列を統合して、必須資格のIdを持っていればOK
           //
-          if (qualificationsAcquisitionScheduled?.length === 0) return true;
+          const mergeQualificationList = [...qualifications, ...qualificationsAcquisitionScheduled];
+          const hasRequiredId = isRequiredIdList.some((requiredId) =>
+            mergeQualificationList.includes(requiredId),
+          );
+
+          if (!hasRequiredId) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message:
+                '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
+              //
+              // NOTE: 応募条件を満たしているかどうかは、一律、qualificationsで出力
+              //
+              path: ['qualifications'],
+            });
+          }
+
+          //
+          // NOTE: qualifications と qualificationsAcquisitionScheduledを
+          //       比較して、同じものを選択されてしまっていないかのチェック
+          //
           const isDuplicate = qualifications.some((value) =>
             qualificationsAcquisitionScheduled?.includes(value),
           );
+
           if (isDuplicate) {
-            return false;
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: '保有資格・免許と取得予定の資格・免許は違う資格を選択してください。',
+              //
+              // NOTE: 保有資格と取得予定の資格の重複は、一律、qualificationsAcquisitionScheduledで出力
+              //
+              path: ['qualificationsAcquisitionScheduled'],
+            });
           }
-          return true;
-        },
-        {
-          message: '保有資格・免許と取得予定の資格・免許は違う資格を選択してください。',
-        },
-      ),
+        }
+      }),
   };
 };
 
