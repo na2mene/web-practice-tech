@@ -15,6 +15,9 @@ export type MemberQualificationsSchemaType = {
   };
 };
 
+//
+// NOTE: デッドコードだけど、構造を把握しやすい意味で残してみた
+//
 const memberQualificationsDefaultValidation: PartialFormValidation<MemberQualificationsSchemaType> =
   {
     memberQualifications: z.object({
@@ -49,22 +52,34 @@ const generateMemberQualificationValidation = (
               '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
           },
         ),
-        qualificationsAcquisitionScheduled: z.array(z.number()).refine(
-          (qualificationsAcquisitionScheduled) => {
-            return isRequiredIdList.some((requiredId) =>
-              qualificationsAcquisitionScheduled.includes(requiredId),
-            );
-          },
-          {
-            message:
-              '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
-          },
-        ),
+        qualificationsAcquisitionScheduled: z
+          .array(z.number())
+          .optional()
+          .refine(
+            (qualificationsAcquisitionScheduled) => {
+              //
+              // NOTE: こちらは基本的にバリデーションをかけないが、入力があるときだけ発火させたいので、
+              //       空の場合は、基本的にtrueを返す.
+              //
+              if (qualificationsAcquisitionScheduled?.length === 0) return true;
+              return isRequiredIdList.some((requiredId) =>
+                qualificationsAcquisitionScheduled?.includes(requiredId),
+              );
+            },
+            {
+              message:
+                '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
+            },
+          ),
       })
       .refine(
         ({ qualifications, qualificationsAcquisitionScheduled }) => {
+          //
+          // NOTE: 相関チェックとしても、入力があるときだけバリデーションロジックが走るようにする.
+          //
+          if (qualificationsAcquisitionScheduled?.length === 0) return true;
           const isDuplicate = qualifications.some((value) =>
-            qualificationsAcquisitionScheduled.includes(value),
+            qualificationsAcquisitionScheduled?.includes(value),
           );
           if (isDuplicate) {
             return false;
