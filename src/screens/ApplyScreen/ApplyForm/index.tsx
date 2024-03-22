@@ -81,7 +81,10 @@ export const ApplyForm = ({ id }: Props) => {
       password: '',
       employmentStatus: undefined,
       memberCareer: '',
-      qualifications: [],
+      memberQualifications: {
+        qualifications: [],
+        qualificationsAcquisitionScheduled: [],
+      },
       preferredDatetime: [
         {
           preferredDate: '',

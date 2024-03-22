@@ -10,14 +10,33 @@ export const useApplyInformationForm = () => {
     qualification_id: number,
   ) => {
     if (checked) {
-      setValue('qualifications', [...value, qualification_id]);
+      setValue('memberQualifications.qualifications', [...value, qualification_id]);
     } else {
       setValue(
-        'qualifications',
+        'memberQualifications.qualifications',
         value?.filter((value) => value !== qualification_id),
       );
     }
-    trigger('qualifications');
+    trigger('memberQualifications');
+  };
+
+  const handleQualificationsAcquisitionScheduledChange = (
+    checked: boolean,
+    value: number[],
+    qualification_id: number,
+  ) => {
+    if (checked) {
+      setValue('memberQualifications.qualificationsAcquisitionScheduled', [
+        ...value,
+        qualification_id,
+      ]);
+    } else {
+      setValue(
+        'memberQualifications.qualificationsAcquisitionScheduled',
+        value?.filter((value) => value !== qualification_id),
+      );
+    }
+    trigger('memberQualifications');
   };
 
   const handlePreferredDateChange = (value: string, preferredDateIndex: number) => {
@@ -51,6 +70,7 @@ export const useApplyInformationForm = () => {
 
   return {
     handleQualificationChange,
+    handleQualificationsAcquisitionScheduledChange,
     handlePreferredDateChange,
     handlePreferredTimeHourChange,
     handlePreferredTimeMinuteChange,

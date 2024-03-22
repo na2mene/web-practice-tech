@@ -16,7 +16,7 @@ import { generateEmailValidation } from '@/components/ui/Input/Email';
 import { generatePasswordValidation } from '@/components/ui/Input/Password';
 import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/EmploymentStatus';
 import { generateMemberCareerValidation } from '@/components/ui/Select/MemberCareer';
-import { generateQualificationValidation } from '@/components/ui/Checkbox/Qualifications';
+import { generateMemberQualificationValidation } from '@/components/ui/Checkbox/MemberQualification';
 import { generatepreferredDatetimeValidation } from '@/components/ui/Select/PreferredDatetime';
 
 //
@@ -39,25 +39,6 @@ const createBasicInformationSchema = (minAge: number = 0) =>
     ...generateEmailValidation(),
     ...generatePasswordValidation(),
     ...generateEmploymentStatusValidation(),
-
-    // employmentStatus: z.union([
-    //   z.undefined(),
-    //   z.string().transform((val) => (val === '' ? undefined : Number(val))),
-    // ]),
-    // employmentStatus: z.preprocess(
-    //   (value) => {
-    //     if (value === undefined) {
-    //       return NaN;
-    //     }
-    //     return Number(value);
-    //   },
-    //   z.number().min(1, { message: '就業状況を選択してください' }),
-    // ),
-    // employmentStatus: z.coerce
-    //   .number()
-    //   .min(1, { message: '就業状況を選択してください' })
-    //   .optional(),
-    // employmentStatus: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
   });
 
 //
@@ -72,16 +53,8 @@ export type BasicInformationSchemaType = z.infer<ReturnType<typeof createBasicIn
 const createApplyInformationSchema = (qualificationDataList: Props['qualificationData']) =>
   z.object({
     ...generateMemberCareerValidation(),
-    ...generateQualificationValidation(qualificationDataList),
+    ...generateMemberQualificationValidation(qualificationDataList),
     ...generatepreferredDatetimeValidation(),
-    // TODO: 面接希望日時（行追加のネスト）あとで
-    // prefferdDateTime: z.array(
-    //   z.object({
-    // prefferdDate: z.date(),
-    // prefferdHour: z.array(z.string()),
-    // prefferdMinutes: z.array(z.string()),
-    //   }),
-    // ),
   });
 
 //
