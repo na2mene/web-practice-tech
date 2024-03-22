@@ -1,6 +1,4 @@
 import { FC } from 'react';
-import { z } from 'zod';
-import { PartialFormValidation } from '@/libs/zod-utils';
 import { useFormContext } from 'react-hook-form';
 
 import {
@@ -11,37 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/Form/form';
 import { Checkbox } from '@/components/ui/Checkbox/checkbox';
-
-type QualificationSchemaType = {
-  qualifications: number[];
-};
-
-const qualificationDefaultValidation: PartialFormValidation<QualificationSchemaType> = {
-  qualifications: z.array(z.number()),
-};
-
-const generateQualificationValidation = (
-  qualificationDataList: {
-    id: number;
-    name: string;
-    required: boolean;
-  }[],
-) => {
-  return {
-    qualifications: qualificationDefaultValidation.qualifications.refine(
-      (qualifications) => {
-        const isRequiredIdList = qualificationDataList
-          .filter((data) => data.required)
-          .map((data) => data.id);
-        return isRequiredIdList.some((requiredId) => qualifications.includes(requiredId));
-      },
-      {
-        message:
-          '応募条件を満たす資格/免許が選択されていません。お持ちの場合はチェックしてください。',
-      },
-    ),
-  };
-};
+import { MemberQualificationsSchemaType } from '..';
 
 type Props = {
   qualifications:
@@ -53,13 +21,13 @@ type Props = {
     | [];
   handleQualificationChange: (checked: boolean, value: number[], qualificationId: number) => void;
 };
-const Qualifications: FC<Props> = ({ qualifications, handleQualificationChange }: Props) => {
-  const { control } = useFormContext<QualificationSchemaType>();
+export const Qualifications: FC<Props> = ({ qualifications, handleQualificationChange }: Props) => {
+  const { control } = useFormContext<MemberQualificationsSchemaType>();
 
   return (
     <FormField
       control={control}
-      name='qualifications'
+      name='memberQualifications.qualifications'
       render={() => (
         <FormItem>
           <FormLabel>保有資格・免許</FormLabel>
@@ -67,7 +35,7 @@ const Qualifications: FC<Props> = ({ qualifications, handleQualificationChange }
             <FormField
               key={index}
               control={control}
-              name='qualifications'
+              name='memberQualifications.qualifications'
               render={({ field: { value, onChange, ...restField } }) => (
                 <FormItem key={index}>
                   <FormControl>
@@ -90,5 +58,3 @@ const Qualifications: FC<Props> = ({ qualifications, handleQualificationChange }
     />
   );
 };
-
-export { Qualifications, generateQualificationValidation };
