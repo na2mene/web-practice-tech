@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { ApplyFormSchemaType } from '../schemas';
@@ -35,6 +35,7 @@ export const ApplyForm = ({ id }: Props) => {
       },
     ],
     jobCategoryData: {
+      id: 1,
       min_age: 0,
     },
   };
@@ -52,6 +53,9 @@ export const ApplyForm = ({ id }: Props) => {
       },
     ];
     apiData.jobCategoryData.min_age = 23;
+  }
+  if (id === '3') {
+    apiData.jobCategoryData.id = 39;
   }
 
   const applyFormSchema = createSchema(apiData);
@@ -110,11 +114,27 @@ export const ApplyForm = ({ id }: Props) => {
     window.alert(`変換後: ${JSON.stringify(data)}`);
   };
 
+  const onError: SubmitErrorHandler<ApplyFormSchemaType> = (errors) => {
+    //
+    // NOTE: 職種のIDが、配列に含まれていない かつ
+    //       errorsの要素が1件 かつ
+    //       errors.memberQualifications が 何かしらのエラーに引っ掛かっている(= 何かエラーとなっている)
+    //       => このときは、memberQualificationsがエラーであってもデータを送信する.（既存仕様踏襲）
+    //
+    if (
+      ![39].includes(apiData.jobCategoryData.id) &&
+      Object.keys(errors).length === 1 &&
+      typeof errors.memberQualifications !== 'undefined'
+    ) {
+      onSubmit(forms.getValues());
+    }
+  };
+
   console.log(forms.formState.errors);
 
   return (
     <Form {...forms}>
-      <form onSubmit={forms.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={forms.handleSubmit(onSubmit, onError)} className='space-y-8'>
         <BasicInfomationForm />
         <ApplyInfomationForm qualifications={apiData.qualificationData} />
         <Button type='submit'>応募する</Button>
