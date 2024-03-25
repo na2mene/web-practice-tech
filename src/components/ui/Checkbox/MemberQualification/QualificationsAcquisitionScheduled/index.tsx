@@ -46,7 +46,7 @@ export const QualificationsAcquisitionScheduled: FC<Props> = ({
           <div className='flex flex-row'>
             <FormLabel className='w-36'>取得予定（1年以内）の資格・免許</FormLabel>
             <div>
-              <FormMessage className='mb-2' />
+              <FormMessage className='mb-2 leading-none' />
               <div className='flex flex-row gap-x-4'>
                 {qualificationsAcquisitionScheduled.map(
                   (qualificationAcquisitionScheduled, index) => (
