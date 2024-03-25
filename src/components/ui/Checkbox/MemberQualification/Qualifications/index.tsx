@@ -33,7 +33,7 @@ export const Qualifications: FC<Props> = ({ qualifications, handleQualificationC
           <div className='flex flex-row'>
             <FormLabel className='w-36'>保有資格・免許</FormLabel>
             <div>
-              <FormMessage className='mb-2' />
+              <FormMessage className='mb-2 leading-none' />
               <div className='flex flex-row gap-x-4'>
                 {qualifications.map((qualification, index) => (
                   <div key={index} className='flex flex-row items-center'>
