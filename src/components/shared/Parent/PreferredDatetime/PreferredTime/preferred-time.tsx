@@ -8,7 +8,7 @@ import { Select, SelectTrigger, SelectValue } from '@/components/ui/Select/selec
 import { Button } from '@/components/ui/Button/button';
 import { preferredDatetimeSchemaType } from '../preferred-datetime';
 import { PreferredHourContent } from '@/components/shared/Parent/PreferredDatetime/PreferredTime/PreferredHourContent/preferred-hour-content';
-import { PreferredMinuteContent } from '@/components/shared/Parent/PreferredDatetime/PreferredTime/PreferredMinutesContent/preferred-minutes-content';
+import { PreferredMinutesContent } from '@/components/shared/Parent/PreferredDatetime/PreferredTime/PreferredMinutesContent/preferred-minutes-content';
 
 const MAX_PREFERRED_TIME_LENGTH = 3;
 
@@ -95,7 +95,7 @@ export const PreferredTime: FC<Props> = ({
                           <SelectValue placeholder='分' />
                         </SelectTrigger>
                       </FormControl>
-                      <PreferredMinuteContent />
+                      <PreferredMinutesContent />
                     </Select>
                     <FormMessage />
                   </FormItem>
