@@ -8,7 +8,7 @@ const MINUTES = [
   { value: '45', label: '45' },
 ];
 
-export const PreferredMinuteContent: FC = () => {
+export const PreferredMinutesContent: FC = () => {
   const items = useMemo(() => {
     return MINUTES.map((minutes, index) => {
       return (
