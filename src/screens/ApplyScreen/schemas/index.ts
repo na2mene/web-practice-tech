@@ -1,23 +1,23 @@
 import { z } from 'zod';
 
-import { generateFamilyNameValidation } from '@/components/ui/Input/FamilyName';
-import { generateFamilyNameKanaValidation } from '@/components/ui/Input/FamilyNameKana';
-import { generateFirstNameValidation } from '@/components/ui/Input/FirstName';
-import { generateFirstNameKanaValidation } from '@/components/ui/Input/FirstNameKana';
-import { generateBirthdayValidation } from '@/components/ui/Select/Birthday';
-import { generateGenderValidation } from '@/components/ui/RadioGroup/Gender';
-import { generateTelValidation } from '@/components/ui/Input/Tel';
-import { generatePostalCodeValidation } from '@/components/ui/Input/PostalCode';
-import { generatePrefectureValidation } from '@/components/ui/Select/Prefecture';
-import { generateCityValidation } from '@/components/ui/Select/City';
-import { generateTownValidation } from '@/components/ui/Input/Town';
-import { generateBuildingValidation } from '@/components/ui/Input/Building';
-import { generateEmailValidation } from '@/components/ui/Input/Email';
-import { generatePasswordValidation } from '@/components/ui/Input/Password';
-import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/EmploymentStatus';
-import { generateMemberCareerValidation } from '@/components/ui/Select/MemberCareer';
-import { generateMemberQualificationValidation } from '@/components/ui/Checkbox/MemberQualification';
-import { generatepreferredDatetimeValidation } from '@/components/ui/Select/PreferredDatetime';
+import { generateFamilyNameValidation } from '@/components/ui/Input/family-name';
+import { generateFamilyNameKanaValidation } from '@/components/ui/Input/family-name-kana';
+import { generateFirstNameValidation } from '@/components/ui/Input/first-name';
+import { generateFirstNameKanaValidation } from '@/components/ui/Input/first-name-kana';
+import { generateBirthdayValidation } from '@/components/shared/Parent/Birthday/birthday';
+import { generateGenderValidation } from '@/components/ui/RadioGroup/gender';
+import { generateTelValidation } from '@/components/ui/Input/tel';
+import { generatePostalCodeValidation } from '@/components/ui/Input/postal-code';
+import { generatePrefectureValidation } from '@/components/ui/Select/Prefecture/prefecture';
+import { generateCityValidation } from '@/components/shared/Parent/City/city';
+import { generateTownValidation } from '@/components/ui/Input/town';
+import { generateBuildingValidation } from '@/components/ui/Input/building';
+import { generateEmailValidation } from '@/components/ui/Input/email';
+import { generatePasswordValidation } from '@/components/ui/Input/password';
+import { generateEmploymentStatusValidation } from '@/components/ui/RadioGroup/employment-status';
+import { generateMemberCareerValidation } from '@/components/ui/Select/MemberCareer/member-career';
+import { generateMemberQualificationValidation } from '@/components/shared/Parent/MemberQualification';
+import { generatepreferredDatetimeValidation } from '@/components/shared/Parent/PreferredDatetime/preferred-datetime';
 
 //
 // NOTE: BasicInformationコンポーネントのスキーマ

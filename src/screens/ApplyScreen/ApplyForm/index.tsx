@@ -95,7 +95,7 @@ export const ApplyForm = ({ id }: Props) => {
           preferredTime: [
             {
               hour: '',
-              minute: '00',
+              minutes: '00',
             },
           ],
         },
