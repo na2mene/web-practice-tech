@@ -2,12 +2,12 @@
 import { useState } from 'react';
 
 import { useApplyInformationForm } from '@/screens/ApplyScreen/ApplyForm/ApplyInfomationForm/useApplyInformationForm';
-import { MemberCareer } from '@/components/ui/Select/MemberCareer';
-import { MemberQualification } from '@/components/ui/Checkbox/MemberQualification';
-import { Qualifications } from '@/components/ui/Checkbox/MemberQualification/Qualifications';
-import { QualificationsAcquisitionScheduledButton } from '@/components/ui/Button/QualificationsAcquisitionScheduled';
-import { QualificationsAcquisitionScheduled } from '@/components/ui/Checkbox/MemberQualification/QualificationsAcquisitionScheduled';
-import { PreferredDatetime } from '@/components/ui/Select/PreferredDatetime';
+import { MemberCareer } from '@/components/ui/Select/MemberCareer/member-career';
+import { MemberQualification } from '@/components/shared/Parent/MemberQualification';
+import { Qualifications } from '@/components/shared/Parent/MemberQualification/Qualifications/qualifications';
+import { QualificationsAcquisitionScheduledButton } from '@/components/ui/Button/qualifications-scquisition-scheduled-button';
+import { QualificationsAcquisitionScheduled } from '@/components/shared/Parent/MemberQualification/QualificationsAcquisitionScheduled/qualifications-scquisition-scheduled';
+import { PreferredDatetime } from '@/components/shared/Parent/PreferredDatetime/preferred-datetime';
 
 type Props = {
   qualifications:

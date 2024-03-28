@@ -62,7 +62,7 @@ export const useApplyInformationForm = () => {
     preferredTimeIndex: number,
   ) => {
     setValue(
-      `preferredDatetime.${preferredDateIndex}.preferredTime.${preferredTimeIndex}.minute`,
+      `preferredDatetime.${preferredDateIndex}.preferredTime.${preferredTimeIndex}.minutes`,
       value,
     );
     trigger('preferredDatetime');

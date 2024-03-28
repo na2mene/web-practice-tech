@@ -2,21 +2,21 @@
 
 import { FormField, FormMessage } from '@/components/ui/Form/form';
 import { useBasicInformaionForm } from './useBasicInformationForm';
-import { FamilyName } from '@/components/ui/Input/FamilyName';
-import { FirstName } from '@/components/ui/Input/FirstName';
-import { FamilyNameKana } from '@/components/ui/Input/FamilyNameKana';
-import { FirstNameKana } from '@/components/ui/Input/FirstNameKana';
-import { Birthday } from '@/components/ui/Select/Birthday';
-import { Gender } from '@/components/ui/RadioGroup/Gender';
-import { Tel } from '@/components/ui/Input/Tel';
-import { PostalCode } from '@/components/ui/Input/PostalCode';
-import { Prefecture } from '@/components/ui/Select/Prefecture';
-import { City } from '@/components/ui/Select/City';
-import { Town } from '@/components/ui/Input/Town';
-import { Building } from '@/components/ui/Input/Building';
-import { Email } from '@/components/ui/Input/Email';
-import { Password } from '@/components/ui/Input/Password';
-import { EmploymentStatus } from '@/components/ui/RadioGroup/EmploymentStatus';
+import { FamilyName } from '@/components/ui/Input/family-name';
+import { FirstName } from '@/components/ui/Input/first-name';
+import { FamilyNameKana } from '@/components/ui/Input/family-name-kana';
+import { FirstNameKana } from '@/components/ui/Input/first-name-kana';
+import { Birthday } from '@/components/shared/Parent/Birthday/birthday';
+import { Gender } from '@/components/ui/RadioGroup/gender';
+import { Tel } from '@/components/ui/Input/tel';
+import { PostalCode } from '@/components/ui/Input/postal-code';
+import { Prefecture } from '@/components/ui/Select/Prefecture/prefecture';
+import { City } from '@/components/shared/Parent/City/city';
+import { Town } from '@/components/ui/Input/town';
+import { Building } from '@/components/ui/Input/building';
+import { Email } from '@/components/ui/Input/email';
+import { Password } from '@/components/ui/Input/password';
+import { EmploymentStatus } from '@/components/ui/RadioGroup/employment-status';
 
 export const BasicInfomationForm = () => {
   const {
